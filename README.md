@@ -77,19 +77,12 @@ Fittings and valves are added to a section using a separate csv configuration fi
 Column:
 
 0. id of the section to which the fitting/valve belongs
-
 1. id of the fitting
-
 2. type of the fitting (can be chosen arbitrarily, just a description for easy reference)
-
 3. `zeta` resistance coefficient
-
 4. `zeta_inf` resistance coefficient
-
 5. `zeta_d` resistance coefficient
-
 6. `ELR` equivalent length ratio
-
 7. `Kv` flow coefficient (based on flow rate in m<sup>3</sup>/h and pressure in bar)
 
 Several ways exist to determine the pressure drop caused by fluid flow through a fitting or valve. PypeFlow supports four different methods:
