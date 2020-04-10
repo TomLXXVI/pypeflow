@@ -1,0 +1,1050 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>pypeflow.core.pipe API documentation</title>
+<meta name="description" content="Modeling straight pipe" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pypeflow.core.pipe</code></h1>
+</header>
+<section id="section-intro">
+<h2 id="modeling-straight-pipe">Modeling straight pipe</h2>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+## Modeling straight pipe
+&#34;&#34;&#34;
+from typing import Optional, Type
+import math
+import quantities as qty
+from pypeflow.core.fluids import Fluid
+from pypeflow.core.pipe_schedules import PipeSchedule
+from pypeflow.core.cross_sections import Circular
+
+
+def reynolds_number(v: float, d_hyd: float, kin_visco: float) -&gt; float:
+    &#34;&#34;&#34;
+    Calculate Reynolds number.
+
+    **Parameters:**
+
+    - `v`: (*float*) = flow velocity [m/s]
+    - `d_hyd`: (*float*) = hydraulic diameter [m]
+    - `kin_visco`: (*float*) = kinematic viscosity [m^2/s]
+
+    **Returns:** (*float*)
+
+    &#34;&#34;&#34;
+    return v * d_hyd / kin_visco
+
+
+def _haaland(re: float, rel_pipe_rough: float) -&gt; float:
+    # Haaland equation for calculating the Darcy friction factor.
+    var = 6.9 / re + (rel_pipe_rough / 3.71) ** 1.11
+    return (1.0 / (-1.8 * math.log10(var))) ** 2.0
+
+
+def _serghide(re: float, rel_pipe_rough: float) -&gt; float:
+    # Serghide equation for calculating the Darcy friction factor.
+    var1 = -2.0 * math.log10(rel_pipe_rough / 3.7 + 12.0 / re)
+    var2 = -2.0 * math.log10(rel_pipe_rough / 3.7 + 2.51 * var1 / re)
+    var3 = -2.0 * math.log10(rel_pipe_rough / 3.7 + 2.51 * var2 / re)
+    return (var1 - (var2 - var1) ** 2.0 / (var3 - 2.0 * var2 + var1)) ** -2.0
+
+
+def darcy_friction_factor(re: float, rel_pipe_rough: float, use: str = &#39;haaland&#39;) -&gt; float:
+    &#34;&#34;&#34;
+    Calculate the Darcy friction factor.
+
+    **Parameters:**
+
+    - `re`: (*float*) = Reynolds number
+    - `rel_pipe_rough`: (*float*) = relative pipe wall roughness
+    - `use`: (*str*) = friction factor equation to be used. valid values: &#39;haaland&#39;/&#39;serghide&#39;
+
+    **Returns:** (*float*)
+
+    &#34;&#34;&#34;
+    if use == &#39;serghide&#39;:
+        return _serghide(re, rel_pipe_rough)
+    else:
+        return _haaland(re, rel_pipe_rough)
+
+
+class Pipe:
+    &#34;&#34;&#34;Class that models straight pipe.&#34;&#34;&#34;
+
+    def __init__(self):
+        self._length: float = math.nan
+        self._fluid: Optional[Fluid] = None
+        self._rough: float = math.nan
+        self._flow_rate: float = math.nan
+        self._dp_fric: float = math.nan
+        self._dp_minor: float = math.nan
+        self._cross_section: Circular = Circular()
+        self._max_iterations: int = 30
+
+    @classmethod
+    def create(cls, fluid: Fluid, pipe_schedule: Type[PipeSchedule], length: qty.Length, **kwargs) -&gt; &#39;Pipe&#39;:
+        &#34;&#34;&#34;
+        Create a configured Pipe object.&lt;br&gt;
+
+        - If flow rate and nominal diameter are given, the pressure loss in the pipe is calculated.
+        - If flow rate and friction loss are given, the diameter of the pipe is calculated.
+        - If friction loss and nominal diameter are given, the flow rate is calculated.
+
+        **Parameters:**
+
+        - `fluid`: (object of type *pyflow.core.fluids.Fluid*) = fluid that flow through the pipe
+        - `pipe_schedule`: (type of *pyflow.core.pipe_schedules.PipeSchedule*) = pipe schedule
+        - `length`: (*quantities.Length*) = the length of the pipe
+        - `kwargs`: optional keyword arguments:
+            + `flow_rate`: (*quantities.VolumeFlowRate*) = flow rate through the pipe
+            + `nominal_diameter`: (*quantities.Length*) = the nominal diameter of the pipe
+            + `friction_loss`: (*quantities.Pressure*) = the friction loss in the pipe
+            + `sum_zeta`: (*float*) = sum of resistance coefficients of fittings/valves in the pipe
+
+        **Returns:** (*Pipe* object)
+
+        &#34;&#34;&#34;
+        p = cls()
+        p.fluid = fluid
+        p.length = length
+        p.roughness = pipe_schedule.pipe_roughness
+        V = kwargs.get(&#39;flow_rate&#39;)
+        dpf = kwargs.get(&#39;friction_loss&#39;)
+        dn = kwargs.get(&#39;nominal_diameter&#39;)
+        sum_zeta = kwargs.get(&#39;sum_zeta&#39;, 0.0)
+        if (V is not None) and (dpf is not None):
+            p.cross_section = Circular.create(pipe_schedule)
+            p.flow_rate = V
+            p.friction_loss = dpf
+            p.calculate_diameter()
+        if (V is not None) and (dn is not None):
+            p.cross_section = Circular.create(pipe_schedule, dn=dn)
+            p.flow_rate = V
+            p.calculate_pressure_loss(sum_zeta)
+        if (dpf is not None) and (dn is not None):
+            p.cross_section = Circular.create(pipe_schedule, dn=dn)
+            p.friction_loss = dpf
+            p.calculate_flow_rate(sum_zeta)
+        return p
+
+    @property
+    def length(self) -&gt; qty.Length:
+        &#34;&#34;&#34;Get/set the length (*quantities.Length*) of the pipe.&#34;&#34;&#34;
+        return qty.Length(self._length)
+
+    @length.setter
+    def length(self, l: qty.Length):
+        self._length = l()
+
+    @property
+    def roughness(self) -&gt; qty.Length:
+        &#34;&#34;&#34;Get/set the pipe wall roughness (*quantities.Length*) of the pipe.&#34;&#34;&#34;
+        return qty.Length(self._rough)
+
+    @roughness.setter
+    def roughness(self, r: qty.Length):
+        self._rough = r()
+
+    @property
+    def flow_rate(self) -&gt; qty.VolumeFlowRate:
+        &#34;&#34;&#34;Get/set the flow rate (*quantities.VolumeFlowRate*) through the pipe.&#34;&#34;&#34;
+        return qty.VolumeFlowRate(self._flow_rate)
+
+    @flow_rate.setter
+    def flow_rate(self, V: qty.VolumeFlowRate):
+        self._flow_rate = V()
+
+    @property
+    def velocity(self) -&gt; qty.Velocity:
+        &#34;&#34;&#34;Get the flow velocity (*quantities.Velocity*) in the pipe.&#34;&#34;&#34;
+        v = self._flow_rate / self._cross_section.area()
+        return qty.Velocity(v)
+
+    @property
+    def velocity_pressure(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;Get the velocity pressure (*quantities.Pressure*) in the pipe.&#34;&#34;&#34;
+        rho = self._fluid.density()
+        v = self._flow_rate / self._cross_section.area()
+        return qty.Pressure(rho * v ** 2.0 / 2.0)
+
+    @property
+    def friction_loss(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;Get/set the friction loss (*quantities.Pressure*) across the pipe.&#34;&#34;&#34;
+        return qty.Pressure(self._dp_fric)
+
+    @friction_loss.setter
+    def friction_loss(self, dp_fric: qty.Pressure):
+        self._dp_fric = dp_fric()
+
+    @property
+    def minor_losses(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;Get the sum of pressure losses (*quantities.Pressure*) due to fittings/valves in the pipe.&#34;&#34;&#34;
+        return qty.Pressure(self._dp_minor)
+
+    @property
+    def pressure_loss(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;Get the pressure loss (*quantities.Pressure*) across the pipe including its minor losses.&#34;&#34;&#34;
+        dp = 0.0
+        if not math.isnan(self._dp_minor):
+            dp += self._dp_minor
+        if not math.isnan(self._dp_fric):
+            dp += self._dp_fric
+        return qty.Pressure(dp)
+
+    @property
+    def fluid(self) -&gt; Fluid:
+        &#34;&#34;&#34;Get/set the fluid (*pyflow.core.fluids.Fluid*) flowing in the pipe.&#34;&#34;&#34;
+        return self._fluid
+
+    @fluid.setter
+    def fluid(self, fl: Fluid):
+        self._fluid = fl
+
+    @property
+    def cross_section(self) -&gt; Circular:
+        &#34;&#34;&#34;Get/set the cross section (*pyflow.core.cross_sections.Circular*) of the pipe.&#34;&#34;&#34;
+        return self._cross_section
+
+    @cross_section.setter
+    def cross_section(self, cs: Circular):
+        self._cross_section = cs
+
+    def calculate_diameter(self) -&gt; qty.Length:
+        &#34;&#34;&#34;
+        Calculate the diameter of the pipe if flow rate and friction loss are given on creation.
+
+        **Returns:** (*quantities.Length*) = calculated or theoretical inside diameter of the pipe.
+
+        &#34;&#34;&#34;
+        # given: friction loss and flow rate
+        rho = self._fluid.density()
+        mu = self._fluid.kinematic_viscosity()
+        pi = math.pi
+        dpf = self._dp_fric
+        V = self._flow_rate
+        l = self._length
+        f = 0.03
+        i = 0
+        di: float = 0.0
+        while i &lt; self._max_iterations:
+            di = (f * l / dpf * rho * 8.0 / (pi ** 2.0) * V ** 2.0) ** (1.0 / 5.0)
+            A = pi * di ** 2.0 / 4.0
+            v = V / A
+            re = reynolds_number(v, di, mu)
+            rel_pipe_rough = self._rough / di
+            f_new = darcy_friction_factor(re, rel_pipe_rough)
+            if abs(f_new - f) &lt;= 1.0e-5:
+                break
+            else:
+                f = f_new
+                i += 1
+                if i == self._max_iterations:
+                    raise OverflowError(&#39;too many iterations. no solution found&#39;)
+        self._cross_section.diameter = qty.Length(di)
+        return qty.Length(di)
+
+    def calculate_flow_rate(self, sum_zeta: float = 0.0) -&gt; qty.VolumeFlowRate:
+        &#34;&#34;&#34;
+        Calculate flow rate through the pipe if nominal diameter and friction loss are known on creation.
+
+        **Parameters:**
+
+        - `sum_zeta`: (*float*) = sum of resistance coefficients of fittings/valves present in the pipe.
+
+        **Returns:** (*quantities.VolumeFlowRate*)
+
+        &#34;&#34;&#34;
+        # given: friction loss and cross section (area and hydraulic diameter)
+        rho = self._fluid.density()
+        mu = self._fluid.kinematic_viscosity()
+        di = self._cross_section.diameter()
+        rel_pipe_rough = self._rough / di
+        f = 1.325 / math.log10(rel_pipe_rough / 3.7) ** 2.0
+        i = 0
+        v = 0.0
+        while i &lt; self._max_iterations:
+            var = f * self._length / di + sum_zeta
+            v = math.sqrt(2.0 * self._dp_fric / (rho * var))
+            re = reynolds_number(v, di, mu)
+            f_new = darcy_friction_factor(re, rel_pipe_rough)
+            if abs(f_new - f) &lt;= 1.0e-5:
+                break
+            else:
+                f = f_new
+                i += 1
+                if i == self._max_iterations:
+                    raise OverflowError(&#39;too many iterations. no solution found&#39;)
+        self._flow_rate = self._cross_section.area() * v
+        return qty.VolumeFlowRate(self._flow_rate)
+
+    def calculate_pressure_loss(self, sum_zeta: float = 0.0) -&gt; qty.Pressure:
+        &#34;&#34;&#34;
+        Calculate pressure loss across the pipe if flow rate and nominal diameter are known on creation.
+
+        **Parameters:**
+
+        - `sum_zeta`: (*float*) = sum of resistance coefficients of fittings/valves present in the pipe.
+
+        **Returns:** (*quantities.Pressure*)
+
+        &#34;&#34;&#34;
+        # given: flow rate and cross section (area and hydraulic diameter)
+        rho = self._fluid.density()
+        mu = self._fluid.kinematic_viscosity()
+        di = self._cross_section.diameter()
+        v = self._flow_rate / self._cross_section.area()
+        re = reynolds_number(v, di, mu)
+        rel_pipe_rough = self._rough / di
+        f = darcy_friction_factor(re, rel_pipe_rough)
+        self._dp_fric = f * self._length / di * rho * v ** 2.0 / 2.0
+        self._dp_minor = sum_zeta * rho * v ** 2.0 / 2.0
+        return qty.Pressure(self._dp_fric)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="pypeflow.core.pipe.darcy_friction_factor"><code class="name flex">
+<span>def <span class="ident">darcy_friction_factor</span></span>(<span>re, rel_pipe_rough, use='haaland')</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Calculate the Darcy friction factor.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>re</code>: (<em>float</em>) = Reynolds number</li>
+<li><code>rel_pipe_rough</code>: (<em>float</em>) = relative pipe wall roughness</li>
+<li><code>use</code>: (<em>str</em>) = friction factor equation to be used. valid values: 'haaland'/'serghide'</li>
+</ul>
+<p><strong>Returns:</strong> (<em>float</em>)</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def darcy_friction_factor(re: float, rel_pipe_rough: float, use: str = &#39;haaland&#39;) -&gt; float:
+    &#34;&#34;&#34;
+    Calculate the Darcy friction factor.
+
+    **Parameters:**
+
+    - `re`: (*float*) = Reynolds number
+    - `rel_pipe_rough`: (*float*) = relative pipe wall roughness
+    - `use`: (*str*) = friction factor equation to be used. valid values: &#39;haaland&#39;/&#39;serghide&#39;
+
+    **Returns:** (*float*)
+
+    &#34;&#34;&#34;
+    if use == &#39;serghide&#39;:
+        return _serghide(re, rel_pipe_rough)
+    else:
+        return _haaland(re, rel_pipe_rough)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.core.pipe.reynolds_number"><code class="name flex">
+<span>def <span class="ident">reynolds_number</span></span>(<span>v, d_hyd, kin_visco)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Calculate Reynolds number.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>v</code>: (<em>float</em>) = flow velocity [m/s]</li>
+<li><code>d_hyd</code>: (<em>float</em>) = hydraulic diameter [m]</li>
+<li><code>kin_visco</code>: (<em>float</em>) = kinematic viscosity [m^2/s]</li>
+</ul>
+<p><strong>Returns:</strong> (<em>float</em>)</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def reynolds_number(v: float, d_hyd: float, kin_visco: float) -&gt; float:
+    &#34;&#34;&#34;
+    Calculate Reynolds number.
+
+    **Parameters:**
+
+    - `v`: (*float*) = flow velocity [m/s]
+    - `d_hyd`: (*float*) = hydraulic diameter [m]
+    - `kin_visco`: (*float*) = kinematic viscosity [m^2/s]
+
+    **Returns:** (*float*)
+
+    &#34;&#34;&#34;
+    return v * d_hyd / kin_visco</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pypeflow.core.pipe.Pipe"><code class="flex name class">
+<span>class <span class="ident">Pipe</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>Class that models straight pipe.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Pipe:
+    &#34;&#34;&#34;Class that models straight pipe.&#34;&#34;&#34;
+
+    def __init__(self):
+        self._length: float = math.nan
+        self._fluid: Optional[Fluid] = None
+        self._rough: float = math.nan
+        self._flow_rate: float = math.nan
+        self._dp_fric: float = math.nan
+        self._dp_minor: float = math.nan
+        self._cross_section: Circular = Circular()
+        self._max_iterations: int = 30
+
+    @classmethod
+    def create(cls, fluid: Fluid, pipe_schedule: Type[PipeSchedule], length: qty.Length, **kwargs) -&gt; &#39;Pipe&#39;:
+        &#34;&#34;&#34;
+        Create a configured Pipe object.&lt;br&gt;
+
+        - If flow rate and nominal diameter are given, the pressure loss in the pipe is calculated.
+        - If flow rate and friction loss are given, the diameter of the pipe is calculated.
+        - If friction loss and nominal diameter are given, the flow rate is calculated.
+
+        **Parameters:**
+
+        - `fluid`: (object of type *pyflow.core.fluids.Fluid*) = fluid that flow through the pipe
+        - `pipe_schedule`: (type of *pyflow.core.pipe_schedules.PipeSchedule*) = pipe schedule
+        - `length`: (*quantities.Length*) = the length of the pipe
+        - `kwargs`: optional keyword arguments:
+            + `flow_rate`: (*quantities.VolumeFlowRate*) = flow rate through the pipe
+            + `nominal_diameter`: (*quantities.Length*) = the nominal diameter of the pipe
+            + `friction_loss`: (*quantities.Pressure*) = the friction loss in the pipe
+            + `sum_zeta`: (*float*) = sum of resistance coefficients of fittings/valves in the pipe
+
+        **Returns:** (*Pipe* object)
+
+        &#34;&#34;&#34;
+        p = cls()
+        p.fluid = fluid
+        p.length = length
+        p.roughness = pipe_schedule.pipe_roughness
+        V = kwargs.get(&#39;flow_rate&#39;)
+        dpf = kwargs.get(&#39;friction_loss&#39;)
+        dn = kwargs.get(&#39;nominal_diameter&#39;)
+        sum_zeta = kwargs.get(&#39;sum_zeta&#39;, 0.0)
+        if (V is not None) and (dpf is not None):
+            p.cross_section = Circular.create(pipe_schedule)
+            p.flow_rate = V
+            p.friction_loss = dpf
+            p.calculate_diameter()
+        if (V is not None) and (dn is not None):
+            p.cross_section = Circular.create(pipe_schedule, dn=dn)
+            p.flow_rate = V
+            p.calculate_pressure_loss(sum_zeta)
+        if (dpf is not None) and (dn is not None):
+            p.cross_section = Circular.create(pipe_schedule, dn=dn)
+            p.friction_loss = dpf
+            p.calculate_flow_rate(sum_zeta)
+        return p
+
+    @property
+    def length(self) -&gt; qty.Length:
+        &#34;&#34;&#34;Get/set the length (*quantities.Length*) of the pipe.&#34;&#34;&#34;
+        return qty.Length(self._length)
+
+    @length.setter
+    def length(self, l: qty.Length):
+        self._length = l()
+
+    @property
+    def roughness(self) -&gt; qty.Length:
+        &#34;&#34;&#34;Get/set the pipe wall roughness (*quantities.Length*) of the pipe.&#34;&#34;&#34;
+        return qty.Length(self._rough)
+
+    @roughness.setter
+    def roughness(self, r: qty.Length):
+        self._rough = r()
+
+    @property
+    def flow_rate(self) -&gt; qty.VolumeFlowRate:
+        &#34;&#34;&#34;Get/set the flow rate (*quantities.VolumeFlowRate*) through the pipe.&#34;&#34;&#34;
+        return qty.VolumeFlowRate(self._flow_rate)
+
+    @flow_rate.setter
+    def flow_rate(self, V: qty.VolumeFlowRate):
+        self._flow_rate = V()
+
+    @property
+    def velocity(self) -&gt; qty.Velocity:
+        &#34;&#34;&#34;Get the flow velocity (*quantities.Velocity*) in the pipe.&#34;&#34;&#34;
+        v = self._flow_rate / self._cross_section.area()
+        return qty.Velocity(v)
+
+    @property
+    def velocity_pressure(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;Get the velocity pressure (*quantities.Pressure*) in the pipe.&#34;&#34;&#34;
+        rho = self._fluid.density()
+        v = self._flow_rate / self._cross_section.area()
+        return qty.Pressure(rho * v ** 2.0 / 2.0)
+
+    @property
+    def friction_loss(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;Get/set the friction loss (*quantities.Pressure*) across the pipe.&#34;&#34;&#34;
+        return qty.Pressure(self._dp_fric)
+
+    @friction_loss.setter
+    def friction_loss(self, dp_fric: qty.Pressure):
+        self._dp_fric = dp_fric()
+
+    @property
+    def minor_losses(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;Get the sum of pressure losses (*quantities.Pressure*) due to fittings/valves in the pipe.&#34;&#34;&#34;
+        return qty.Pressure(self._dp_minor)
+
+    @property
+    def pressure_loss(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;Get the pressure loss (*quantities.Pressure*) across the pipe including its minor losses.&#34;&#34;&#34;
+        dp = 0.0
+        if not math.isnan(self._dp_minor):
+            dp += self._dp_minor
+        if not math.isnan(self._dp_fric):
+            dp += self._dp_fric
+        return qty.Pressure(dp)
+
+    @property
+    def fluid(self) -&gt; Fluid:
+        &#34;&#34;&#34;Get/set the fluid (*pyflow.core.fluids.Fluid*) flowing in the pipe.&#34;&#34;&#34;
+        return self._fluid
+
+    @fluid.setter
+    def fluid(self, fl: Fluid):
+        self._fluid = fl
+
+    @property
+    def cross_section(self) -&gt; Circular:
+        &#34;&#34;&#34;Get/set the cross section (*pyflow.core.cross_sections.Circular*) of the pipe.&#34;&#34;&#34;
+        return self._cross_section
+
+    @cross_section.setter
+    def cross_section(self, cs: Circular):
+        self._cross_section = cs
+
+    def calculate_diameter(self) -&gt; qty.Length:
+        &#34;&#34;&#34;
+        Calculate the diameter of the pipe if flow rate and friction loss are given on creation.
+
+        **Returns:** (*quantities.Length*) = calculated or theoretical inside diameter of the pipe.
+
+        &#34;&#34;&#34;
+        # given: friction loss and flow rate
+        rho = self._fluid.density()
+        mu = self._fluid.kinematic_viscosity()
+        pi = math.pi
+        dpf = self._dp_fric
+        V = self._flow_rate
+        l = self._length
+        f = 0.03
+        i = 0
+        di: float = 0.0
+        while i &lt; self._max_iterations:
+            di = (f * l / dpf * rho * 8.0 / (pi ** 2.0) * V ** 2.0) ** (1.0 / 5.0)
+            A = pi * di ** 2.0 / 4.0
+            v = V / A
+            re = reynolds_number(v, di, mu)
+            rel_pipe_rough = self._rough / di
+            f_new = darcy_friction_factor(re, rel_pipe_rough)
+            if abs(f_new - f) &lt;= 1.0e-5:
+                break
+            else:
+                f = f_new
+                i += 1
+                if i == self._max_iterations:
+                    raise OverflowError(&#39;too many iterations. no solution found&#39;)
+        self._cross_section.diameter = qty.Length(di)
+        return qty.Length(di)
+
+    def calculate_flow_rate(self, sum_zeta: float = 0.0) -&gt; qty.VolumeFlowRate:
+        &#34;&#34;&#34;
+        Calculate flow rate through the pipe if nominal diameter and friction loss are known on creation.
+
+        **Parameters:**
+
+        - `sum_zeta`: (*float*) = sum of resistance coefficients of fittings/valves present in the pipe.
+
+        **Returns:** (*quantities.VolumeFlowRate*)
+
+        &#34;&#34;&#34;
+        # given: friction loss and cross section (area and hydraulic diameter)
+        rho = self._fluid.density()
+        mu = self._fluid.kinematic_viscosity()
+        di = self._cross_section.diameter()
+        rel_pipe_rough = self._rough / di
+        f = 1.325 / math.log10(rel_pipe_rough / 3.7) ** 2.0
+        i = 0
+        v = 0.0
+        while i &lt; self._max_iterations:
+            var = f * self._length / di + sum_zeta
+            v = math.sqrt(2.0 * self._dp_fric / (rho * var))
+            re = reynolds_number(v, di, mu)
+            f_new = darcy_friction_factor(re, rel_pipe_rough)
+            if abs(f_new - f) &lt;= 1.0e-5:
+                break
+            else:
+                f = f_new
+                i += 1
+                if i == self._max_iterations:
+                    raise OverflowError(&#39;too many iterations. no solution found&#39;)
+        self._flow_rate = self._cross_section.area() * v
+        return qty.VolumeFlowRate(self._flow_rate)
+
+    def calculate_pressure_loss(self, sum_zeta: float = 0.0) -&gt; qty.Pressure:
+        &#34;&#34;&#34;
+        Calculate pressure loss across the pipe if flow rate and nominal diameter are known on creation.
+
+        **Parameters:**
+
+        - `sum_zeta`: (*float*) = sum of resistance coefficients of fittings/valves present in the pipe.
+
+        **Returns:** (*quantities.Pressure*)
+
+        &#34;&#34;&#34;
+        # given: flow rate and cross section (area and hydraulic diameter)
+        rho = self._fluid.density()
+        mu = self._fluid.kinematic_viscosity()
+        di = self._cross_section.diameter()
+        v = self._flow_rate / self._cross_section.area()
+        re = reynolds_number(v, di, mu)
+        rel_pipe_rough = self._rough / di
+        f = darcy_friction_factor(re, rel_pipe_rough)
+        self._dp_fric = f * self._length / di * rho * v ** 2.0 / 2.0
+        self._dp_minor = sum_zeta * rho * v ** 2.0 / 2.0
+        return qty.Pressure(self._dp_fric)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="pypeflow.core.pipe.Pipe.create"><code class="name flex">
+<span>def <span class="ident">create</span></span>(<span>fluid, pipe_schedule, length, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Create a configured Pipe object.<br></p>
+<ul>
+<li>If flow rate and nominal diameter are given, the pressure loss in the pipe is calculated.</li>
+<li>If flow rate and friction loss are given, the diameter of the pipe is calculated.</li>
+<li>If friction loss and nominal diameter are given, the flow rate is calculated.</li>
+</ul>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>fluid</code>: (object of type <em>pyflow.core.fluids.Fluid</em>) = fluid that flow through the pipe</li>
+<li><code>pipe_schedule</code>: (type of <em>pyflow.core.pipe_schedules.PipeSchedule</em>) = pipe schedule</li>
+<li><code>length</code>: (<em>quantities.Length</em>) = the length of the pipe</li>
+<li><code>kwargs</code>: optional keyword arguments:<ul>
+<li><code>flow_rate</code>: (<em>quantities.VolumeFlowRate</em>) = flow rate through the pipe</li>
+<li><code>nominal_diameter</code>: (<em>quantities.Length</em>) = the nominal diameter of the pipe</li>
+<li><code>friction_loss</code>: (<em>quantities.Pressure</em>) = the friction loss in the pipe</li>
+<li><code>sum_zeta</code>: (<em>float</em>) = sum of resistance coefficients of fittings/valves in the pipe</li>
+</ul>
+</li>
+</ul>
+<p><strong>Returns:</strong> (<em>Pipe</em> object)</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def create(cls, fluid: Fluid, pipe_schedule: Type[PipeSchedule], length: qty.Length, **kwargs) -&gt; &#39;Pipe&#39;:
+    &#34;&#34;&#34;
+    Create a configured Pipe object.&lt;br&gt;
+
+    - If flow rate and nominal diameter are given, the pressure loss in the pipe is calculated.
+    - If flow rate and friction loss are given, the diameter of the pipe is calculated.
+    - If friction loss and nominal diameter are given, the flow rate is calculated.
+
+    **Parameters:**
+
+    - `fluid`: (object of type *pyflow.core.fluids.Fluid*) = fluid that flow through the pipe
+    - `pipe_schedule`: (type of *pyflow.core.pipe_schedules.PipeSchedule*) = pipe schedule
+    - `length`: (*quantities.Length*) = the length of the pipe
+    - `kwargs`: optional keyword arguments:
+        + `flow_rate`: (*quantities.VolumeFlowRate*) = flow rate through the pipe
+        + `nominal_diameter`: (*quantities.Length*) = the nominal diameter of the pipe
+        + `friction_loss`: (*quantities.Pressure*) = the friction loss in the pipe
+        + `sum_zeta`: (*float*) = sum of resistance coefficients of fittings/valves in the pipe
+
+    **Returns:** (*Pipe* object)
+
+    &#34;&#34;&#34;
+    p = cls()
+    p.fluid = fluid
+    p.length = length
+    p.roughness = pipe_schedule.pipe_roughness
+    V = kwargs.get(&#39;flow_rate&#39;)
+    dpf = kwargs.get(&#39;friction_loss&#39;)
+    dn = kwargs.get(&#39;nominal_diameter&#39;)
+    sum_zeta = kwargs.get(&#39;sum_zeta&#39;, 0.0)
+    if (V is not None) and (dpf is not None):
+        p.cross_section = Circular.create(pipe_schedule)
+        p.flow_rate = V
+        p.friction_loss = dpf
+        p.calculate_diameter()
+    if (V is not None) and (dn is not None):
+        p.cross_section = Circular.create(pipe_schedule, dn=dn)
+        p.flow_rate = V
+        p.calculate_pressure_loss(sum_zeta)
+    if (dpf is not None) and (dn is not None):
+        p.cross_section = Circular.create(pipe_schedule, dn=dn)
+        p.friction_loss = dpf
+        p.calculate_flow_rate(sum_zeta)
+    return p</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pypeflow.core.pipe.Pipe.cross_section"><code class="name">var <span class="ident">cross_section</span></code></dt>
+<dd>
+<section class="desc"><p>Get/set the cross section (<em>pyflow.core.cross_sections.Circular</em>) of the pipe.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def cross_section(self) -&gt; Circular:
+    &#34;&#34;&#34;Get/set the cross section (*pyflow.core.cross_sections.Circular*) of the pipe.&#34;&#34;&#34;
+    return self._cross_section</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.core.pipe.Pipe.flow_rate"><code class="name">var <span class="ident">flow_rate</span></code></dt>
+<dd>
+<section class="desc"><p>Get/set the flow rate (<em>quantities.VolumeFlowRate</em>) through the pipe.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def flow_rate(self) -&gt; qty.VolumeFlowRate:
+    &#34;&#34;&#34;Get/set the flow rate (*quantities.VolumeFlowRate*) through the pipe.&#34;&#34;&#34;
+    return qty.VolumeFlowRate(self._flow_rate)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.core.pipe.Pipe.fluid"><code class="name">var <span class="ident">fluid</span></code></dt>
+<dd>
+<section class="desc"><p>Get/set the fluid (<em>pyflow.core.fluids.Fluid</em>) flowing in the pipe.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def fluid(self) -&gt; Fluid:
+    &#34;&#34;&#34;Get/set the fluid (*pyflow.core.fluids.Fluid*) flowing in the pipe.&#34;&#34;&#34;
+    return self._fluid</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.core.pipe.Pipe.friction_loss"><code class="name">var <span class="ident">friction_loss</span></code></dt>
+<dd>
+<section class="desc"><p>Get/set the friction loss (<em>quantities.Pressure</em>) across the pipe.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def friction_loss(self) -&gt; qty.Pressure:
+    &#34;&#34;&#34;Get/set the friction loss (*quantities.Pressure*) across the pipe.&#34;&#34;&#34;
+    return qty.Pressure(self._dp_fric)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.core.pipe.Pipe.length"><code class="name">var <span class="ident">length</span></code></dt>
+<dd>
+<section class="desc"><p>Get/set the length (<em>quantities.Length</em>) of the pipe.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def length(self) -&gt; qty.Length:
+    &#34;&#34;&#34;Get/set the length (*quantities.Length*) of the pipe.&#34;&#34;&#34;
+    return qty.Length(self._length)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.core.pipe.Pipe.minor_losses"><code class="name">var <span class="ident">minor_losses</span></code></dt>
+<dd>
+<section class="desc"><p>Get the sum of pressure losses (<em>quantities.Pressure</em>) due to fittings/valves in the pipe.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def minor_losses(self) -&gt; qty.Pressure:
+    &#34;&#34;&#34;Get the sum of pressure losses (*quantities.Pressure*) due to fittings/valves in the pipe.&#34;&#34;&#34;
+    return qty.Pressure(self._dp_minor)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.core.pipe.Pipe.pressure_loss"><code class="name">var <span class="ident">pressure_loss</span></code></dt>
+<dd>
+<section class="desc"><p>Get the pressure loss (<em>quantities.Pressure</em>) across the pipe including its minor losses.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def pressure_loss(self) -&gt; qty.Pressure:
+    &#34;&#34;&#34;Get the pressure loss (*quantities.Pressure*) across the pipe including its minor losses.&#34;&#34;&#34;
+    dp = 0.0
+    if not math.isnan(self._dp_minor):
+        dp += self._dp_minor
+    if not math.isnan(self._dp_fric):
+        dp += self._dp_fric
+    return qty.Pressure(dp)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.core.pipe.Pipe.roughness"><code class="name">var <span class="ident">roughness</span></code></dt>
+<dd>
+<section class="desc"><p>Get/set the pipe wall roughness (<em>quantities.Length</em>) of the pipe.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def roughness(self) -&gt; qty.Length:
+    &#34;&#34;&#34;Get/set the pipe wall roughness (*quantities.Length*) of the pipe.&#34;&#34;&#34;
+    return qty.Length(self._rough)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.core.pipe.Pipe.velocity"><code class="name">var <span class="ident">velocity</span></code></dt>
+<dd>
+<section class="desc"><p>Get the flow velocity (<em>quantities.Velocity</em>) in the pipe.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def velocity(self) -&gt; qty.Velocity:
+    &#34;&#34;&#34;Get the flow velocity (*quantities.Velocity*) in the pipe.&#34;&#34;&#34;
+    v = self._flow_rate / self._cross_section.area()
+    return qty.Velocity(v)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.core.pipe.Pipe.velocity_pressure"><code class="name">var <span class="ident">velocity_pressure</span></code></dt>
+<dd>
+<section class="desc"><p>Get the velocity pressure (<em>quantities.Pressure</em>) in the pipe.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def velocity_pressure(self) -&gt; qty.Pressure:
+    &#34;&#34;&#34;Get the velocity pressure (*quantities.Pressure*) in the pipe.&#34;&#34;&#34;
+    rho = self._fluid.density()
+    v = self._flow_rate / self._cross_section.area()
+    return qty.Pressure(rho * v ** 2.0 / 2.0)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pypeflow.core.pipe.Pipe.calculate_diameter"><code class="name flex">
+<span>def <span class="ident">calculate_diameter</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Calculate the diameter of the pipe if flow rate and friction loss are given on creation.</p>
+<p><strong>Returns:</strong> (<em>quantities.Length</em>) = calculated or theoretical inside diameter of the pipe.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calculate_diameter(self) -&gt; qty.Length:
+    &#34;&#34;&#34;
+    Calculate the diameter of the pipe if flow rate and friction loss are given on creation.
+
+    **Returns:** (*quantities.Length*) = calculated or theoretical inside diameter of the pipe.
+
+    &#34;&#34;&#34;
+    # given: friction loss and flow rate
+    rho = self._fluid.density()
+    mu = self._fluid.kinematic_viscosity()
+    pi = math.pi
+    dpf = self._dp_fric
+    V = self._flow_rate
+    l = self._length
+    f = 0.03
+    i = 0
+    di: float = 0.0
+    while i &lt; self._max_iterations:
+        di = (f * l / dpf * rho * 8.0 / (pi ** 2.0) * V ** 2.0) ** (1.0 / 5.0)
+        A = pi * di ** 2.0 / 4.0
+        v = V / A
+        re = reynolds_number(v, di, mu)
+        rel_pipe_rough = self._rough / di
+        f_new = darcy_friction_factor(re, rel_pipe_rough)
+        if abs(f_new - f) &lt;= 1.0e-5:
+            break
+        else:
+            f = f_new
+            i += 1
+            if i == self._max_iterations:
+                raise OverflowError(&#39;too many iterations. no solution found&#39;)
+    self._cross_section.diameter = qty.Length(di)
+    return qty.Length(di)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.core.pipe.Pipe.calculate_flow_rate"><code class="name flex">
+<span>def <span class="ident">calculate_flow_rate</span></span>(<span>self, sum_zeta=0.0)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Calculate flow rate through the pipe if nominal diameter and friction loss are known on creation.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>sum_zeta</code>: (<em>float</em>) = sum of resistance coefficients of fittings/valves present in the pipe.</li>
+</ul>
+<p><strong>Returns:</strong> (<em>quantities.VolumeFlowRate</em>)</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calculate_flow_rate(self, sum_zeta: float = 0.0) -&gt; qty.VolumeFlowRate:
+    &#34;&#34;&#34;
+    Calculate flow rate through the pipe if nominal diameter and friction loss are known on creation.
+
+    **Parameters:**
+
+    - `sum_zeta`: (*float*) = sum of resistance coefficients of fittings/valves present in the pipe.
+
+    **Returns:** (*quantities.VolumeFlowRate*)
+
+    &#34;&#34;&#34;
+    # given: friction loss and cross section (area and hydraulic diameter)
+    rho = self._fluid.density()
+    mu = self._fluid.kinematic_viscosity()
+    di = self._cross_section.diameter()
+    rel_pipe_rough = self._rough / di
+    f = 1.325 / math.log10(rel_pipe_rough / 3.7) ** 2.0
+    i = 0
+    v = 0.0
+    while i &lt; self._max_iterations:
+        var = f * self._length / di + sum_zeta
+        v = math.sqrt(2.0 * self._dp_fric / (rho * var))
+        re = reynolds_number(v, di, mu)
+        f_new = darcy_friction_factor(re, rel_pipe_rough)
+        if abs(f_new - f) &lt;= 1.0e-5:
+            break
+        else:
+            f = f_new
+            i += 1
+            if i == self._max_iterations:
+                raise OverflowError(&#39;too many iterations. no solution found&#39;)
+    self._flow_rate = self._cross_section.area() * v
+    return qty.VolumeFlowRate(self._flow_rate)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.core.pipe.Pipe.calculate_pressure_loss"><code class="name flex">
+<span>def <span class="ident">calculate_pressure_loss</span></span>(<span>self, sum_zeta=0.0)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Calculate pressure loss across the pipe if flow rate and nominal diameter are known on creation.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>sum_zeta</code>: (<em>float</em>) = sum of resistance coefficients of fittings/valves present in the pipe.</li>
+</ul>
+<p><strong>Returns:</strong> (<em>quantities.Pressure</em>)</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calculate_pressure_loss(self, sum_zeta: float = 0.0) -&gt; qty.Pressure:
+    &#34;&#34;&#34;
+    Calculate pressure loss across the pipe if flow rate and nominal diameter are known on creation.
+
+    **Parameters:**
+
+    - `sum_zeta`: (*float*) = sum of resistance coefficients of fittings/valves present in the pipe.
+
+    **Returns:** (*quantities.Pressure*)
+
+    &#34;&#34;&#34;
+    # given: flow rate and cross section (area and hydraulic diameter)
+    rho = self._fluid.density()
+    mu = self._fluid.kinematic_viscosity()
+    di = self._cross_section.diameter()
+    v = self._flow_rate / self._cross_section.area()
+    re = reynolds_number(v, di, mu)
+    rel_pipe_rough = self._rough / di
+    f = darcy_friction_factor(re, rel_pipe_rough)
+    self._dp_fric = f * self._length / di * rho * v ** 2.0 / 2.0
+    self._dp_minor = sum_zeta * rho * v ** 2.0 / 2.0
+    return qty.Pressure(self._dp_fric)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#modeling-straight-pipe">Modeling straight pipe</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pypeflow.core" href="index.html">pypeflow.core</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="pypeflow.core.pipe.darcy_friction_factor" href="#pypeflow.core.pipe.darcy_friction_factor">darcy_friction_factor</a></code></li>
+<li><code><a title="pypeflow.core.pipe.reynolds_number" href="#pypeflow.core.pipe.reynolds_number">reynolds_number</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pypeflow.core.pipe.Pipe" href="#pypeflow.core.pipe.Pipe">Pipe</a></code></h4>
+<ul class="">
+<li><code><a title="pypeflow.core.pipe.Pipe.calculate_diameter" href="#pypeflow.core.pipe.Pipe.calculate_diameter">calculate_diameter</a></code></li>
+<li><code><a title="pypeflow.core.pipe.Pipe.calculate_flow_rate" href="#pypeflow.core.pipe.Pipe.calculate_flow_rate">calculate_flow_rate</a></code></li>
+<li><code><a title="pypeflow.core.pipe.Pipe.calculate_pressure_loss" href="#pypeflow.core.pipe.Pipe.calculate_pressure_loss">calculate_pressure_loss</a></code></li>
+<li><code><a title="pypeflow.core.pipe.Pipe.create" href="#pypeflow.core.pipe.Pipe.create">create</a></code></li>
+<li><code><a title="pypeflow.core.pipe.Pipe.cross_section" href="#pypeflow.core.pipe.Pipe.cross_section">cross_section</a></code></li>
+<li><code><a title="pypeflow.core.pipe.Pipe.flow_rate" href="#pypeflow.core.pipe.Pipe.flow_rate">flow_rate</a></code></li>
+<li><code><a title="pypeflow.core.pipe.Pipe.fluid" href="#pypeflow.core.pipe.Pipe.fluid">fluid</a></code></li>
+<li><code><a title="pypeflow.core.pipe.Pipe.friction_loss" href="#pypeflow.core.pipe.Pipe.friction_loss">friction_loss</a></code></li>
+<li><code><a title="pypeflow.core.pipe.Pipe.length" href="#pypeflow.core.pipe.Pipe.length">length</a></code></li>
+<li><code><a title="pypeflow.core.pipe.Pipe.minor_losses" href="#pypeflow.core.pipe.Pipe.minor_losses">minor_losses</a></code></li>
+<li><code><a title="pypeflow.core.pipe.Pipe.pressure_loss" href="#pypeflow.core.pipe.Pipe.pressure_loss">pressure_loss</a></code></li>
+<li><code><a title="pypeflow.core.pipe.Pipe.roughness" href="#pypeflow.core.pipe.Pipe.roughness">roughness</a></code></li>
+<li><code><a title="pypeflow.core.pipe.Pipe.velocity" href="#pypeflow.core.pipe.Pipe.velocity">velocity</a></code></li>
+<li><code><a title="pypeflow.core.pipe.Pipe.velocity_pressure" href="#pypeflow.core.pipe.Pipe.velocity_pressure">velocity_pressure</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

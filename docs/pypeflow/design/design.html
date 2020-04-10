@@ -1,0 +1,1554 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>pypeflow.design.design API documentation</title>
+<meta name="description" content="User interface for designing a piping network" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pypeflow.design.design</code></h1>
+</header>
+<section id="section-intro">
+<h2 id="user-interface-for-designing-a-piping-network">User interface for designing a piping network</h2>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+## User interface for designing a piping network
+&#34;&#34;&#34;
+from typing import Type, Dict, List, Tuple
+import csv
+import math
+import pandas as pd
+import quantities as qty
+from pypeflow.core.pipe_schedules import PipeSchedule, PIPE_SCHEDULES
+from pypeflow.core.fluids import Fluid, FLUIDS
+from pypeflow.design.network import Network
+
+
+class Designer:
+    &#34;&#34;&#34;
+    Class that encapsulates the user interface methods
+    &#34;&#34;&#34;
+    network: Network = Network()
+    &#34;&#34;&#34;Reference to the *Network* object&#34;&#34;&#34;
+    units: Dict[str, str] = {
+        &#39;length&#39;: &#39;m&#39;,
+        &#39;diameter&#39;: &#39;mm&#39;,
+        &#39;flow_rate&#39;: &#39;L/s&#39;,
+        &#39;pressure&#39;: &#39;bar&#39;,
+        &#39;velocity&#39;: &#39;m/s&#39;,
+        &#39;height&#39;: &#39;m&#39;
+    }
+    &#34;&#34;&#34;Dictionary that holds the measuring units in which the quantity values are expressed&#34;&#34;&#34;
+
+    @classmethod
+    def set_units(cls, units: Dict[str, str]):
+        &#34;&#34;&#34;
+        Set the measuring SI-units of the quantities that will be used as input and that will be returned as output.
+
+        Parameter `units` is a dictionary (*Dict[str, str]*) that can contain the following keys with corresponding
+        measuring units assigned to them:
+
+        - *&#39;length&#39;* (default value = *&#39;m&#39;*)
+        - *&#39;diameter&#39;* (default value = *&#39;mm&#39;*)
+        - *&#39;flow_rate&#39;* (default value = *&#39;L/s&#39;*)
+        - *&#39;pressure&#39;* (default value = *&#39;bar&#39;*)
+        - *&#39;velocity&#39;* (default value = *&#39;m/s&#39;*)
+
+        &#34;&#34;&#34;
+        cls.units.update(units)
+
+    @classmethod
+    def create_network(cls, **kwargs):
+        &#34;&#34;&#34;
+        Create piping network.
+
+        **kwargs:**
+
+        - `start_node_id`: (*str*) = id of the start node of the network
+        - `end_node_id`: (*str*) = id of the exit node of the network
+        - `fluid`: (*str*) = fluid that flows in the network (available fluids: &#39;water&#39;/&#39;air&#39;, default = &#39;water&#39;)
+        - `fluid_temperature`: (*float*) = reference temperature of fluid used to determine other fluid properties
+        (density, viscosity)
+        - `pipe_schedule`: (*str*) = pipe schedule of pipe sections (to determine cross section dimensions and
+        pipe wall roughness)
+
+        &#34;&#34;&#34;
+        start_node_id: str = kwargs.get(&#39;start_node_id&#39;)
+        end_node_id: str = kwargs.get(&#39;end_node_id&#39;)
+        fluid: str = kwargs.get(&#39;fluid&#39;, &#39;water&#39;)
+        fluid_temperature: float = kwargs.get(&#39;fluid_temperature&#39;, 10.0)
+        pipe_schedule: str = kwargs.get(&#39;pipe_schedule&#39;, &#39;pipe_schedule_40&#39;)
+        fluid_obj = cls._create_fluid(fluid, fluid_temperature)
+        pipe_schedule_type = cls._create_pipe_schedule(pipe_schedule)
+        cls.network = Network.create(
+            start_node_id=start_node_id,
+            end_node_id=end_node_id,
+            fluid=fluid_obj,
+            pipe_schedule=pipe_schedule_type
+        )
+
+    @staticmethod
+    def _create_fluid(fluid: str, temperature: float) -&gt; Fluid:
+        &#34;&#34;&#34;Create Fluid object from given fluid string and temperature.&#34;&#34;&#34;
+        try:
+            fluid_type = FLUIDS[fluid.lower()]
+        except KeyError:
+            raise KeyError(f&#39;Fluid {fluid} unknown.&#39;)
+        else:
+            return fluid_type(temperature)
+
+    @staticmethod
+    def _create_pipe_schedule(pipe_schedule: str) -&gt; Type[PipeSchedule]:
+        &#34;&#34;&#34;Get PipeSchedule derived class from pipe schedule string.&#34;&#34;&#34;
+        try:
+            pipe_schedule_type = PIPE_SCHEDULES[pipe_schedule.lower()]
+        except KeyError:
+            raise KeyError(f&#39;Pipe schedule {pipe_schedule} unknown.&#39;)
+        else:
+            return pipe_schedule_type
+
+    @classmethod
+    def configure_network(cls, file_path: str):
+        &#34;&#34;&#34;
+        Configure network via a network configuration file (.csv-file). Parameter `file_path` (*str*) is the file path
+        to this configuration file. The configuration data is organised in a table. Each row contains the configuration
+        data of a pipe section in the network. Each row has the following fields (columns) in the order as
+        mentioned here:
+
+        0. id of the section
+        1. start node id of the section
+        2. height of the start node with respect to a chosen reference plane
+        3. end node id of the section
+        4. height of the end node with respect to a chosen reference plane
+        5. length of the section
+        6. nominal diameter (leave empty if not known)
+        7. design flow rate through the section
+        8. pressure drop across section due to friction (leave empty if not known)
+
+        Designing a network implies solving two kind of problems:
+
+        1. Diameter and flow rate are known -&gt; find the pressure drop across the section&lt;br&gt;
+        2. Friction loss and flow rate are known -&gt; find the calculated, theoretical inside diameter
+
+        &#34;&#34;&#34;
+        with open(file_path) as f:
+            reader = csv.reader(f)
+            for i, row in enumerate(reader):
+                if i == 0:
+                    continue
+                else:
+                    cls.network.add_section(
+                        id=row[0],
+                        start_node_id=row[1],
+                        start_node_height=qty.create(qty.Length, row[2], cls.units[&#39;length&#39;], 0.0),
+                        end_node_id=row[3],
+                        end_node_height=qty.create(qty.Length, row[4], cls.units[&#39;length&#39;], 0.0),
+                        length=qty.create(qty.Length, row[5], cls.units[&#39;length&#39;], 0.0),
+                        nominal_diameter=qty.create(qty.Length, row[6], cls.units[&#39;diameter&#39;], None),
+                        flow_rate=qty.create(qty.VolumeFlowRate, row[7], cls.units[&#39;flow_rate&#39;], None),
+                        pressure_drop=qty.create(qty.Pressure, row[8], cls.units[&#39;pressure&#39;], None),
+                    )
+
+    @classmethod
+    def add_fittings(cls, file_path: str):
+        &#34;&#34;&#34;
+        Add fittings/valves to the sections of the piping network. Fitting data is read from a .csv-file.  Parameter
+        `file_path` (*str*) is the file path to this fitting data file. The fitting data is organised in a table.
+        Each row contains the data of one fitting. Each row has the following fields (columns) in the order as
+        mentioned here:
+
+        0. id of the section to which the fitting/valve belongs
+        1. id of the fitting
+        2. type of the fitting (can be chosen arbitrarily, just a description for easy reference)
+        3. *zeta* resistance coefficient
+        4. *zeta_inf* resistance coefficient (see 3K-method)
+        5. *zeta_d* resistance coefficient (see 3K-method)
+        6. *ELR* equivalent length ratio (see Crane-K-method)
+        7. *Kv* flow coefficient (based on flow rate in m^3/h and pressure in bar)
+
+        At least one resistance coefficient (or flow coefficient) must be specified. In case of the 3K-method, *zeta*,
+        *zeta_inf* and *zeta_d* must be specified. Leave other fields empty if they are not used.
+
+        &#34;&#34;&#34;
+        with open(file_path) as f:
+            reader = csv.reader(f)
+            for i, row in enumerate(reader):
+                if i == 0:
+                    continue
+                else:
+                    section_id = row[0]
+                    section = cls.network.sections[section_id]
+                    if section.real:
+                        section.add_fitting(
+                            id=row[1],
+                            type=row[2],
+                            zeta=cls._set_float(row[3]),
+                            zeta_inf=cls._set_float(row[4]),
+                            zeta_d=cls._set_float(row[5]),
+                            ELR=cls._set_float(row[6]),
+                            Kv=cls._set_float(row[7]),
+                        )
+
+    @staticmethod
+    def _set_float(value: str) -&gt; float:
+        try:
+            value = float(value)
+        except ValueError:
+            return math.nan
+        else:
+            return value
+
+    @classmethod
+    def add_balancing_valves(cls, dp_100_list: List[Tuple[str, float]]) -&gt; List[Tuple[str, float]]:
+        &#34;&#34;&#34;
+        Add one or more balancing valves to the network.
+
+        **Parameters:**
+
+        - `dp_100_list`: (*List[Tuple[str, float]]*)&lt;br&gt;
+        List of tuples. The first element (*str*) of the tuple is the id of the section to which the balancing valve
+        must be added. The second element (*float*) is the design pressure drop across the fully open balancing valve.
+        The measuring unit is taken from the units set (see method `set_units`).
+
+        **Returns:** (*List[Tuple[str, float]]*)&lt;br&gt;
+        List of tuples. The first element (*str*) of the tuple is the id of the section to which the balancing valve is
+        added. The second element (*float*) is the preliminary Kvs value of the balancing valve.
+
+        &#34;&#34;&#34;
+        Kvs_pre_list: List[Tuple[str, float]] = []
+        for section_id, dp_100 in dp_100_list:
+            section = cls.network.sections[section_id]
+            Kvs_pre = section.add_balancing_valve(qty.Pressure(dp_100, cls.units[&#39;pressure&#39;]))
+            Kvs_pre_list.append((section_id, Kvs_pre))
+        return Kvs_pre_list
+
+    @classmethod
+    def init_balancing_valves(cls, Kvs_list: List[Tuple[str, float]]):
+        &#34;&#34;&#34;
+        Set the commercial available Kvs values of the balancing valves in the network.
+
+        **Parameters:**
+
+        - `Kvs_list`: (*List[Tuple[str, float]]*)&lt;br&gt;
+        List of tuples. The first element (*str*) of the tuple is the id of the section to which the balancing valve was
+        added. The second element (*float*) is the Kvs value of the balancing valve.
+
+        &#34;&#34;&#34;
+        for section_id, Kvs in Kvs_list:
+            section = cls.network.sections[section_id]
+            section.init_balancing_valve(Kvs)
+
+    @classmethod
+    def add_control_valves(cls, target_authority_list: List[Tuple[str, float]]) -&gt; List[Tuple[str, float]]:
+        &#34;&#34;&#34;
+        Add one ore more control valves to the network.
+
+        **Parameters:**
+
+        - `target_authority_list`: (*List[Tuple[str, float]]*)&lt;br&gt;
+        List of tuples. The first element (*str*) of the tuple is the id of the section to which the control valve was
+        added. The second element (*float*) is the valve authority aimed at.
+
+        **Returns:** (*List[Tuple[str, float]]*)&lt;br&gt;
+        List of tuples. The first element (*str*) of the tuple is the id of the section to which the control valve is
+        added. The second element (*float*) is the preliminary Kvs value of the control valve.
+
+        &#34;&#34;&#34;
+        Kvs_pre_list: List[Tuple[str, float]] = []
+        for section_id, target_authority in target_authority_list:
+            section = cls.network.sections[section_id]
+            Kvs = section.add_control_valve(target_authority)
+            Kvs_pre_list.append((section_id, Kvs))
+        return Kvs_pre_list
+
+    @classmethod
+    def set_control_valves(cls, Kvs_list: List[Tuple[str, float]]):
+        &#34;&#34;&#34;
+        Set the commercial available Kvs value of the control valves in the network.
+
+        **Parameters:**
+
+        - `Kvs_list`: (*List[Tuple[str, float]]*)&lt;br&gt;
+        List of tuples. The first element (*str*) of the tuple is the id of the section to which the control valve was
+        added. The second element (*float*) is the Kvs value of the control valve.
+
+        &#34;&#34;&#34;
+        for section_id, Kvs in Kvs_list:
+            section = cls.network.sections[section_id]
+            section.set_control_valve(Kvs)
+
+    @classmethod
+    def set_balancing_valves(cls) -&gt; List[Tuple[str, float]]:
+        &#34;&#34;&#34;
+        Calculate the Kvr setting of the balancing valves in the network in order to dissipate excess feed pressure.
+
+        **Returns:** (*List[Tuple[str, float]]*)&lt;br&gt;
+        List of tuples. The first element (*str*) of the tuple is the id of the section to which the balancing valve was
+        added. The second element (*float*) is the calculated Kvr setting of the balancing valve.
+
+        &#34;&#34;&#34;
+        Kvr_list: List[Tuple[str, float]] = []
+        bv_dict = cls.network.get_balancing_valves()
+        dp_max = cls.network.critical_path.static_head_required()
+        for section_id in bv_dict.keys():
+            section = cls.network.sections[section_id]
+            dp_path = bv_dict[section_id][1].static_head_required()
+            section.set_balancing_valve(qty.Pressure(dp_max - dp_path))
+            Kvr_list.append((section_id, section.balancing_valve.Kvr))
+        return Kvr_list
+
+    @classmethod
+    def get_sections(cls) -&gt; pd.DataFrame:
+        &#34;&#34;&#34;
+        Returns an overview of the sections in the network organised in a Pandas DataFrame.
+        &#34;&#34;&#34;
+        keys = [
+            &#39;section_id&#39;,
+            f&#39;L [{cls.units[&#34;length&#34;]}]&#39;,
+            f&#39;Di,th [{cls.units[&#34;diameter&#34;]}]&#39;,
+            f&#39;Di [{cls.units[&#34;diameter&#34;]}]&#39;,
+            f&#39;DN [{cls.units[&#34;diameter&#34;]}]&#39;,
+            f&#39;V [{cls.units[&#34;flow_rate&#34;]}]&#39;,
+            f&#39;v [{cls.units[&#34;velocity&#34;]}]&#39;,
+            f&#39;dp,dyn [{cls.units[&#34;pressure&#34;]}]&#39;,
+        ]
+        d = {k: [] for k in keys}
+        for section in cls.network.sections.values():
+            d[keys[0]].append(section.id)
+            d[keys[1]].append(section.pipe.length(cls.units[&#39;length&#39;], 3))
+            d[keys[2]].append(section.pipe.cross_section.calculated_diameter(cls.units[&#39;diameter&#39;], 3))
+            d[keys[3]].append(section.pipe.cross_section.diameter(cls.units[&#39;diameter&#39;], 3))
+            d[keys[4]].append(section.pipe.cross_section.nominal_diameter(cls.units[&#39;diameter&#39;], 3))
+            d[keys[5]].append(section.pipe.flow_rate(cls.units[&#39;flow_rate&#39;], 3))
+            d[keys[6]].append(section.pipe.velocity(cls.units[&#39;velocity&#39;], 3))
+            d[keys[7]].append(section.pressure_drop(cls.units[&#39;pressure&#39;], 3))
+        return pd.DataFrame(d)
+
+    @classmethod
+    def get_paths(cls) -&gt; pd.DataFrame:
+        &#34;&#34;&#34;
+        Returns an overview of the flow paths in the network organised in a Pandas DataFrame.
+
+        Following data about the flow paths is returned:
+
+        - velocity head loss between end node and start node of the path
+        - elevation head loss between end node and start node of the path
+        - dynamic head loss between end node and start of the path
+        - static head required between start node and end node of flow path to establish the design flow rates along the
+        path
+        - the pressure difference between the critical path and the path under consideration (after balancing the
+        network for design flow rates, there should be zero difference)
+
+        &#34;&#34;&#34;
+        keys = [
+            &#39;path&#39;,
+            f&#39;dp,vel [{cls.units[&#34;pressure&#34;]}]&#39;,
+            f&#39;dp,elev [{cls.units[&#34;pressure&#34;]}]&#39;,
+            f&#39;dp,dyn [{cls.units[&#34;pressure&#34;]}]&#39;,
+            f&#39;dp,stat req. [{cls.units[&#34;pressure&#34;]}]&#39;,
+            f&#39;dp,dif [{cls.units[&#34;pressure&#34;]}]&#39;
+        ]
+        d = {k: [] for k in keys}
+        static_head_max = cls.network.critical_path.static_head_required
+        for path in cls.network.paths:
+            d[keys[0]].append(repr(path))
+            d[keys[1]].append(path.velocity_head(cls.units[&#39;pressure&#39;], 3))
+            d[keys[2]].append(path.elevation_head(cls.units[&#39;pressure&#39;], 3))
+            d[keys[3]].append(path.dynamic_head(cls.units[&#39;pressure&#39;], 3))
+            d[keys[4]].append(path.static_head_required(cls.units[&#39;pressure&#39;], 3))
+            dp_dif = qty.Pressure(static_head_max() - path.static_head_required())
+            d[keys[5]].append(dp_dif(cls.units[&#39;pressure&#39;], 3))
+        return pd.DataFrame(d).sort_values(by=keys[4])
+
+    @classmethod
+    def get_fittings(cls) -&gt; pd.DataFrame:
+        &#34;&#34;&#34;
+        Returns an overview of the fittings in the network organised as a Pandas DataFrame.
+
+        &#34;&#34;&#34;
+        keys = [
+            &#39;section_id&#39;,
+            &#39;fitting_id&#39;,
+            f&#39;dp [{cls.units[&#34;pressure&#34;]}]&#39;,
+            &#39;zeta&#39;,
+            &#39;zeta_inf&#39;,
+            &#39;zeta_d&#39;,
+            &#39;ELR&#39;,
+            &#39;Kv&#39;
+        ]
+        d = {k: [] for k in keys}
+        for section in cls.network.sections.values():
+            if section.fittings:
+                for id_, fitting in section.fittings.items():
+                    d[keys[0]].append(section.id)
+                    d[keys[1]].append(id_)
+                    d[keys[2]].append(fitting.pressure_drop(cls.units[&#39;pressure&#39;], 3))
+                    c = fitting.get_coefficients()
+                    d[keys[3]].append(c[&#39;zeta&#39;])
+                    d[keys[4]].append(c[&#39;zeta_inf&#39;])
+                    d[keys[5]].append(c[&#39;zeta_d&#39;])
+                    d[keys[6]].append(c[&#39;ELR&#39;])
+                    d[keys[7]].append(c[&#39;Kv&#39;])
+        return pd.DataFrame(d)
+
+    @classmethod
+    def get_control_valves(cls) -&gt; pd.DataFrame:
+        &#34;&#34;&#34;
+        Get an overview of the control valves in the network organised as a Pandas DataFrame.
+
+        &#34;&#34;&#34;
+        keys = [
+            &#39;section_id&#39;,
+            f&#39;dp [{cls.units[&#34;pressure&#34;]}]&#39;,
+            &#39;Kvs&#39;,
+            &#39;auth&#39;
+        ]
+        d = {k: [] for k in keys}
+        cv_dict = cls.network.get_control_valves()
+        for section_id, tup in cv_dict.items():
+            control_valve = tup[0]
+            section = tup[1]
+            d[keys[0]].append(section_id)
+            d[keys[1]].append(control_valve.pressure_drop(cls.units[&#39;pressure&#39;], 3))
+            d[keys[2]].append(control_valve.Kvs)
+            d[keys[3]].append(control_valve.authority(section.pressure_drop))
+        return pd.DataFrame(d)
+
+    @classmethod
+    def get_balancing_valves(cls) -&gt; pd.DataFrame:
+        &#34;&#34;&#34;
+        Returns an overview of the balancing valves in the network organised as a Pandas DataFrame.
+
+        &#34;&#34;&#34;
+        keys = [
+            &#39;section_id&#39;,
+            f&#39;dp [{cls.units[&#34;pressure&#34;]}]&#39;,
+            &#39;Kvr&#39;,
+            &#39;Kvs&#39;
+        ]
+        d = {k: [] for k in keys}
+        bv_dict = cls.network.get_balancing_valves()
+        for section_id, tup in bv_dict.items():
+            balancing_valve = tup[0]
+            d[keys[0]].append(section_id)
+            d[keys[1]].append(balancing_valve.pressure_drop(cls.units[&#39;pressure&#39;], 3))
+            d[keys[2]].append(round(balancing_valve.Kvr, 3))
+            d[keys[3]].append(balancing_valve.Kvs)
+        return pd.DataFrame(d)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pypeflow.design.design.Designer"><code class="flex name class">
+<span>class <span class="ident">Designer</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>Class that encapsulates the user interface methods</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Designer:
+    &#34;&#34;&#34;
+    Class that encapsulates the user interface methods
+    &#34;&#34;&#34;
+    network: Network = Network()
+    &#34;&#34;&#34;Reference to the *Network* object&#34;&#34;&#34;
+    units: Dict[str, str] = {
+        &#39;length&#39;: &#39;m&#39;,
+        &#39;diameter&#39;: &#39;mm&#39;,
+        &#39;flow_rate&#39;: &#39;L/s&#39;,
+        &#39;pressure&#39;: &#39;bar&#39;,
+        &#39;velocity&#39;: &#39;m/s&#39;,
+        &#39;height&#39;: &#39;m&#39;
+    }
+    &#34;&#34;&#34;Dictionary that holds the measuring units in which the quantity values are expressed&#34;&#34;&#34;
+
+    @classmethod
+    def set_units(cls, units: Dict[str, str]):
+        &#34;&#34;&#34;
+        Set the measuring SI-units of the quantities that will be used as input and that will be returned as output.
+
+        Parameter `units` is a dictionary (*Dict[str, str]*) that can contain the following keys with corresponding
+        measuring units assigned to them:
+
+        - *&#39;length&#39;* (default value = *&#39;m&#39;*)
+        - *&#39;diameter&#39;* (default value = *&#39;mm&#39;*)
+        - *&#39;flow_rate&#39;* (default value = *&#39;L/s&#39;*)
+        - *&#39;pressure&#39;* (default value = *&#39;bar&#39;*)
+        - *&#39;velocity&#39;* (default value = *&#39;m/s&#39;*)
+
+        &#34;&#34;&#34;
+        cls.units.update(units)
+
+    @classmethod
+    def create_network(cls, **kwargs):
+        &#34;&#34;&#34;
+        Create piping network.
+
+        **kwargs:**
+
+        - `start_node_id`: (*str*) = id of the start node of the network
+        - `end_node_id`: (*str*) = id of the exit node of the network
+        - `fluid`: (*str*) = fluid that flows in the network (available fluids: &#39;water&#39;/&#39;air&#39;, default = &#39;water&#39;)
+        - `fluid_temperature`: (*float*) = reference temperature of fluid used to determine other fluid properties
+        (density, viscosity)
+        - `pipe_schedule`: (*str*) = pipe schedule of pipe sections (to determine cross section dimensions and
+        pipe wall roughness)
+
+        &#34;&#34;&#34;
+        start_node_id: str = kwargs.get(&#39;start_node_id&#39;)
+        end_node_id: str = kwargs.get(&#39;end_node_id&#39;)
+        fluid: str = kwargs.get(&#39;fluid&#39;, &#39;water&#39;)
+        fluid_temperature: float = kwargs.get(&#39;fluid_temperature&#39;, 10.0)
+        pipe_schedule: str = kwargs.get(&#39;pipe_schedule&#39;, &#39;pipe_schedule_40&#39;)
+        fluid_obj = cls._create_fluid(fluid, fluid_temperature)
+        pipe_schedule_type = cls._create_pipe_schedule(pipe_schedule)
+        cls.network = Network.create(
+            start_node_id=start_node_id,
+            end_node_id=end_node_id,
+            fluid=fluid_obj,
+            pipe_schedule=pipe_schedule_type
+        )
+
+    @staticmethod
+    def _create_fluid(fluid: str, temperature: float) -&gt; Fluid:
+        &#34;&#34;&#34;Create Fluid object from given fluid string and temperature.&#34;&#34;&#34;
+        try:
+            fluid_type = FLUIDS[fluid.lower()]
+        except KeyError:
+            raise KeyError(f&#39;Fluid {fluid} unknown.&#39;)
+        else:
+            return fluid_type(temperature)
+
+    @staticmethod
+    def _create_pipe_schedule(pipe_schedule: str) -&gt; Type[PipeSchedule]:
+        &#34;&#34;&#34;Get PipeSchedule derived class from pipe schedule string.&#34;&#34;&#34;
+        try:
+            pipe_schedule_type = PIPE_SCHEDULES[pipe_schedule.lower()]
+        except KeyError:
+            raise KeyError(f&#39;Pipe schedule {pipe_schedule} unknown.&#39;)
+        else:
+            return pipe_schedule_type
+
+    @classmethod
+    def configure_network(cls, file_path: str):
+        &#34;&#34;&#34;
+        Configure network via a network configuration file (.csv-file). Parameter `file_path` (*str*) is the file path
+        to this configuration file. The configuration data is organised in a table. Each row contains the configuration
+        data of a pipe section in the network. Each row has the following fields (columns) in the order as
+        mentioned here:
+
+        0. id of the section
+        1. start node id of the section
+        2. height of the start node with respect to a chosen reference plane
+        3. end node id of the section
+        4. height of the end node with respect to a chosen reference plane
+        5. length of the section
+        6. nominal diameter (leave empty if not known)
+        7. design flow rate through the section
+        8. pressure drop across section due to friction (leave empty if not known)
+
+        Designing a network implies solving two kind of problems:
+
+        1. Diameter and flow rate are known -&gt; find the pressure drop across the section&lt;br&gt;
+        2. Friction loss and flow rate are known -&gt; find the calculated, theoretical inside diameter
+
+        &#34;&#34;&#34;
+        with open(file_path) as f:
+            reader = csv.reader(f)
+            for i, row in enumerate(reader):
+                if i == 0:
+                    continue
+                else:
+                    cls.network.add_section(
+                        id=row[0],
+                        start_node_id=row[1],
+                        start_node_height=qty.create(qty.Length, row[2], cls.units[&#39;length&#39;], 0.0),
+                        end_node_id=row[3],
+                        end_node_height=qty.create(qty.Length, row[4], cls.units[&#39;length&#39;], 0.0),
+                        length=qty.create(qty.Length, row[5], cls.units[&#39;length&#39;], 0.0),
+                        nominal_diameter=qty.create(qty.Length, row[6], cls.units[&#39;diameter&#39;], None),
+                        flow_rate=qty.create(qty.VolumeFlowRate, row[7], cls.units[&#39;flow_rate&#39;], None),
+                        pressure_drop=qty.create(qty.Pressure, row[8], cls.units[&#39;pressure&#39;], None),
+                    )
+
+    @classmethod
+    def add_fittings(cls, file_path: str):
+        &#34;&#34;&#34;
+        Add fittings/valves to the sections of the piping network. Fitting data is read from a .csv-file.  Parameter
+        `file_path` (*str*) is the file path to this fitting data file. The fitting data is organised in a table.
+        Each row contains the data of one fitting. Each row has the following fields (columns) in the order as
+        mentioned here:
+
+        0. id of the section to which the fitting/valve belongs
+        1. id of the fitting
+        2. type of the fitting (can be chosen arbitrarily, just a description for easy reference)
+        3. *zeta* resistance coefficient
+        4. *zeta_inf* resistance coefficient (see 3K-method)
+        5. *zeta_d* resistance coefficient (see 3K-method)
+        6. *ELR* equivalent length ratio (see Crane-K-method)
+        7. *Kv* flow coefficient (based on flow rate in m^3/h and pressure in bar)
+
+        At least one resistance coefficient (or flow coefficient) must be specified. In case of the 3K-method, *zeta*,
+        *zeta_inf* and *zeta_d* must be specified. Leave other fields empty if they are not used.
+
+        &#34;&#34;&#34;
+        with open(file_path) as f:
+            reader = csv.reader(f)
+            for i, row in enumerate(reader):
+                if i == 0:
+                    continue
+                else:
+                    section_id = row[0]
+                    section = cls.network.sections[section_id]
+                    if section.real:
+                        section.add_fitting(
+                            id=row[1],
+                            type=row[2],
+                            zeta=cls._set_float(row[3]),
+                            zeta_inf=cls._set_float(row[4]),
+                            zeta_d=cls._set_float(row[5]),
+                            ELR=cls._set_float(row[6]),
+                            Kv=cls._set_float(row[7]),
+                        )
+
+    @staticmethod
+    def _set_float(value: str) -&gt; float:
+        try:
+            value = float(value)
+        except ValueError:
+            return math.nan
+        else:
+            return value
+
+    @classmethod
+    def add_balancing_valves(cls, dp_100_list: List[Tuple[str, float]]) -&gt; List[Tuple[str, float]]:
+        &#34;&#34;&#34;
+        Add one or more balancing valves to the network.
+
+        **Parameters:**
+
+        - `dp_100_list`: (*List[Tuple[str, float]]*)&lt;br&gt;
+        List of tuples. The first element (*str*) of the tuple is the id of the section to which the balancing valve
+        must be added. The second element (*float*) is the design pressure drop across the fully open balancing valve.
+        The measuring unit is taken from the units set (see method `set_units`).
+
+        **Returns:** (*List[Tuple[str, float]]*)&lt;br&gt;
+        List of tuples. The first element (*str*) of the tuple is the id of the section to which the balancing valve is
+        added. The second element (*float*) is the preliminary Kvs value of the balancing valve.
+
+        &#34;&#34;&#34;
+        Kvs_pre_list: List[Tuple[str, float]] = []
+        for section_id, dp_100 in dp_100_list:
+            section = cls.network.sections[section_id]
+            Kvs_pre = section.add_balancing_valve(qty.Pressure(dp_100, cls.units[&#39;pressure&#39;]))
+            Kvs_pre_list.append((section_id, Kvs_pre))
+        return Kvs_pre_list
+
+    @classmethod
+    def init_balancing_valves(cls, Kvs_list: List[Tuple[str, float]]):
+        &#34;&#34;&#34;
+        Set the commercial available Kvs values of the balancing valves in the network.
+
+        **Parameters:**
+
+        - `Kvs_list`: (*List[Tuple[str, float]]*)&lt;br&gt;
+        List of tuples. The first element (*str*) of the tuple is the id of the section to which the balancing valve was
+        added. The second element (*float*) is the Kvs value of the balancing valve.
+
+        &#34;&#34;&#34;
+        for section_id, Kvs in Kvs_list:
+            section = cls.network.sections[section_id]
+            section.init_balancing_valve(Kvs)
+
+    @classmethod
+    def add_control_valves(cls, target_authority_list: List[Tuple[str, float]]) -&gt; List[Tuple[str, float]]:
+        &#34;&#34;&#34;
+        Add one ore more control valves to the network.
+
+        **Parameters:**
+
+        - `target_authority_list`: (*List[Tuple[str, float]]*)&lt;br&gt;
+        List of tuples. The first element (*str*) of the tuple is the id of the section to which the control valve was
+        added. The second element (*float*) is the valve authority aimed at.
+
+        **Returns:** (*List[Tuple[str, float]]*)&lt;br&gt;
+        List of tuples. The first element (*str*) of the tuple is the id of the section to which the control valve is
+        added. The second element (*float*) is the preliminary Kvs value of the control valve.
+
+        &#34;&#34;&#34;
+        Kvs_pre_list: List[Tuple[str, float]] = []
+        for section_id, target_authority in target_authority_list:
+            section = cls.network.sections[section_id]
+            Kvs = section.add_control_valve(target_authority)
+            Kvs_pre_list.append((section_id, Kvs))
+        return Kvs_pre_list
+
+    @classmethod
+    def set_control_valves(cls, Kvs_list: List[Tuple[str, float]]):
+        &#34;&#34;&#34;
+        Set the commercial available Kvs value of the control valves in the network.
+
+        **Parameters:**
+
+        - `Kvs_list`: (*List[Tuple[str, float]]*)&lt;br&gt;
+        List of tuples. The first element (*str*) of the tuple is the id of the section to which the control valve was
+        added. The second element (*float*) is the Kvs value of the control valve.
+
+        &#34;&#34;&#34;
+        for section_id, Kvs in Kvs_list:
+            section = cls.network.sections[section_id]
+            section.set_control_valve(Kvs)
+
+    @classmethod
+    def set_balancing_valves(cls) -&gt; List[Tuple[str, float]]:
+        &#34;&#34;&#34;
+        Calculate the Kvr setting of the balancing valves in the network in order to dissipate excess feed pressure.
+
+        **Returns:** (*List[Tuple[str, float]]*)&lt;br&gt;
+        List of tuples. The first element (*str*) of the tuple is the id of the section to which the balancing valve was
+        added. The second element (*float*) is the calculated Kvr setting of the balancing valve.
+
+        &#34;&#34;&#34;
+        Kvr_list: List[Tuple[str, float]] = []
+        bv_dict = cls.network.get_balancing_valves()
+        dp_max = cls.network.critical_path.static_head_required()
+        for section_id in bv_dict.keys():
+            section = cls.network.sections[section_id]
+            dp_path = bv_dict[section_id][1].static_head_required()
+            section.set_balancing_valve(qty.Pressure(dp_max - dp_path))
+            Kvr_list.append((section_id, section.balancing_valve.Kvr))
+        return Kvr_list
+
+    @classmethod
+    def get_sections(cls) -&gt; pd.DataFrame:
+        &#34;&#34;&#34;
+        Returns an overview of the sections in the network organised in a Pandas DataFrame.
+        &#34;&#34;&#34;
+        keys = [
+            &#39;section_id&#39;,
+            f&#39;L [{cls.units[&#34;length&#34;]}]&#39;,
+            f&#39;Di,th [{cls.units[&#34;diameter&#34;]}]&#39;,
+            f&#39;Di [{cls.units[&#34;diameter&#34;]}]&#39;,
+            f&#39;DN [{cls.units[&#34;diameter&#34;]}]&#39;,
+            f&#39;V [{cls.units[&#34;flow_rate&#34;]}]&#39;,
+            f&#39;v [{cls.units[&#34;velocity&#34;]}]&#39;,
+            f&#39;dp,dyn [{cls.units[&#34;pressure&#34;]}]&#39;,
+        ]
+        d = {k: [] for k in keys}
+        for section in cls.network.sections.values():
+            d[keys[0]].append(section.id)
+            d[keys[1]].append(section.pipe.length(cls.units[&#39;length&#39;], 3))
+            d[keys[2]].append(section.pipe.cross_section.calculated_diameter(cls.units[&#39;diameter&#39;], 3))
+            d[keys[3]].append(section.pipe.cross_section.diameter(cls.units[&#39;diameter&#39;], 3))
+            d[keys[4]].append(section.pipe.cross_section.nominal_diameter(cls.units[&#39;diameter&#39;], 3))
+            d[keys[5]].append(section.pipe.flow_rate(cls.units[&#39;flow_rate&#39;], 3))
+            d[keys[6]].append(section.pipe.velocity(cls.units[&#39;velocity&#39;], 3))
+            d[keys[7]].append(section.pressure_drop(cls.units[&#39;pressure&#39;], 3))
+        return pd.DataFrame(d)
+
+    @classmethod
+    def get_paths(cls) -&gt; pd.DataFrame:
+        &#34;&#34;&#34;
+        Returns an overview of the flow paths in the network organised in a Pandas DataFrame.
+
+        Following data about the flow paths is returned:
+
+        - velocity head loss between end node and start node of the path
+        - elevation head loss between end node and start node of the path
+        - dynamic head loss between end node and start of the path
+        - static head required between start node and end node of flow path to establish the design flow rates along the
+        path
+        - the pressure difference between the critical path and the path under consideration (after balancing the
+        network for design flow rates, there should be zero difference)
+
+        &#34;&#34;&#34;
+        keys = [
+            &#39;path&#39;,
+            f&#39;dp,vel [{cls.units[&#34;pressure&#34;]}]&#39;,
+            f&#39;dp,elev [{cls.units[&#34;pressure&#34;]}]&#39;,
+            f&#39;dp,dyn [{cls.units[&#34;pressure&#34;]}]&#39;,
+            f&#39;dp,stat req. [{cls.units[&#34;pressure&#34;]}]&#39;,
+            f&#39;dp,dif [{cls.units[&#34;pressure&#34;]}]&#39;
+        ]
+        d = {k: [] for k in keys}
+        static_head_max = cls.network.critical_path.static_head_required
+        for path in cls.network.paths:
+            d[keys[0]].append(repr(path))
+            d[keys[1]].append(path.velocity_head(cls.units[&#39;pressure&#39;], 3))
+            d[keys[2]].append(path.elevation_head(cls.units[&#39;pressure&#39;], 3))
+            d[keys[3]].append(path.dynamic_head(cls.units[&#39;pressure&#39;], 3))
+            d[keys[4]].append(path.static_head_required(cls.units[&#39;pressure&#39;], 3))
+            dp_dif = qty.Pressure(static_head_max() - path.static_head_required())
+            d[keys[5]].append(dp_dif(cls.units[&#39;pressure&#39;], 3))
+        return pd.DataFrame(d).sort_values(by=keys[4])
+
+    @classmethod
+    def get_fittings(cls) -&gt; pd.DataFrame:
+        &#34;&#34;&#34;
+        Returns an overview of the fittings in the network organised as a Pandas DataFrame.
+
+        &#34;&#34;&#34;
+        keys = [
+            &#39;section_id&#39;,
+            &#39;fitting_id&#39;,
+            f&#39;dp [{cls.units[&#34;pressure&#34;]}]&#39;,
+            &#39;zeta&#39;,
+            &#39;zeta_inf&#39;,
+            &#39;zeta_d&#39;,
+            &#39;ELR&#39;,
+            &#39;Kv&#39;
+        ]
+        d = {k: [] for k in keys}
+        for section in cls.network.sections.values():
+            if section.fittings:
+                for id_, fitting in section.fittings.items():
+                    d[keys[0]].append(section.id)
+                    d[keys[1]].append(id_)
+                    d[keys[2]].append(fitting.pressure_drop(cls.units[&#39;pressure&#39;], 3))
+                    c = fitting.get_coefficients()
+                    d[keys[3]].append(c[&#39;zeta&#39;])
+                    d[keys[4]].append(c[&#39;zeta_inf&#39;])
+                    d[keys[5]].append(c[&#39;zeta_d&#39;])
+                    d[keys[6]].append(c[&#39;ELR&#39;])
+                    d[keys[7]].append(c[&#39;Kv&#39;])
+        return pd.DataFrame(d)
+
+    @classmethod
+    def get_control_valves(cls) -&gt; pd.DataFrame:
+        &#34;&#34;&#34;
+        Get an overview of the control valves in the network organised as a Pandas DataFrame.
+
+        &#34;&#34;&#34;
+        keys = [
+            &#39;section_id&#39;,
+            f&#39;dp [{cls.units[&#34;pressure&#34;]}]&#39;,
+            &#39;Kvs&#39;,
+            &#39;auth&#39;
+        ]
+        d = {k: [] for k in keys}
+        cv_dict = cls.network.get_control_valves()
+        for section_id, tup in cv_dict.items():
+            control_valve = tup[0]
+            section = tup[1]
+            d[keys[0]].append(section_id)
+            d[keys[1]].append(control_valve.pressure_drop(cls.units[&#39;pressure&#39;], 3))
+            d[keys[2]].append(control_valve.Kvs)
+            d[keys[3]].append(control_valve.authority(section.pressure_drop))
+        return pd.DataFrame(d)
+
+    @classmethod
+    def get_balancing_valves(cls) -&gt; pd.DataFrame:
+        &#34;&#34;&#34;
+        Returns an overview of the balancing valves in the network organised as a Pandas DataFrame.
+
+        &#34;&#34;&#34;
+        keys = [
+            &#39;section_id&#39;,
+            f&#39;dp [{cls.units[&#34;pressure&#34;]}]&#39;,
+            &#39;Kvr&#39;,
+            &#39;Kvs&#39;
+        ]
+        d = {k: [] for k in keys}
+        bv_dict = cls.network.get_balancing_valves()
+        for section_id, tup in bv_dict.items():
+            balancing_valve = tup[0]
+            d[keys[0]].append(section_id)
+            d[keys[1]].append(balancing_valve.pressure_drop(cls.units[&#39;pressure&#39;], 3))
+            d[keys[2]].append(round(balancing_valve.Kvr, 3))
+            d[keys[3]].append(balancing_valve.Kvs)
+        return pd.DataFrame(d)</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="pypeflow.design.design.Designer.network"><code class="name">var <span class="ident">network</span></code></dt>
+<dd>
+<section class="desc"><p>Reference to the <em>Network</em> object</p></section>
+</dd>
+<dt id="pypeflow.design.design.Designer.units"><code class="name">var <span class="ident">units</span></code></dt>
+<dd>
+<section class="desc"><p>Dictionary that holds the measuring units in which the quantity values are expressed</p></section>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="pypeflow.design.design.Designer.add_balancing_valves"><code class="name flex">
+<span>def <span class="ident">add_balancing_valves</span></span>(<span>dp_100_list)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Add one or more balancing valves to the network.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>dp_100_list</code>: (<em>List[Tuple[str, float]]</em>)<br>
+List of tuples. The first element (<em>str</em>) of the tuple is the id of the section to which the balancing valve
+must be added. The second element (<em>float</em>) is the design pressure drop across the fully open balancing valve.
+The measuring unit is taken from the units set (see method <code>set_units</code>).</li>
+</ul>
+<p><strong>Returns:</strong> (<em>List[Tuple[str, float]]</em>)<br>
+List of tuples. The first element (<em>str</em>) of the tuple is the id of the section to which the balancing valve is
+added. The second element (<em>float</em>) is the preliminary Kvs value of the balancing valve.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def add_balancing_valves(cls, dp_100_list: List[Tuple[str, float]]) -&gt; List[Tuple[str, float]]:
+    &#34;&#34;&#34;
+    Add one or more balancing valves to the network.
+
+    **Parameters:**
+
+    - `dp_100_list`: (*List[Tuple[str, float]]*)&lt;br&gt;
+    List of tuples. The first element (*str*) of the tuple is the id of the section to which the balancing valve
+    must be added. The second element (*float*) is the design pressure drop across the fully open balancing valve.
+    The measuring unit is taken from the units set (see method `set_units`).
+
+    **Returns:** (*List[Tuple[str, float]]*)&lt;br&gt;
+    List of tuples. The first element (*str*) of the tuple is the id of the section to which the balancing valve is
+    added. The second element (*float*) is the preliminary Kvs value of the balancing valve.
+
+    &#34;&#34;&#34;
+    Kvs_pre_list: List[Tuple[str, float]] = []
+    for section_id, dp_100 in dp_100_list:
+        section = cls.network.sections[section_id]
+        Kvs_pre = section.add_balancing_valve(qty.Pressure(dp_100, cls.units[&#39;pressure&#39;]))
+        Kvs_pre_list.append((section_id, Kvs_pre))
+    return Kvs_pre_list</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.design.Designer.add_control_valves"><code class="name flex">
+<span>def <span class="ident">add_control_valves</span></span>(<span>target_authority_list)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Add one ore more control valves to the network.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>target_authority_list</code>: (<em>List[Tuple[str, float]]</em>)<br>
+List of tuples. The first element (<em>str</em>) of the tuple is the id of the section to which the control valve was
+added. The second element (<em>float</em>) is the valve authority aimed at.</li>
+</ul>
+<p><strong>Returns:</strong> (<em>List[Tuple[str, float]]</em>)<br>
+List of tuples. The first element (<em>str</em>) of the tuple is the id of the section to which the control valve is
+added. The second element (<em>float</em>) is the preliminary Kvs value of the control valve.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def add_control_valves(cls, target_authority_list: List[Tuple[str, float]]) -&gt; List[Tuple[str, float]]:
+    &#34;&#34;&#34;
+    Add one ore more control valves to the network.
+
+    **Parameters:**
+
+    - `target_authority_list`: (*List[Tuple[str, float]]*)&lt;br&gt;
+    List of tuples. The first element (*str*) of the tuple is the id of the section to which the control valve was
+    added. The second element (*float*) is the valve authority aimed at.
+
+    **Returns:** (*List[Tuple[str, float]]*)&lt;br&gt;
+    List of tuples. The first element (*str*) of the tuple is the id of the section to which the control valve is
+    added. The second element (*float*) is the preliminary Kvs value of the control valve.
+
+    &#34;&#34;&#34;
+    Kvs_pre_list: List[Tuple[str, float]] = []
+    for section_id, target_authority in target_authority_list:
+        section = cls.network.sections[section_id]
+        Kvs = section.add_control_valve(target_authority)
+        Kvs_pre_list.append((section_id, Kvs))
+    return Kvs_pre_list</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.design.Designer.add_fittings"><code class="name flex">
+<span>def <span class="ident">add_fittings</span></span>(<span>file_path)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Add fittings/valves to the sections of the piping network. Fitting data is read from a .csv-file.
+Parameter
+<code>file_path</code> (<em>str</em>) is the file path to this fitting data file. The fitting data is organised in a table.
+Each row contains the data of one fitting. Each row has the following fields (columns) in the order as
+mentioned here:</p>
+<ol>
+<li>id of the section to which the fitting/valve belongs</li>
+<li>id of the fitting</li>
+<li>type of the fitting (can be chosen arbitrarily, just a description for easy reference)</li>
+<li><em>zeta</em> resistance coefficient</li>
+<li><em>zeta_inf</em> resistance coefficient (see 3K-method)</li>
+<li><em>zeta_d</em> resistance coefficient (see 3K-method)</li>
+<li><em>ELR</em> equivalent length ratio (see Crane-K-method)</li>
+<li><em>Kv</em> flow coefficient (based on flow rate in m^3/h and pressure in bar)</li>
+</ol>
+<p>At least one resistance coefficient (or flow coefficient) must be specified. In case of the 3K-method, <em>zeta</em>,
+<em>zeta_inf</em> and <em>zeta_d</em> must be specified. Leave other fields empty if they are not used.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def add_fittings(cls, file_path: str):
+    &#34;&#34;&#34;
+    Add fittings/valves to the sections of the piping network. Fitting data is read from a .csv-file.  Parameter
+    `file_path` (*str*) is the file path to this fitting data file. The fitting data is organised in a table.
+    Each row contains the data of one fitting. Each row has the following fields (columns) in the order as
+    mentioned here:
+
+    0. id of the section to which the fitting/valve belongs
+    1. id of the fitting
+    2. type of the fitting (can be chosen arbitrarily, just a description for easy reference)
+    3. *zeta* resistance coefficient
+    4. *zeta_inf* resistance coefficient (see 3K-method)
+    5. *zeta_d* resistance coefficient (see 3K-method)
+    6. *ELR* equivalent length ratio (see Crane-K-method)
+    7. *Kv* flow coefficient (based on flow rate in m^3/h and pressure in bar)
+
+    At least one resistance coefficient (or flow coefficient) must be specified. In case of the 3K-method, *zeta*,
+    *zeta_inf* and *zeta_d* must be specified. Leave other fields empty if they are not used.
+
+    &#34;&#34;&#34;
+    with open(file_path) as f:
+        reader = csv.reader(f)
+        for i, row in enumerate(reader):
+            if i == 0:
+                continue
+            else:
+                section_id = row[0]
+                section = cls.network.sections[section_id]
+                if section.real:
+                    section.add_fitting(
+                        id=row[1],
+                        type=row[2],
+                        zeta=cls._set_float(row[3]),
+                        zeta_inf=cls._set_float(row[4]),
+                        zeta_d=cls._set_float(row[5]),
+                        ELR=cls._set_float(row[6]),
+                        Kv=cls._set_float(row[7]),
+                    )</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.design.Designer.configure_network"><code class="name flex">
+<span>def <span class="ident">configure_network</span></span>(<span>file_path)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Configure network via a network configuration file (.csv-file). Parameter <code>file_path</code> (<em>str</em>) is the file path
+to this configuration file. The configuration data is organised in a table. Each row contains the configuration
+data of a pipe section in the network. Each row has the following fields (columns) in the order as
+mentioned here:</p>
+<ol>
+<li>id of the section</li>
+<li>start node id of the section</li>
+<li>height of the start node with respect to a chosen reference plane</li>
+<li>end node id of the section</li>
+<li>height of the end node with respect to a chosen reference plane</li>
+<li>length of the section</li>
+<li>nominal diameter (leave empty if not known)</li>
+<li>design flow rate through the section</li>
+<li>pressure drop across section due to friction (leave empty if not known)</li>
+</ol>
+<p>Designing a network implies solving two kind of problems:</p>
+<ol>
+<li>Diameter and flow rate are known -&gt; find the pressure drop across the section<br></li>
+<li>Friction loss and flow rate are known -&gt; find the calculated, theoretical inside diameter</li>
+</ol></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def configure_network(cls, file_path: str):
+    &#34;&#34;&#34;
+    Configure network via a network configuration file (.csv-file). Parameter `file_path` (*str*) is the file path
+    to this configuration file. The configuration data is organised in a table. Each row contains the configuration
+    data of a pipe section in the network. Each row has the following fields (columns) in the order as
+    mentioned here:
+
+    0. id of the section
+    1. start node id of the section
+    2. height of the start node with respect to a chosen reference plane
+    3. end node id of the section
+    4. height of the end node with respect to a chosen reference plane
+    5. length of the section
+    6. nominal diameter (leave empty if not known)
+    7. design flow rate through the section
+    8. pressure drop across section due to friction (leave empty if not known)
+
+    Designing a network implies solving two kind of problems:
+
+    1. Diameter and flow rate are known -&gt; find the pressure drop across the section&lt;br&gt;
+    2. Friction loss and flow rate are known -&gt; find the calculated, theoretical inside diameter
+
+    &#34;&#34;&#34;
+    with open(file_path) as f:
+        reader = csv.reader(f)
+        for i, row in enumerate(reader):
+            if i == 0:
+                continue
+            else:
+                cls.network.add_section(
+                    id=row[0],
+                    start_node_id=row[1],
+                    start_node_height=qty.create(qty.Length, row[2], cls.units[&#39;length&#39;], 0.0),
+                    end_node_id=row[3],
+                    end_node_height=qty.create(qty.Length, row[4], cls.units[&#39;length&#39;], 0.0),
+                    length=qty.create(qty.Length, row[5], cls.units[&#39;length&#39;], 0.0),
+                    nominal_diameter=qty.create(qty.Length, row[6], cls.units[&#39;diameter&#39;], None),
+                    flow_rate=qty.create(qty.VolumeFlowRate, row[7], cls.units[&#39;flow_rate&#39;], None),
+                    pressure_drop=qty.create(qty.Pressure, row[8], cls.units[&#39;pressure&#39;], None),
+                )</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.design.Designer.create_network"><code class="name flex">
+<span>def <span class="ident">create_network</span></span>(<span>**kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Create piping network.</p>
+<p><strong>kwargs:</strong></p>
+<ul>
+<li><code>start_node_id</code>: (<em>str</em>) = id of the start node of the network</li>
+<li><code>end_node_id</code>: (<em>str</em>) = id of the exit node of the network</li>
+<li><code>fluid</code>: (<em>str</em>) = fluid that flows in the network (available fluids: 'water'/'air', default = 'water')</li>
+<li><code>fluid_temperature</code>: (<em>float</em>) = reference temperature of fluid used to determine other fluid properties
+(density, viscosity)</li>
+<li><code>pipe_schedule</code>: (<em>str</em>) = pipe schedule of pipe sections (to determine cross section dimensions and
+pipe wall roughness)</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def create_network(cls, **kwargs):
+    &#34;&#34;&#34;
+    Create piping network.
+
+    **kwargs:**
+
+    - `start_node_id`: (*str*) = id of the start node of the network
+    - `end_node_id`: (*str*) = id of the exit node of the network
+    - `fluid`: (*str*) = fluid that flows in the network (available fluids: &#39;water&#39;/&#39;air&#39;, default = &#39;water&#39;)
+    - `fluid_temperature`: (*float*) = reference temperature of fluid used to determine other fluid properties
+    (density, viscosity)
+    - `pipe_schedule`: (*str*) = pipe schedule of pipe sections (to determine cross section dimensions and
+    pipe wall roughness)
+
+    &#34;&#34;&#34;
+    start_node_id: str = kwargs.get(&#39;start_node_id&#39;)
+    end_node_id: str = kwargs.get(&#39;end_node_id&#39;)
+    fluid: str = kwargs.get(&#39;fluid&#39;, &#39;water&#39;)
+    fluid_temperature: float = kwargs.get(&#39;fluid_temperature&#39;, 10.0)
+    pipe_schedule: str = kwargs.get(&#39;pipe_schedule&#39;, &#39;pipe_schedule_40&#39;)
+    fluid_obj = cls._create_fluid(fluid, fluid_temperature)
+    pipe_schedule_type = cls._create_pipe_schedule(pipe_schedule)
+    cls.network = Network.create(
+        start_node_id=start_node_id,
+        end_node_id=end_node_id,
+        fluid=fluid_obj,
+        pipe_schedule=pipe_schedule_type
+    )</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.design.Designer.get_balancing_valves"><code class="name flex">
+<span>def <span class="ident">get_balancing_valves</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns an overview of the balancing valves in the network organised as a Pandas DataFrame.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def get_balancing_valves(cls) -&gt; pd.DataFrame:
+    &#34;&#34;&#34;
+    Returns an overview of the balancing valves in the network organised as a Pandas DataFrame.
+
+    &#34;&#34;&#34;
+    keys = [
+        &#39;section_id&#39;,
+        f&#39;dp [{cls.units[&#34;pressure&#34;]}]&#39;,
+        &#39;Kvr&#39;,
+        &#39;Kvs&#39;
+    ]
+    d = {k: [] for k in keys}
+    bv_dict = cls.network.get_balancing_valves()
+    for section_id, tup in bv_dict.items():
+        balancing_valve = tup[0]
+        d[keys[0]].append(section_id)
+        d[keys[1]].append(balancing_valve.pressure_drop(cls.units[&#39;pressure&#39;], 3))
+        d[keys[2]].append(round(balancing_valve.Kvr, 3))
+        d[keys[3]].append(balancing_valve.Kvs)
+    return pd.DataFrame(d)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.design.Designer.get_control_valves"><code class="name flex">
+<span>def <span class="ident">get_control_valves</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Get an overview of the control valves in the network organised as a Pandas DataFrame.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def get_control_valves(cls) -&gt; pd.DataFrame:
+    &#34;&#34;&#34;
+    Get an overview of the control valves in the network organised as a Pandas DataFrame.
+
+    &#34;&#34;&#34;
+    keys = [
+        &#39;section_id&#39;,
+        f&#39;dp [{cls.units[&#34;pressure&#34;]}]&#39;,
+        &#39;Kvs&#39;,
+        &#39;auth&#39;
+    ]
+    d = {k: [] for k in keys}
+    cv_dict = cls.network.get_control_valves()
+    for section_id, tup in cv_dict.items():
+        control_valve = tup[0]
+        section = tup[1]
+        d[keys[0]].append(section_id)
+        d[keys[1]].append(control_valve.pressure_drop(cls.units[&#39;pressure&#39;], 3))
+        d[keys[2]].append(control_valve.Kvs)
+        d[keys[3]].append(control_valve.authority(section.pressure_drop))
+    return pd.DataFrame(d)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.design.Designer.get_fittings"><code class="name flex">
+<span>def <span class="ident">get_fittings</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns an overview of the fittings in the network organised as a Pandas DataFrame.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def get_fittings(cls) -&gt; pd.DataFrame:
+    &#34;&#34;&#34;
+    Returns an overview of the fittings in the network organised as a Pandas DataFrame.
+
+    &#34;&#34;&#34;
+    keys = [
+        &#39;section_id&#39;,
+        &#39;fitting_id&#39;,
+        f&#39;dp [{cls.units[&#34;pressure&#34;]}]&#39;,
+        &#39;zeta&#39;,
+        &#39;zeta_inf&#39;,
+        &#39;zeta_d&#39;,
+        &#39;ELR&#39;,
+        &#39;Kv&#39;
+    ]
+    d = {k: [] for k in keys}
+    for section in cls.network.sections.values():
+        if section.fittings:
+            for id_, fitting in section.fittings.items():
+                d[keys[0]].append(section.id)
+                d[keys[1]].append(id_)
+                d[keys[2]].append(fitting.pressure_drop(cls.units[&#39;pressure&#39;], 3))
+                c = fitting.get_coefficients()
+                d[keys[3]].append(c[&#39;zeta&#39;])
+                d[keys[4]].append(c[&#39;zeta_inf&#39;])
+                d[keys[5]].append(c[&#39;zeta_d&#39;])
+                d[keys[6]].append(c[&#39;ELR&#39;])
+                d[keys[7]].append(c[&#39;Kv&#39;])
+    return pd.DataFrame(d)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.design.Designer.get_paths"><code class="name flex">
+<span>def <span class="ident">get_paths</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns an overview of the flow paths in the network organised in a Pandas DataFrame.</p>
+<p>Following data about the flow paths is returned:</p>
+<ul>
+<li>velocity head loss between end node and start node of the path</li>
+<li>elevation head loss between end node and start node of the path</li>
+<li>dynamic head loss between end node and start of the path</li>
+<li>static head required between start node and end node of flow path to establish the design flow rates along the
+path</li>
+<li>the pressure difference between the critical path and the path under consideration (after balancing the
+network for design flow rates, there should be zero difference)</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def get_paths(cls) -&gt; pd.DataFrame:
+    &#34;&#34;&#34;
+    Returns an overview of the flow paths in the network organised in a Pandas DataFrame.
+
+    Following data about the flow paths is returned:
+
+    - velocity head loss between end node and start node of the path
+    - elevation head loss between end node and start node of the path
+    - dynamic head loss between end node and start of the path
+    - static head required between start node and end node of flow path to establish the design flow rates along the
+    path
+    - the pressure difference between the critical path and the path under consideration (after balancing the
+    network for design flow rates, there should be zero difference)
+
+    &#34;&#34;&#34;
+    keys = [
+        &#39;path&#39;,
+        f&#39;dp,vel [{cls.units[&#34;pressure&#34;]}]&#39;,
+        f&#39;dp,elev [{cls.units[&#34;pressure&#34;]}]&#39;,
+        f&#39;dp,dyn [{cls.units[&#34;pressure&#34;]}]&#39;,
+        f&#39;dp,stat req. [{cls.units[&#34;pressure&#34;]}]&#39;,
+        f&#39;dp,dif [{cls.units[&#34;pressure&#34;]}]&#39;
+    ]
+    d = {k: [] for k in keys}
+    static_head_max = cls.network.critical_path.static_head_required
+    for path in cls.network.paths:
+        d[keys[0]].append(repr(path))
+        d[keys[1]].append(path.velocity_head(cls.units[&#39;pressure&#39;], 3))
+        d[keys[2]].append(path.elevation_head(cls.units[&#39;pressure&#39;], 3))
+        d[keys[3]].append(path.dynamic_head(cls.units[&#39;pressure&#39;], 3))
+        d[keys[4]].append(path.static_head_required(cls.units[&#39;pressure&#39;], 3))
+        dp_dif = qty.Pressure(static_head_max() - path.static_head_required())
+        d[keys[5]].append(dp_dif(cls.units[&#39;pressure&#39;], 3))
+    return pd.DataFrame(d).sort_values(by=keys[4])</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.design.Designer.get_sections"><code class="name flex">
+<span>def <span class="ident">get_sections</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns an overview of the sections in the network organised in a Pandas DataFrame.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def get_sections(cls) -&gt; pd.DataFrame:
+    &#34;&#34;&#34;
+    Returns an overview of the sections in the network organised in a Pandas DataFrame.
+    &#34;&#34;&#34;
+    keys = [
+        &#39;section_id&#39;,
+        f&#39;L [{cls.units[&#34;length&#34;]}]&#39;,
+        f&#39;Di,th [{cls.units[&#34;diameter&#34;]}]&#39;,
+        f&#39;Di [{cls.units[&#34;diameter&#34;]}]&#39;,
+        f&#39;DN [{cls.units[&#34;diameter&#34;]}]&#39;,
+        f&#39;V [{cls.units[&#34;flow_rate&#34;]}]&#39;,
+        f&#39;v [{cls.units[&#34;velocity&#34;]}]&#39;,
+        f&#39;dp,dyn [{cls.units[&#34;pressure&#34;]}]&#39;,
+    ]
+    d = {k: [] for k in keys}
+    for section in cls.network.sections.values():
+        d[keys[0]].append(section.id)
+        d[keys[1]].append(section.pipe.length(cls.units[&#39;length&#39;], 3))
+        d[keys[2]].append(section.pipe.cross_section.calculated_diameter(cls.units[&#39;diameter&#39;], 3))
+        d[keys[3]].append(section.pipe.cross_section.diameter(cls.units[&#39;diameter&#39;], 3))
+        d[keys[4]].append(section.pipe.cross_section.nominal_diameter(cls.units[&#39;diameter&#39;], 3))
+        d[keys[5]].append(section.pipe.flow_rate(cls.units[&#39;flow_rate&#39;], 3))
+        d[keys[6]].append(section.pipe.velocity(cls.units[&#39;velocity&#39;], 3))
+        d[keys[7]].append(section.pressure_drop(cls.units[&#39;pressure&#39;], 3))
+    return pd.DataFrame(d)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.design.Designer.init_balancing_valves"><code class="name flex">
+<span>def <span class="ident">init_balancing_valves</span></span>(<span>Kvs_list)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Set the commercial available Kvs values of the balancing valves in the network.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>Kvs_list</code>: (<em>List[Tuple[str, float]]</em>)<br>
+List of tuples. The first element (<em>str</em>) of the tuple is the id of the section to which the balancing valve was
+added. The second element (<em>float</em>) is the Kvs value of the balancing valve.</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def init_balancing_valves(cls, Kvs_list: List[Tuple[str, float]]):
+    &#34;&#34;&#34;
+    Set the commercial available Kvs values of the balancing valves in the network.
+
+    **Parameters:**
+
+    - `Kvs_list`: (*List[Tuple[str, float]]*)&lt;br&gt;
+    List of tuples. The first element (*str*) of the tuple is the id of the section to which the balancing valve was
+    added. The second element (*float*) is the Kvs value of the balancing valve.
+
+    &#34;&#34;&#34;
+    for section_id, Kvs in Kvs_list:
+        section = cls.network.sections[section_id]
+        section.init_balancing_valve(Kvs)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.design.Designer.set_balancing_valves"><code class="name flex">
+<span>def <span class="ident">set_balancing_valves</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Calculate the Kvr setting of the balancing valves in the network in order to dissipate excess feed pressure.</p>
+<p><strong>Returns:</strong> (<em>List[Tuple[str, float]]</em>)<br>
+List of tuples. The first element (<em>str</em>) of the tuple is the id of the section to which the balancing valve was
+added. The second element (<em>float</em>) is the calculated Kvr setting of the balancing valve.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def set_balancing_valves(cls) -&gt; List[Tuple[str, float]]:
+    &#34;&#34;&#34;
+    Calculate the Kvr setting of the balancing valves in the network in order to dissipate excess feed pressure.
+
+    **Returns:** (*List[Tuple[str, float]]*)&lt;br&gt;
+    List of tuples. The first element (*str*) of the tuple is the id of the section to which the balancing valve was
+    added. The second element (*float*) is the calculated Kvr setting of the balancing valve.
+
+    &#34;&#34;&#34;
+    Kvr_list: List[Tuple[str, float]] = []
+    bv_dict = cls.network.get_balancing_valves()
+    dp_max = cls.network.critical_path.static_head_required()
+    for section_id in bv_dict.keys():
+        section = cls.network.sections[section_id]
+        dp_path = bv_dict[section_id][1].static_head_required()
+        section.set_balancing_valve(qty.Pressure(dp_max - dp_path))
+        Kvr_list.append((section_id, section.balancing_valve.Kvr))
+    return Kvr_list</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.design.Designer.set_control_valves"><code class="name flex">
+<span>def <span class="ident">set_control_valves</span></span>(<span>Kvs_list)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Set the commercial available Kvs value of the control valves in the network.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>Kvs_list</code>: (<em>List[Tuple[str, float]]</em>)<br>
+List of tuples. The first element (<em>str</em>) of the tuple is the id of the section to which the control valve was
+added. The second element (<em>float</em>) is the Kvs value of the control valve.</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def set_control_valves(cls, Kvs_list: List[Tuple[str, float]]):
+    &#34;&#34;&#34;
+    Set the commercial available Kvs value of the control valves in the network.
+
+    **Parameters:**
+
+    - `Kvs_list`: (*List[Tuple[str, float]]*)&lt;br&gt;
+    List of tuples. The first element (*str*) of the tuple is the id of the section to which the control valve was
+    added. The second element (*float*) is the Kvs value of the control valve.
+
+    &#34;&#34;&#34;
+    for section_id, Kvs in Kvs_list:
+        section = cls.network.sections[section_id]
+        section.set_control_valve(Kvs)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.design.Designer.set_units"><code class="name flex">
+<span>def <span class="ident">set_units</span></span>(<span>units)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Set the measuring SI-units of the quantities that will be used as input and that will be returned as output.</p>
+<p>Parameter <code>units</code> is a dictionary (<em>Dict[str, str]</em>) that can contain the following keys with corresponding
+measuring units assigned to them:</p>
+<ul>
+<li><em>'length'</em> (default value = <em>'m'</em>)</li>
+<li><em>'diameter'</em> (default value = <em>'mm'</em>)</li>
+<li><em>'flow_rate'</em> (default value = <em>'L/s'</em>)</li>
+<li><em>'pressure'</em> (default value = <em>'bar'</em>)</li>
+<li><em>'velocity'</em> (default value = <em>'m/s'</em>)</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def set_units(cls, units: Dict[str, str]):
+    &#34;&#34;&#34;
+    Set the measuring SI-units of the quantities that will be used as input and that will be returned as output.
+
+    Parameter `units` is a dictionary (*Dict[str, str]*) that can contain the following keys with corresponding
+    measuring units assigned to them:
+
+    - *&#39;length&#39;* (default value = *&#39;m&#39;*)
+    - *&#39;diameter&#39;* (default value = *&#39;mm&#39;*)
+    - *&#39;flow_rate&#39;* (default value = *&#39;L/s&#39;*)
+    - *&#39;pressure&#39;* (default value = *&#39;bar&#39;*)
+    - *&#39;velocity&#39;* (default value = *&#39;m/s&#39;*)
+
+    &#34;&#34;&#34;
+    cls.units.update(units)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#user-interface-for-designing-a-piping-network">User interface for designing a piping network</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pypeflow.design" href="index.html">pypeflow.design</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pypeflow.design.design.Designer" href="#pypeflow.design.design.Designer">Designer</a></code></h4>
+<ul class="">
+<li><code><a title="pypeflow.design.design.Designer.add_balancing_valves" href="#pypeflow.design.design.Designer.add_balancing_valves">add_balancing_valves</a></code></li>
+<li><code><a title="pypeflow.design.design.Designer.add_control_valves" href="#pypeflow.design.design.Designer.add_control_valves">add_control_valves</a></code></li>
+<li><code><a title="pypeflow.design.design.Designer.add_fittings" href="#pypeflow.design.design.Designer.add_fittings">add_fittings</a></code></li>
+<li><code><a title="pypeflow.design.design.Designer.configure_network" href="#pypeflow.design.design.Designer.configure_network">configure_network</a></code></li>
+<li><code><a title="pypeflow.design.design.Designer.create_network" href="#pypeflow.design.design.Designer.create_network">create_network</a></code></li>
+<li><code><a title="pypeflow.design.design.Designer.get_balancing_valves" href="#pypeflow.design.design.Designer.get_balancing_valves">get_balancing_valves</a></code></li>
+<li><code><a title="pypeflow.design.design.Designer.get_control_valves" href="#pypeflow.design.design.Designer.get_control_valves">get_control_valves</a></code></li>
+<li><code><a title="pypeflow.design.design.Designer.get_fittings" href="#pypeflow.design.design.Designer.get_fittings">get_fittings</a></code></li>
+<li><code><a title="pypeflow.design.design.Designer.get_paths" href="#pypeflow.design.design.Designer.get_paths">get_paths</a></code></li>
+<li><code><a title="pypeflow.design.design.Designer.get_sections" href="#pypeflow.design.design.Designer.get_sections">get_sections</a></code></li>
+<li><code><a title="pypeflow.design.design.Designer.init_balancing_valves" href="#pypeflow.design.design.Designer.init_balancing_valves">init_balancing_valves</a></code></li>
+<li><code><a title="pypeflow.design.design.Designer.network" href="#pypeflow.design.design.Designer.network">network</a></code></li>
+<li><code><a title="pypeflow.design.design.Designer.set_balancing_valves" href="#pypeflow.design.design.Designer.set_balancing_valves">set_balancing_valves</a></code></li>
+<li><code><a title="pypeflow.design.design.Designer.set_control_valves" href="#pypeflow.design.design.Designer.set_control_valves">set_control_valves</a></code></li>
+<li><code><a title="pypeflow.design.design.Designer.set_units" href="#pypeflow.design.design.Designer.set_units">set_units</a></code></li>
+<li><code><a title="pypeflow.design.design.Designer.units" href="#pypeflow.design.design.Designer.units">units</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

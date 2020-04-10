@@ -1,0 +1,2499 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>pypeflow.design.network API documentation</title>
+<meta name="description" content="Modeling the components for piping network design" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pypeflow.design.network</code></h1>
+</header>
+<section id="section-intro">
+<h2 id="modeling-the-components-for-piping-network-design">Modeling the components for piping network design</h2>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+## Modeling the components for piping network design
+&#34;&#34;&#34;
+from typing import List, Dict, Optional, Tuple, Type
+import threading
+import math
+import quantities as qty
+from pypeflow.core import Pipe, Fitting, BalancingValve, ControlValve
+from pypeflow.core.pipe_schedules import PipeSchedule
+from pypeflow.core.fluids import Fluid
+from pypeflow.core.pump import Pump
+from pypeflow.core.resistance_coefficient import ResistanceCoefficient
+
+
+class Section:
+    &#34;&#34;&#34;Class that models a pipe section in a network.&#34;&#34;&#34;
+
+    def __init__(self):
+        self._id: str = &#39;&#39;
+        self._start_node: Node = Node()
+        self._end_node: Node = Node()
+        self._pipe: Pipe = Pipe()
+        self._fittings: Dict[str, Fitting] = {}
+        self._balancing_valve: Optional[BalancingValve] = None
+        self._control_valve: Optional[ControlValve] = None
+        self._pump: Optional[Pump] = None
+        self._real: bool = False
+
+    @classmethod
+    def create_pseudo(cls, **kwargs):
+        &#34;&#34;&#34;
+        Create a pseudo section.&lt;br&gt;
+        A pseudo section is to be used in open networks (eg. drinking water installations) to make a closing connection
+        to the end node of the network. This is needed so that the program can find the flow paths in the network.
+        A flow path is any sequence of sections that connects the start node of the network with the end node of the
+        network.
+        Between the start node and end node of the network the feed pressure is present that establish the flow in the
+        network.
+
+        **kwargs:**
+
+        - `id`: (*str*) = id of the section in the network
+        - `start_node_id`: (*str*) = id of the start node of the section
+        - `end_node_id`: (*str*) = id of the exit node of the section
+        - `start_node_height`: (*quantities.Length*) = height of the start node with respect to a chosen reference plane
+        - `end_node_height`: (*quantities.Length*) = height of the end node with respect to a chosen reference plane
+
+        &#34;&#34;&#34;
+        id_: str = kwargs.get(&#39;id&#39;)
+        sn_id: str = kwargs.get(&#39;start_node_id&#39;)
+        en_id: str = kwargs.get(&#39;end_node_id&#39;)
+        sn_h: qty.Length = kwargs.get(&#39;start_node_height&#39;)
+        en_h: qty.Length = kwargs.get(&#39;end_node_height&#39;)
+
+        s = cls()
+        s._id = id_
+        s._start_node = Node.create(sn_id, sn_h)
+        s._end_node = Node.create(en_id, en_h)
+        return s
+
+    @classmethod
+    def create_real(cls, **kwargs):
+        &#34;&#34;&#34;
+        Create a real pipe section.
+
+        **kwargs:**
+
+        - `id`: (*str*) = id of the section in the network
+        - `start_node_id`: (*str*) = id of the start node of the section
+        - `end_node_id`: (*str*) = id of the exit node of the section
+        - `start_node_height`: (*quantities.Length*) = height of the start node with respect to a chosen reference plane
+        - `end_node_height`: (*quantities.Length*) = height of the end node with respect to a chosen reference plane
+        - `fluid`: (object of type *pyflow.core.fluids.Fluid*) = fluid that flows in the section
+        - `pipe_schedule`: (type of *pyflow.core.pipe_schedules.PipeSchedule*) = pipe schedule of the section
+        - `length`: (*quantities.Length*) = length of the section
+        - `nominal_diameter`: (*quantities.Length*) = nominal diameter of the section
+        - `flow_rate`: (*quantities.VolumeFlowRate*) = flow rate through the section
+        - `pressure_drop`: (*quantities.Pressure*) = pressure drop due to friction across the section
+
+        If flow rate and friction loss are set -&gt; diameter will be calculated&lt;br&gt;
+        If flow rate and nominal diameter are set -&gt; friction loss will be calculated
+
+        &#34;&#34;&#34;
+        s = cls.create_pseudo(**kwargs)
+        s._real = True
+
+        fluid: Fluid = kwargs.get(&#39;fluid&#39;)
+        pipe_schedule: Type[PipeSchedule] = kwargs.get(&#39;pipe_schedule&#39;)
+        l: qty.Length = kwargs.get(&#39;length&#39;)
+        dn: Optional[qty.Length] = kwargs.get(&#39;nominal_diameter&#39;)
+        V: Optional[qty.VolumeFlowRate] = kwargs.get(&#39;flow_rate&#39;)
+        dp: Optional[qty.Pressure] = kwargs.get(&#39;pressure_drop&#39;)
+
+        if (V is not None) and (dp is not None):  # diameter unknown
+            s._pipe = Pipe.create(fluid, pipe_schedule, l, flow_rate=V, friction_loss=dp)
+        if (V is not None) and (dn is not None):  # pressure drop unknown
+            s._pipe = Pipe.create(fluid, pipe_schedule, l, flow_rate=V, nominal_diameter=dn)
+        return s
+
+    def add_fitting(self, **kwargs):
+        &#34;&#34;&#34;
+        Add a fitting/valve to the section.
+
+        **kwargs:**
+
+        - `id`: (*str*) = id of the fitting/valve
+        - `type`: (*str*) = a description of the type of fitting/valve
+        - `zeta`: (*float*) = (1st) resistance coefficient of the fitting
+        - `zeta_inf`: (*float*) = 2nd resistance coefficient of the fitting (see 3K-method)
+        - `zeta_d`: (*float*) = 3th resistance coefficient of the fitting (see 3K-method)
+        - `ELR`: (*float*) = equivalent length ratio of the fitting (see Crane-K-method)
+        - `Kv`: (*float*) = flow coefficient of the fitting/valve
+
+        Based on the parameters that are set, the pressure drop across the fitting/valve is calculated using the
+        appropriate method (see pyflow.core.fitting.Fitting).
+
+        &#34;&#34;&#34;
+        id_: str = kwargs.get(&#39;id&#39;)
+        type_: str = kwargs.get(&#39;type&#39;)
+        zeta: float = kwargs.get(&#39;zeta&#39;, math.nan)
+        zeta_inf: float = kwargs.get(&#39;zeta_inf&#39;, math.nan)
+        zeta_d: float = kwargs.get(&#39;zeta_d&#39;, math.nan)
+        ELR: float = kwargs.get(&#39;ELR&#39;, math.nan)
+        Kv: float = kwargs.get(&#39;Kv&#39;, math.nan)
+
+        if not math.isnan(Kv):
+            f = Fitting.create_w_flow_rate(type_, self._pipe.fluid, self._pipe.flow_rate, Kv)
+        else:
+            f = Fitting.create_w_velocity(type_, self._pipe.fluid, self._pipe.velocity,
+                                          self._pipe.cross_section.diameter,
+                                          zeta=zeta, zeta_inf=zeta_inf, zeta_d=zeta_d, ELR=ELR)
+        v = self._fittings.setdefault(id_, f)
+        if v is not f: raise ValueError(f&#39;a fitting with {id_} was already added to the section&#39;)
+
+    def add_balancing_valve(self, dp_100: qty.Pressure) -&gt; float:
+        &#34;&#34;&#34;
+        Add a balancing valve to the section. A section can have only one balancing valve.
+
+        **Parameter:**
+
+        - `dp_100` (*quantities.Pressure*) = pressure drop across fully open valve.
+
+        **Returns:** (*float*)&lt;br&gt;
+        Preliminary calculated Kvs value for the balancing valve.
+
+        &#34;&#34;&#34;
+        self._balancing_valve = BalancingValve.create(
+            self._pipe.fluid,
+            self._pipe.flow_rate,
+            dp_100
+        )
+        return self._balancing_valve.Kvs
+
+    def init_balancing_valve(self, Kvs: float):
+        &#34;&#34;&#34;
+        Set commercial available Kvs value (*float*) for the balancing valve.
+        &#34;&#34;&#34;
+        self._balancing_valve.Kvs = Kvs
+
+    def set_balancing_valve(self, dp_excess: qty.Pressure) -&gt; float:
+        &#34;&#34;&#34;
+        Determine the calculated Kvr setting (*float*) of the balancing valve in order to dissipate the excess
+        feed pressure (*quantities.Pressure*).
+
+        **Returns:** (*float*) The Kvr setting for the balancing valve.
+
+        &#34;&#34;&#34;
+        self._balancing_valve.set_pressure_excess(dp_excess)
+        return self._balancing_valve.Kvr
+
+    def add_control_valve(self, target_authority: float) -&gt; float:
+        &#34;&#34;&#34;
+        Add a control valve to the section. A section can have only one control valve.
+
+        **Parameter:**
+
+        - `target_authority`: (*float*) = the valve authority aimed at
+
+        **Returns:** (*float*) Preliminary Kvs value for the control valve.
+
+        &#34;&#34;&#34;
+        self._control_valve = ControlValve.create(
+            self._pipe.fluid,
+            self._pipe.flow_rate,
+            target_authority,
+            self.pressure_drop
+        )
+        return self._control_valve.Kvs
+
+    def set_control_valve(self, Kvs: float):
+        &#34;&#34;&#34;Set commercial available Kvs value (*float*) for the control valve.&#34;&#34;&#34;
+        self._control_valve.Kvs = Kvs
+
+    def add_pump(self, pump_coefficients: Tuple[float, float, float]):
+        &#34;&#34;&#34;
+        Add a pump to the section.
+
+        Parameter `coefficients` is a tuple of 3 *float* values which are the coefficients of the pump curve described
+        by the equation: dp_pump = `coefficients[0]` + `coefficients[1]` * V + `coefficients[2]` * V **2.
+
+        &#34;&#34;&#34;
+        self._pump = Pump.create(*pump_coefficients)
+
+    @property
+    def id(self) -&gt; str:
+        &#34;&#34;&#34;Get id of the section.&#34;&#34;&#34;
+        return self._id
+
+    @property
+    def start_node(self) -&gt; &#39;Node&#39;:
+        &#34;&#34;&#34;Get start node (*Node*) of the section.&#34;&#34;&#34;
+        return self._start_node
+
+    @property
+    def end_node(self) -&gt; &#39;Node&#39;:
+        &#34;&#34;&#34;Get end node (*Node*) of the section.&#34;&#34;&#34;
+        return self._end_node
+
+    @property
+    def pipe(self) -&gt; Pipe:
+        &#34;&#34;&#34;Get the straight pipe (*pyflow.core.pipe.Pipe*) of the section.&#34;&#34;&#34;
+        return self._pipe
+
+    @property
+    def fittings(self) -&gt; Dict[str, Fitting]:
+        &#34;&#34;&#34;
+        Get a dictionary with the fittings in the section. Keys are the fitting ids (*str*) and values the
+        *Fitting* objects (*pyflow.core.fitting.Fitting*).
+
+        &#34;&#34;&#34;
+        return self._fittings
+
+    @property
+    def balancing_valve(self) -&gt; BalancingValve:
+        &#34;&#34;&#34;Get the balancing valve (*pyflow.core.valves.BalancingValve*) in the section.&#34;&#34;&#34;
+        return self._balancing_valve
+
+    @property
+    def control_valve(self) -&gt; ControlValve:
+        &#34;&#34;&#34;Get the control valve (*pyflow.core.valves.ControlValve*) in the section.&#34;&#34;&#34;
+        return self._control_valve
+
+    @property
+    def pressure_drop(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;Get the pressure drop (*quantities.Pressure*) across the section.&#34;&#34;&#34;
+        dp = self._pipe.friction_loss()
+        dp += sum([fitting.pressure_drop() for fitting in self._fittings.values()])
+        if self._balancing_valve is not None:
+            dp += self._balancing_valve.pressure_drop()
+        if self._pump is not None:
+            dp -= self._pump.added_head(self._pipe.flow_rate)()
+        if self._control_valve is not None:
+            dp += self._control_valve.pressure_drop()
+        return qty.Pressure(dp)
+
+    @property
+    def real(self) -&gt; bool:
+        &#34;&#34;&#34;Returns *True* if the section is not a pseudo section.&#34;&#34;&#34;
+        if self._real:
+            return True
+        return False
+
+    @property
+    def flow_rate(self) -&gt; qty.VolumeFlowRate:
+        &#34;&#34;&#34;Get the flow rate (*quantities.VolumeFlowRate*) in the section.&#34;&#34;&#34;
+        return self._pipe.flow_rate
+
+    @property
+    def zeta(self) -&gt; float:
+        &#34;&#34;&#34;Get the global resistance coefficient of all fittings, balancing valve and control valve in the section.&#34;&#34;&#34;
+        zeta = 0.0
+        for fitting in self._fittings.values():
+            zeta += fitting.zeta
+        if self._balancing_valve is not None:
+            if not math.isnan(self._balancing_valve.Kvr):
+                zeta_bal = ResistanceCoefficient.from_Kv(
+                    self._balancing_valve.Kvr,
+                    self._pipe.cross_section.diameter
+                )
+            else:
+                zeta_bal = ResistanceCoefficient.from_Kv(
+                    self._balancing_valve.Kvs,
+                    self._pipe.cross_section.diameter
+                )
+            zeta += zeta_bal
+        if self._control_valve is not None:
+            zeta_ctrl = ResistanceCoefficient.from_Kv(
+                self._control_valve.Kvs,
+                self._pipe.cross_section.diameter
+            )
+            zeta += zeta_ctrl
+        return zeta
+
+    @property
+    def length(self) -&gt; qty.Length:
+        &#34;&#34;&#34;Get the length (*quantities.Length*) of the section.&#34;&#34;&#34;
+        return self._pipe.length
+
+    @property
+    def nominal_diameter(self) -&gt; qty.Length:
+        &#34;&#34;&#34;Get the nominal diameter (*quantities.Length*) of the section pipe.&#34;&#34;&#34;
+        return self._pipe.cross_section.nominal_diameter
+
+    @property
+    def pump(self) -&gt; Pump:
+        &#34;&#34;&#34;Get the pump (*pyflow.core.pump.Pump*) in the section.&#34;&#34;&#34;
+        return self._pump
+
+
+class Node:
+    &#34;&#34;&#34;Class that models a network node.&#34;&#34;&#34;
+
+    def __init__(self):
+        self._id: str = &#39;&#39;
+        self._height: float = 0.0
+        self._in: List[Section] = []
+        self._out: List[Section] = []
+
+    @classmethod
+    def create(cls, id_: str, height: qty.Length = qty.Length(0.0)) -&gt; &#39;Node&#39;:
+        &#34;&#34;&#34;
+        Create network node.
+
+        **Parameters:**
+
+        - `id_`: (*str*) = the id of the node
+        - height: (*quantities.Length*) = height of the node with respect to a reference plane
+
+        **Returns:** (*Node*)
+
+        &#34;&#34;&#34;
+        n = cls()
+        n.id = id_
+        n.height = height
+        return n
+
+    @property
+    def id(self) -&gt; str:
+        &#34;&#34;&#34;Get/set id (*str*) of the node.&#34;&#34;&#34;
+        return self._id
+
+    @id.setter
+    def id(self, id_: str):
+        self._id = id_
+
+    @property
+    def height(self) -&gt; qty.Length:
+        &#34;&#34;&#34;Get/set the height (*quantities.Length*) of the node with respect to a reference plane.&#34;&#34;&#34;
+        return qty.Length(self._height)
+
+    @height.setter
+    def height(self, h: qty.Length):
+        self._height = h()
+
+    def connect(self, section: Section, direction: str):
+        &#34;&#34;&#34;
+        Connect a section with the node.
+
+        **Parameters:**
+
+        - `section`: (*Section*) = the section to connect with the node
+        - `direction`: (*str*) = the flow sense in the section: into the node (value = *&#39;in&#39;*) or out of the node
+        (value = *&#39;out&#39;*)
+
+        &#34;&#34;&#34;
+        if direction.lower() == &#39;in&#39; and section not in self._in:
+            self._in.append(section)
+        if direction.lower() == &#39;out&#39; and section not in self._out:
+            self._out.append(section)
+
+    @property
+    def incoming(self) -&gt; List[Section]:
+        &#34;&#34;&#34;
+        Get a list of the sections that arrive at the node (flow sense into the node).
+        &#34;&#34;&#34;
+        return self._in
+
+    @property
+    def outgoing(self) -&gt; List[Section]:
+        &#34;&#34;&#34;
+        Get a list of the sections that leave the node (flow sense out of the node).
+        &#34;&#34;&#34;
+        return self._out
+
+
+class FlowPath(List[Section]):
+    &#34;&#34;&#34;
+    Class that models a flow path in the network.
+
+    A flow path is a list of sections. It starts at the start node of the network and ends in the end node of the
+    network.
+    &#34;&#34;&#34;
+
+    def __repr__(self):
+        return &#39;|&#39;.join([section.id for section in self])
+
+    def get_first_real_section(self) -&gt; Section:
+        &#34;&#34;&#34;Get the first section (*Section* object) of the path that is not a pseudo section.&#34;&#34;&#34;
+        for section in self:
+            if section.real:
+                return section
+
+    def get_last_real_section(self) -&gt; Section:
+        &#34;&#34;&#34;Get the last section (*Section* object) of the path that is not a pseudo section.&#34;&#34;&#34;
+        for section in reversed(self):
+            if section.real:
+                return section
+
+    @property
+    def dynamic_head(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;
+        Get the dynamic head (*quantities.Pressure*) between the end node of the last real section and the start node
+        of first real section in the path. (Any pseudo sections in the path are ignored.)
+        &#34;&#34;&#34;
+        return qty.Pressure(sum([section.pressure_drop() for section in self if section.real]))
+
+    @property
+    def height(self) -&gt; qty.Length:
+        &#34;&#34;&#34;
+        Get the height difference (*quantities.Length*) between the end node of the last real section and the start node
+        of first real section in the path. (Any pseudo sections in the path are ignored.)
+        &#34;&#34;&#34;
+        first = self.get_first_real_section()
+        last = self.get_last_real_section()
+        z1 = first.start_node.height()
+        z2 = last.end_node.height()
+        return qty.Length(z2 - z1)
+
+    @property
+    def elevation_head(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;
+        Get the elevation head (*quantities.Pressure*) between the end node of the last real section and the start node
+        of first real section in the path. (Any pseudo sections in the path are ignored.)
+        &#34;&#34;&#34;
+        dh = self.height()
+        return qty.Pressure(dh, &#39;m&#39;)
+
+    @property
+    def velocity_head(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;
+        Get the velocity head (*quantities.Pressure*) between the end node of the last real section and the start node
+        of first real section in the path. (Any pseudo sections in the path are ignored.)
+        &#34;&#34;&#34;
+        first = self.get_first_real_section()
+        last = self.get_last_real_section()
+        vp1 = first.pipe.velocity_pressure()
+        vp2 = last.pipe.velocity_pressure()
+        return qty.Pressure(vp2 - vp1)
+
+    @property
+    def static_head_required(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;
+        Get the static head (*quantities.Pressure*) between the end node of the last real section and the start node
+        of first real section in the path. (Any pseudo sections in the path are ignored.)
+        This is the pressure difference that must be applied between the end node of the path and its start node in
+        order to establish the desired flow rates along the path. However, note that flow paths must also be balanced
+        to accomplish the design flow rates in each section of the network.
+        &#34;&#34;&#34;
+        dp_vel = self.velocity_head()
+        dp_elev = self.elevation_head()
+        dp_dyn = self.dynamic_head()
+        return qty.Pressure(dp_vel + dp_elev + dp_dyn)
+
+
+class Network:
+    &#34;&#34;&#34;Class that models a piping network.&#34;&#34;&#34;
+
+    def __init__(self):
+        self._start_node_id: str = &#39;&#39;
+        self._end_node_id: str = &#39;&#39;
+        self._fluid: Optional[Fluid] = None
+        self._pipe_schedule: Optional[Type[PipeSchedule]] = None
+        self._nodes: Dict[str, Node] = {}
+        self._sections: Dict[str, Section] = {}
+        self._paths: List[FlowPath] = []
+
+    @classmethod
+    def create(cls, **kwargs):
+        &#34;&#34;&#34;
+        Create *Network* object.
+
+        **kwargs:**
+
+        - `start_node_id`: (*str*) = id of the start node of the network
+        - `end_node_id`: (*str*) = id of the end node of the network
+        - `fluid`: (object of type *pyflow.core.fluids.Fluid*) = fluid that flows in the network
+        - `pipe_schedule`: (type of *pyflow.core.pipe_schedules.PipeSchedule*) = pipe schedule of the sections in the
+        network
+
+        &#34;&#34;&#34;
+        sn_id: str = kwargs.get(&#39;start_node_id&#39;)
+        en_id: str = kwargs.get(&#39;end_node_id&#39;)
+        fluid: Fluid = kwargs.get(&#39;fluid&#39;)
+        pipe_schedule: Type[PipeSchedule] = kwargs.get(&#39;pipe_schedule&#39;)
+
+        n = cls()
+        n._start_node_id = sn_id
+        n._end_node_id = en_id
+        n._fluid = fluid
+        n._pipe_schedule = pipe_schedule
+        return n
+
+    def add_section(self, **kwargs):
+        &#34;&#34;&#34;
+        Add a section to the network.
+
+        **kwargs:**
+
+        - `id`: (*str*) = id of the section in the network
+        - `start_node_id`: (*str*) = id of the start node of the section
+        - `end_node_id`: (*str*) = id of the exit node of the section
+        - `start_node_height`: (*quantities.Length*) = height of the start node with respect to a chosen reference plane
+        - `end_node_height`: (*quantities.Length*) = height of the end node with respect to a chosen reference plane
+        - `length`: (*quantities.Length*) = length of the section
+        - `nominal_diameter`: (*quantities.Length*) = nominal diameter of the section
+        - `flow_rate`: (*quantities.VolumeFlowRate*) = flow rate through the section
+        - `pressure_drop`: (*quantities.Pressure*) = pressure drop due to friction across the section
+
+        &#34;&#34;&#34;
+        kwargs.update(fluid=self._fluid, pipe_schedule=self._pipe_schedule)
+        if kwargs[&#39;flow_rate&#39;] is not None:
+            section = Section.create_real(**kwargs)
+        else:
+            section = Section.create_pseudo(**kwargs)
+        v = self._sections.setdefault(section.id, section)
+        if v is not section:
+            raise ValueError(f&#39;a section with {section.id} was already added to the network&#39;)
+        else:
+            sn = self._nodes.setdefault(section.start_node.id, section.start_node)
+            sn.connect(section, &#39;out&#39;)
+            en = self._nodes.setdefault(section.end_node.id, section.end_node)
+            en.connect(section, &#39;in&#39;)
+
+    @property
+    def sections(self) -&gt; Dict[str, Section]:
+        &#34;&#34;&#34;Get a dictionary with the sections in the network. Keys: section ids, values: *Section* objects.&#34;&#34;&#34;
+        return self._sections
+
+    def _find_flow_paths(self):
+        &#34;&#34;&#34;Find all the possible flow paths between the start node and end node of the network.&#34;&#34;&#34;
+        path = FlowPath()
+        self._paths.append(path)
+        try:
+            node = self._nodes[self._start_node_id]  # get start node of network
+            self._search(node, path)                 # begin searching at start node of network
+        except IndexError:
+            self._paths = []
+
+    def _search(self, node: Node, path: FlowPath):
+        # search until the end node of the network has been reached
+        # if the current node has more than 1 outgoing connection, then
+        # for each outgoing connection except the first one...
+        #   create a new empty path
+        #   add the current path to the new path
+        #   add the connection to the new path
+        #   add the new path to the list of paths in the network
+        #   create a thread that begins searching from the end node of the connection
+        # add the first outgoing connection of the current node to the current path
+        # and then set current node to the end node of the first outgoing connection
+        while node.id != self._end_node_id:
+            if len(node.outgoing) &gt; 1:
+                for section in node.outgoing[1:]:
+                    new_path = FlowPath()
+                    new_path.extend(path)
+                    new_path.append(section)
+                    self._paths.append(new_path)
+                    thread = threading.Thread(
+                        target=self._search,
+                        args=(self._nodes[section.end_node.id], new_path)
+                    )
+                    thread.start()
+                    thread.join()
+            path.append(node.outgoing[0])
+            node = self._nodes[path[-1].end_node.id]
+
+    @property
+    def paths(self) -&gt; List[FlowPath]:
+        &#34;&#34;&#34;Get a list of the flow paths (object *FlowPath*) in the network.&#34;&#34;&#34;
+        if not self._paths: self._find_flow_paths()
+        return self._paths
+
+    @property
+    def critical_path(self) -&gt; FlowPath:
+        &#34;&#34;&#34;Get the critical path (object *FlowPath*) in the network.&#34;&#34;&#34;
+        static_head_max = 0.0
+        idx = 0
+        for i in range(len(self.paths)):
+            static_head = (self._paths[i].velocity_head() + self._paths[i].elevation_head()
+                           + self._paths[i].dynamic_head())
+            if static_head &gt; static_head_max:
+                static_head_max = static_head
+                idx = i
+        return self._paths[idx]
+
+    def get_balancing_valves(self) -&gt; Dict[str, Tuple[BalancingValve, FlowPath]]:
+        &#34;&#34;&#34;
+        Get the balancing valves in the network.
+
+        **Returns:**&lt;br&gt;
+        A dictionary whose keys are ids of sections that have a balancing valve.
+        The values of the dictionary are tuples containing the *BalancingValve* object and the *FlowPath* object in
+        which the balancing valve is present.
+
+        &#34;&#34;&#34;
+        d = {}
+        for path in self.paths:
+            for section in path:
+                if section.balancing_valve:
+                    d[section.id] = (section.balancing_valve, path)
+        return d
+
+    def get_control_valves(self) -&gt; Dict[str, Tuple[ControlValve, Section]]:
+        &#34;&#34;&#34;
+        Get the control valves in the network.
+
+        **Returns:**&lt;br&gt;
+        A dictionary whose keys are ids of sections that have a control valve.
+        The values of the dictionary are tuples containing the *ControlValve* object and the *Section* object in
+        which the control valve is present.
+
+        &#34;&#34;&#34;
+        d = {}
+        for section in self._sections.values():
+            if section.control_valve:
+                d[section.id] = (section.control_valve, section)
+        return d
+
+    @property
+    def start_node_id(self) -&gt; str:
+        &#34;&#34;&#34;Get the start node id of the network.&#34;&#34;&#34;
+        return self._start_node_id
+
+    @property
+    def end_node_id(self) -&gt; str:
+        &#34;&#34;&#34;Get the end node id of the network.&#34;&#34;&#34;
+        return self._end_node_id</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pypeflow.design.network.FlowPath"><code class="flex name class">
+<span>class <span class="ident">FlowPath</span></span>
+<span>(</span><span>iterable=())</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Class that models a flow path in the network.</p>
+<p>A flow path is a list of sections. It starts at the start node of the network and ends in the end node of the
+network.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FlowPath(List[Section]):
+    &#34;&#34;&#34;
+    Class that models a flow path in the network.
+
+    A flow path is a list of sections. It starts at the start node of the network and ends in the end node of the
+    network.
+    &#34;&#34;&#34;
+
+    def __repr__(self):
+        return &#39;|&#39;.join([section.id for section in self])
+
+    def get_first_real_section(self) -&gt; Section:
+        &#34;&#34;&#34;Get the first section (*Section* object) of the path that is not a pseudo section.&#34;&#34;&#34;
+        for section in self:
+            if section.real:
+                return section
+
+    def get_last_real_section(self) -&gt; Section:
+        &#34;&#34;&#34;Get the last section (*Section* object) of the path that is not a pseudo section.&#34;&#34;&#34;
+        for section in reversed(self):
+            if section.real:
+                return section
+
+    @property
+    def dynamic_head(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;
+        Get the dynamic head (*quantities.Pressure*) between the end node of the last real section and the start node
+        of first real section in the path. (Any pseudo sections in the path are ignored.)
+        &#34;&#34;&#34;
+        return qty.Pressure(sum([section.pressure_drop() for section in self if section.real]))
+
+    @property
+    def height(self) -&gt; qty.Length:
+        &#34;&#34;&#34;
+        Get the height difference (*quantities.Length*) between the end node of the last real section and the start node
+        of first real section in the path. (Any pseudo sections in the path are ignored.)
+        &#34;&#34;&#34;
+        first = self.get_first_real_section()
+        last = self.get_last_real_section()
+        z1 = first.start_node.height()
+        z2 = last.end_node.height()
+        return qty.Length(z2 - z1)
+
+    @property
+    def elevation_head(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;
+        Get the elevation head (*quantities.Pressure*) between the end node of the last real section and the start node
+        of first real section in the path. (Any pseudo sections in the path are ignored.)
+        &#34;&#34;&#34;
+        dh = self.height()
+        return qty.Pressure(dh, &#39;m&#39;)
+
+    @property
+    def velocity_head(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;
+        Get the velocity head (*quantities.Pressure*) between the end node of the last real section and the start node
+        of first real section in the path. (Any pseudo sections in the path are ignored.)
+        &#34;&#34;&#34;
+        first = self.get_first_real_section()
+        last = self.get_last_real_section()
+        vp1 = first.pipe.velocity_pressure()
+        vp2 = last.pipe.velocity_pressure()
+        return qty.Pressure(vp2 - vp1)
+
+    @property
+    def static_head_required(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;
+        Get the static head (*quantities.Pressure*) between the end node of the last real section and the start node
+        of first real section in the path. (Any pseudo sections in the path are ignored.)
+        This is the pressure difference that must be applied between the end node of the path and its start node in
+        order to establish the desired flow rates along the path. However, note that flow paths must also be balanced
+        to accomplish the design flow rates in each section of the network.
+        &#34;&#34;&#34;
+        dp_vel = self.velocity_head()
+        dp_elev = self.elevation_head()
+        dp_dyn = self.dynamic_head()
+        return qty.Pressure(dp_vel + dp_elev + dp_dyn)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.list</li>
+<li>typing.Generic</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pypeflow.design.network.FlowPath.dynamic_head"><code class="name">var <span class="ident">dynamic_head</span></code></dt>
+<dd>
+<section class="desc"><p>Get the dynamic head (<em>quantities.Pressure</em>) between the end node of the last real section and the start node
+of first real section in the path. (Any pseudo sections in the path are ignored.)</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def dynamic_head(self) -&gt; qty.Pressure:
+    &#34;&#34;&#34;
+    Get the dynamic head (*quantities.Pressure*) between the end node of the last real section and the start node
+    of first real section in the path. (Any pseudo sections in the path are ignored.)
+    &#34;&#34;&#34;
+    return qty.Pressure(sum([section.pressure_drop() for section in self if section.real]))</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.FlowPath.elevation_head"><code class="name">var <span class="ident">elevation_head</span></code></dt>
+<dd>
+<section class="desc"><p>Get the elevation head (<em>quantities.Pressure</em>) between the end node of the last real section and the start node
+of first real section in the path. (Any pseudo sections in the path are ignored.)</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def elevation_head(self) -&gt; qty.Pressure:
+    &#34;&#34;&#34;
+    Get the elevation head (*quantities.Pressure*) between the end node of the last real section and the start node
+    of first real section in the path. (Any pseudo sections in the path are ignored.)
+    &#34;&#34;&#34;
+    dh = self.height()
+    return qty.Pressure(dh, &#39;m&#39;)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.FlowPath.height"><code class="name">var <span class="ident">height</span></code></dt>
+<dd>
+<section class="desc"><p>Get the height difference (<em>quantities.Length</em>) between the end node of the last real section and the start node
+of first real section in the path. (Any pseudo sections in the path are ignored.)</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def height(self) -&gt; qty.Length:
+    &#34;&#34;&#34;
+    Get the height difference (*quantities.Length*) between the end node of the last real section and the start node
+    of first real section in the path. (Any pseudo sections in the path are ignored.)
+    &#34;&#34;&#34;
+    first = self.get_first_real_section()
+    last = self.get_last_real_section()
+    z1 = first.start_node.height()
+    z2 = last.end_node.height()
+    return qty.Length(z2 - z1)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.FlowPath.static_head_required"><code class="name">var <span class="ident">static_head_required</span></code></dt>
+<dd>
+<section class="desc"><p>Get the static head (<em>quantities.Pressure</em>) between the end node of the last real section and the start node
+of first real section in the path. (Any pseudo sections in the path are ignored.)
+This is the pressure difference that must be applied between the end node of the path and its start node in
+order to establish the desired flow rates along the path. However, note that flow paths must also be balanced
+to accomplish the design flow rates in each section of the network.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def static_head_required(self) -&gt; qty.Pressure:
+    &#34;&#34;&#34;
+    Get the static head (*quantities.Pressure*) between the end node of the last real section and the start node
+    of first real section in the path. (Any pseudo sections in the path are ignored.)
+    This is the pressure difference that must be applied between the end node of the path and its start node in
+    order to establish the desired flow rates along the path. However, note that flow paths must also be balanced
+    to accomplish the design flow rates in each section of the network.
+    &#34;&#34;&#34;
+    dp_vel = self.velocity_head()
+    dp_elev = self.elevation_head()
+    dp_dyn = self.dynamic_head()
+    return qty.Pressure(dp_vel + dp_elev + dp_dyn)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.FlowPath.velocity_head"><code class="name">var <span class="ident">velocity_head</span></code></dt>
+<dd>
+<section class="desc"><p>Get the velocity head (<em>quantities.Pressure</em>) between the end node of the last real section and the start node
+of first real section in the path. (Any pseudo sections in the path are ignored.)</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def velocity_head(self) -&gt; qty.Pressure:
+    &#34;&#34;&#34;
+    Get the velocity head (*quantities.Pressure*) between the end node of the last real section and the start node
+    of first real section in the path. (Any pseudo sections in the path are ignored.)
+    &#34;&#34;&#34;
+    first = self.get_first_real_section()
+    last = self.get_last_real_section()
+    vp1 = first.pipe.velocity_pressure()
+    vp2 = last.pipe.velocity_pressure()
+    return qty.Pressure(vp2 - vp1)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pypeflow.design.network.FlowPath.get_first_real_section"><code class="name flex">
+<span>def <span class="ident">get_first_real_section</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Get the first section (<em>Section</em> object) of the path that is not a pseudo section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_first_real_section(self) -&gt; Section:
+    &#34;&#34;&#34;Get the first section (*Section* object) of the path that is not a pseudo section.&#34;&#34;&#34;
+    for section in self:
+        if section.real:
+            return section</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.FlowPath.get_last_real_section"><code class="name flex">
+<span>def <span class="ident">get_last_real_section</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Get the last section (<em>Section</em> object) of the path that is not a pseudo section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_last_real_section(self) -&gt; Section:
+    &#34;&#34;&#34;Get the last section (*Section* object) of the path that is not a pseudo section.&#34;&#34;&#34;
+    for section in reversed(self):
+        if section.real:
+            return section</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pypeflow.design.network.Network"><code class="flex name class">
+<span>class <span class="ident">Network</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>Class that models a piping network.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Network:
+    &#34;&#34;&#34;Class that models a piping network.&#34;&#34;&#34;
+
+    def __init__(self):
+        self._start_node_id: str = &#39;&#39;
+        self._end_node_id: str = &#39;&#39;
+        self._fluid: Optional[Fluid] = None
+        self._pipe_schedule: Optional[Type[PipeSchedule]] = None
+        self._nodes: Dict[str, Node] = {}
+        self._sections: Dict[str, Section] = {}
+        self._paths: List[FlowPath] = []
+
+    @classmethod
+    def create(cls, **kwargs):
+        &#34;&#34;&#34;
+        Create *Network* object.
+
+        **kwargs:**
+
+        - `start_node_id`: (*str*) = id of the start node of the network
+        - `end_node_id`: (*str*) = id of the end node of the network
+        - `fluid`: (object of type *pyflow.core.fluids.Fluid*) = fluid that flows in the network
+        - `pipe_schedule`: (type of *pyflow.core.pipe_schedules.PipeSchedule*) = pipe schedule of the sections in the
+        network
+
+        &#34;&#34;&#34;
+        sn_id: str = kwargs.get(&#39;start_node_id&#39;)
+        en_id: str = kwargs.get(&#39;end_node_id&#39;)
+        fluid: Fluid = kwargs.get(&#39;fluid&#39;)
+        pipe_schedule: Type[PipeSchedule] = kwargs.get(&#39;pipe_schedule&#39;)
+
+        n = cls()
+        n._start_node_id = sn_id
+        n._end_node_id = en_id
+        n._fluid = fluid
+        n._pipe_schedule = pipe_schedule
+        return n
+
+    def add_section(self, **kwargs):
+        &#34;&#34;&#34;
+        Add a section to the network.
+
+        **kwargs:**
+
+        - `id`: (*str*) = id of the section in the network
+        - `start_node_id`: (*str*) = id of the start node of the section
+        - `end_node_id`: (*str*) = id of the exit node of the section
+        - `start_node_height`: (*quantities.Length*) = height of the start node with respect to a chosen reference plane
+        - `end_node_height`: (*quantities.Length*) = height of the end node with respect to a chosen reference plane
+        - `length`: (*quantities.Length*) = length of the section
+        - `nominal_diameter`: (*quantities.Length*) = nominal diameter of the section
+        - `flow_rate`: (*quantities.VolumeFlowRate*) = flow rate through the section
+        - `pressure_drop`: (*quantities.Pressure*) = pressure drop due to friction across the section
+
+        &#34;&#34;&#34;
+        kwargs.update(fluid=self._fluid, pipe_schedule=self._pipe_schedule)
+        if kwargs[&#39;flow_rate&#39;] is not None:
+            section = Section.create_real(**kwargs)
+        else:
+            section = Section.create_pseudo(**kwargs)
+        v = self._sections.setdefault(section.id, section)
+        if v is not section:
+            raise ValueError(f&#39;a section with {section.id} was already added to the network&#39;)
+        else:
+            sn = self._nodes.setdefault(section.start_node.id, section.start_node)
+            sn.connect(section, &#39;out&#39;)
+            en = self._nodes.setdefault(section.end_node.id, section.end_node)
+            en.connect(section, &#39;in&#39;)
+
+    @property
+    def sections(self) -&gt; Dict[str, Section]:
+        &#34;&#34;&#34;Get a dictionary with the sections in the network. Keys: section ids, values: *Section* objects.&#34;&#34;&#34;
+        return self._sections
+
+    def _find_flow_paths(self):
+        &#34;&#34;&#34;Find all the possible flow paths between the start node and end node of the network.&#34;&#34;&#34;
+        path = FlowPath()
+        self._paths.append(path)
+        try:
+            node = self._nodes[self._start_node_id]  # get start node of network
+            self._search(node, path)                 # begin searching at start node of network
+        except IndexError:
+            self._paths = []
+
+    def _search(self, node: Node, path: FlowPath):
+        # search until the end node of the network has been reached
+        # if the current node has more than 1 outgoing connection, then
+        # for each outgoing connection except the first one...
+        #   create a new empty path
+        #   add the current path to the new path
+        #   add the connection to the new path
+        #   add the new path to the list of paths in the network
+        #   create a thread that begins searching from the end node of the connection
+        # add the first outgoing connection of the current node to the current path
+        # and then set current node to the end node of the first outgoing connection
+        while node.id != self._end_node_id:
+            if len(node.outgoing) &gt; 1:
+                for section in node.outgoing[1:]:
+                    new_path = FlowPath()
+                    new_path.extend(path)
+                    new_path.append(section)
+                    self._paths.append(new_path)
+                    thread = threading.Thread(
+                        target=self._search,
+                        args=(self._nodes[section.end_node.id], new_path)
+                    )
+                    thread.start()
+                    thread.join()
+            path.append(node.outgoing[0])
+            node = self._nodes[path[-1].end_node.id]
+
+    @property
+    def paths(self) -&gt; List[FlowPath]:
+        &#34;&#34;&#34;Get a list of the flow paths (object *FlowPath*) in the network.&#34;&#34;&#34;
+        if not self._paths: self._find_flow_paths()
+        return self._paths
+
+    @property
+    def critical_path(self) -&gt; FlowPath:
+        &#34;&#34;&#34;Get the critical path (object *FlowPath*) in the network.&#34;&#34;&#34;
+        static_head_max = 0.0
+        idx = 0
+        for i in range(len(self.paths)):
+            static_head = (self._paths[i].velocity_head() + self._paths[i].elevation_head()
+                           + self._paths[i].dynamic_head())
+            if static_head &gt; static_head_max:
+                static_head_max = static_head
+                idx = i
+        return self._paths[idx]
+
+    def get_balancing_valves(self) -&gt; Dict[str, Tuple[BalancingValve, FlowPath]]:
+        &#34;&#34;&#34;
+        Get the balancing valves in the network.
+
+        **Returns:**&lt;br&gt;
+        A dictionary whose keys are ids of sections that have a balancing valve.
+        The values of the dictionary are tuples containing the *BalancingValve* object and the *FlowPath* object in
+        which the balancing valve is present.
+
+        &#34;&#34;&#34;
+        d = {}
+        for path in self.paths:
+            for section in path:
+                if section.balancing_valve:
+                    d[section.id] = (section.balancing_valve, path)
+        return d
+
+    def get_control_valves(self) -&gt; Dict[str, Tuple[ControlValve, Section]]:
+        &#34;&#34;&#34;
+        Get the control valves in the network.
+
+        **Returns:**&lt;br&gt;
+        A dictionary whose keys are ids of sections that have a control valve.
+        The values of the dictionary are tuples containing the *ControlValve* object and the *Section* object in
+        which the control valve is present.
+
+        &#34;&#34;&#34;
+        d = {}
+        for section in self._sections.values():
+            if section.control_valve:
+                d[section.id] = (section.control_valve, section)
+        return d
+
+    @property
+    def start_node_id(self) -&gt; str:
+        &#34;&#34;&#34;Get the start node id of the network.&#34;&#34;&#34;
+        return self._start_node_id
+
+    @property
+    def end_node_id(self) -&gt; str:
+        &#34;&#34;&#34;Get the end node id of the network.&#34;&#34;&#34;
+        return self._end_node_id</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="pypeflow.design.network.Network.create"><code class="name flex">
+<span>def <span class="ident">create</span></span>(<span>**kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Create <em>Network</em> object.</p>
+<p><strong>kwargs:</strong></p>
+<ul>
+<li><code>start_node_id</code>: (<em>str</em>) = id of the start node of the network</li>
+<li><code>end_node_id</code>: (<em>str</em>) = id of the end node of the network</li>
+<li><code>fluid</code>: (object of type <em>pyflow.core.fluids.Fluid</em>) = fluid that flows in the network</li>
+<li><code>pipe_schedule</code>: (type of <em>pyflow.core.pipe_schedules.PipeSchedule</em>) = pipe schedule of the sections in the
+network</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def create(cls, **kwargs):
+    &#34;&#34;&#34;
+    Create *Network* object.
+
+    **kwargs:**
+
+    - `start_node_id`: (*str*) = id of the start node of the network
+    - `end_node_id`: (*str*) = id of the end node of the network
+    - `fluid`: (object of type *pyflow.core.fluids.Fluid*) = fluid that flows in the network
+    - `pipe_schedule`: (type of *pyflow.core.pipe_schedules.PipeSchedule*) = pipe schedule of the sections in the
+    network
+
+    &#34;&#34;&#34;
+    sn_id: str = kwargs.get(&#39;start_node_id&#39;)
+    en_id: str = kwargs.get(&#39;end_node_id&#39;)
+    fluid: Fluid = kwargs.get(&#39;fluid&#39;)
+    pipe_schedule: Type[PipeSchedule] = kwargs.get(&#39;pipe_schedule&#39;)
+
+    n = cls()
+    n._start_node_id = sn_id
+    n._end_node_id = en_id
+    n._fluid = fluid
+    n._pipe_schedule = pipe_schedule
+    return n</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pypeflow.design.network.Network.critical_path"><code class="name">var <span class="ident">critical_path</span></code></dt>
+<dd>
+<section class="desc"><p>Get the critical path (object <em>FlowPath</em>) in the network.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def critical_path(self) -&gt; FlowPath:
+    &#34;&#34;&#34;Get the critical path (object *FlowPath*) in the network.&#34;&#34;&#34;
+    static_head_max = 0.0
+    idx = 0
+    for i in range(len(self.paths)):
+        static_head = (self._paths[i].velocity_head() + self._paths[i].elevation_head()
+                       + self._paths[i].dynamic_head())
+        if static_head &gt; static_head_max:
+            static_head_max = static_head
+            idx = i
+    return self._paths[idx]</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Network.end_node_id"><code class="name">var <span class="ident">end_node_id</span></code></dt>
+<dd>
+<section class="desc"><p>Get the end node id of the network.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def end_node_id(self) -&gt; str:
+    &#34;&#34;&#34;Get the end node id of the network.&#34;&#34;&#34;
+    return self._end_node_id</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Network.paths"><code class="name">var <span class="ident">paths</span></code></dt>
+<dd>
+<section class="desc"><p>Get a list of the flow paths (object <em>FlowPath</em>) in the network.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def paths(self) -&gt; List[FlowPath]:
+    &#34;&#34;&#34;Get a list of the flow paths (object *FlowPath*) in the network.&#34;&#34;&#34;
+    if not self._paths: self._find_flow_paths()
+    return self._paths</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Network.sections"><code class="name">var <span class="ident">sections</span></code></dt>
+<dd>
+<section class="desc"><p>Get a dictionary with the sections in the network. Keys: section ids, values: <em>Section</em> objects.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def sections(self) -&gt; Dict[str, Section]:
+    &#34;&#34;&#34;Get a dictionary with the sections in the network. Keys: section ids, values: *Section* objects.&#34;&#34;&#34;
+    return self._sections</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Network.start_node_id"><code class="name">var <span class="ident">start_node_id</span></code></dt>
+<dd>
+<section class="desc"><p>Get the start node id of the network.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def start_node_id(self) -&gt; str:
+    &#34;&#34;&#34;Get the start node id of the network.&#34;&#34;&#34;
+    return self._start_node_id</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pypeflow.design.network.Network.add_section"><code class="name flex">
+<span>def <span class="ident">add_section</span></span>(<span>self, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Add a section to the network.</p>
+<p><strong>kwargs:</strong></p>
+<ul>
+<li><code>id</code>: (<em>str</em>) = id of the section in the network</li>
+<li><code>start_node_id</code>: (<em>str</em>) = id of the start node of the section</li>
+<li><code>end_node_id</code>: (<em>str</em>) = id of the exit node of the section</li>
+<li><code>start_node_height</code>: (<em>quantities.Length</em>) = height of the start node with respect to a chosen reference plane</li>
+<li><code>end_node_height</code>: (<em>quantities.Length</em>) = height of the end node with respect to a chosen reference plane</li>
+<li><code>length</code>: (<em>quantities.Length</em>) = length of the section</li>
+<li><code>nominal_diameter</code>: (<em>quantities.Length</em>) = nominal diameter of the section</li>
+<li><code>flow_rate</code>: (<em>quantities.VolumeFlowRate</em>) = flow rate through the section</li>
+<li><code>pressure_drop</code>: (<em>quantities.Pressure</em>) = pressure drop due to friction across the section</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_section(self, **kwargs):
+    &#34;&#34;&#34;
+    Add a section to the network.
+
+    **kwargs:**
+
+    - `id`: (*str*) = id of the section in the network
+    - `start_node_id`: (*str*) = id of the start node of the section
+    - `end_node_id`: (*str*) = id of the exit node of the section
+    - `start_node_height`: (*quantities.Length*) = height of the start node with respect to a chosen reference plane
+    - `end_node_height`: (*quantities.Length*) = height of the end node with respect to a chosen reference plane
+    - `length`: (*quantities.Length*) = length of the section
+    - `nominal_diameter`: (*quantities.Length*) = nominal diameter of the section
+    - `flow_rate`: (*quantities.VolumeFlowRate*) = flow rate through the section
+    - `pressure_drop`: (*quantities.Pressure*) = pressure drop due to friction across the section
+
+    &#34;&#34;&#34;
+    kwargs.update(fluid=self._fluid, pipe_schedule=self._pipe_schedule)
+    if kwargs[&#39;flow_rate&#39;] is not None:
+        section = Section.create_real(**kwargs)
+    else:
+        section = Section.create_pseudo(**kwargs)
+    v = self._sections.setdefault(section.id, section)
+    if v is not section:
+        raise ValueError(f&#39;a section with {section.id} was already added to the network&#39;)
+    else:
+        sn = self._nodes.setdefault(section.start_node.id, section.start_node)
+        sn.connect(section, &#39;out&#39;)
+        en = self._nodes.setdefault(section.end_node.id, section.end_node)
+        en.connect(section, &#39;in&#39;)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Network.get_balancing_valves"><code class="name flex">
+<span>def <span class="ident">get_balancing_valves</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Get the balancing valves in the network.</p>
+<p><strong>Returns:</strong><br>
+A dictionary whose keys are ids of sections that have a balancing valve.
+The values of the dictionary are tuples containing the <em>BalancingValve</em> object and the <em>FlowPath</em> object in
+which the balancing valve is present.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_balancing_valves(self) -&gt; Dict[str, Tuple[BalancingValve, FlowPath]]:
+    &#34;&#34;&#34;
+    Get the balancing valves in the network.
+
+    **Returns:**&lt;br&gt;
+    A dictionary whose keys are ids of sections that have a balancing valve.
+    The values of the dictionary are tuples containing the *BalancingValve* object and the *FlowPath* object in
+    which the balancing valve is present.
+
+    &#34;&#34;&#34;
+    d = {}
+    for path in self.paths:
+        for section in path:
+            if section.balancing_valve:
+                d[section.id] = (section.balancing_valve, path)
+    return d</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Network.get_control_valves"><code class="name flex">
+<span>def <span class="ident">get_control_valves</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Get the control valves in the network.</p>
+<p><strong>Returns:</strong><br>
+A dictionary whose keys are ids of sections that have a control valve.
+The values of the dictionary are tuples containing the <em>ControlValve</em> object and the <em>Section</em> object in
+which the control valve is present.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_control_valves(self) -&gt; Dict[str, Tuple[ControlValve, Section]]:
+    &#34;&#34;&#34;
+    Get the control valves in the network.
+
+    **Returns:**&lt;br&gt;
+    A dictionary whose keys are ids of sections that have a control valve.
+    The values of the dictionary are tuples containing the *ControlValve* object and the *Section* object in
+    which the control valve is present.
+
+    &#34;&#34;&#34;
+    d = {}
+    for section in self._sections.values():
+        if section.control_valve:
+            d[section.id] = (section.control_valve, section)
+    return d</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pypeflow.design.network.Node"><code class="flex name class">
+<span>class <span class="ident">Node</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>Class that models a network node.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Node:
+    &#34;&#34;&#34;Class that models a network node.&#34;&#34;&#34;
+
+    def __init__(self):
+        self._id: str = &#39;&#39;
+        self._height: float = 0.0
+        self._in: List[Section] = []
+        self._out: List[Section] = []
+
+    @classmethod
+    def create(cls, id_: str, height: qty.Length = qty.Length(0.0)) -&gt; &#39;Node&#39;:
+        &#34;&#34;&#34;
+        Create network node.
+
+        **Parameters:**
+
+        - `id_`: (*str*) = the id of the node
+        - height: (*quantities.Length*) = height of the node with respect to a reference plane
+
+        **Returns:** (*Node*)
+
+        &#34;&#34;&#34;
+        n = cls()
+        n.id = id_
+        n.height = height
+        return n
+
+    @property
+    def id(self) -&gt; str:
+        &#34;&#34;&#34;Get/set id (*str*) of the node.&#34;&#34;&#34;
+        return self._id
+
+    @id.setter
+    def id(self, id_: str):
+        self._id = id_
+
+    @property
+    def height(self) -&gt; qty.Length:
+        &#34;&#34;&#34;Get/set the height (*quantities.Length*) of the node with respect to a reference plane.&#34;&#34;&#34;
+        return qty.Length(self._height)
+
+    @height.setter
+    def height(self, h: qty.Length):
+        self._height = h()
+
+    def connect(self, section: Section, direction: str):
+        &#34;&#34;&#34;
+        Connect a section with the node.
+
+        **Parameters:**
+
+        - `section`: (*Section*) = the section to connect with the node
+        - `direction`: (*str*) = the flow sense in the section: into the node (value = *&#39;in&#39;*) or out of the node
+        (value = *&#39;out&#39;*)
+
+        &#34;&#34;&#34;
+        if direction.lower() == &#39;in&#39; and section not in self._in:
+            self._in.append(section)
+        if direction.lower() == &#39;out&#39; and section not in self._out:
+            self._out.append(section)
+
+    @property
+    def incoming(self) -&gt; List[Section]:
+        &#34;&#34;&#34;
+        Get a list of the sections that arrive at the node (flow sense into the node).
+        &#34;&#34;&#34;
+        return self._in
+
+    @property
+    def outgoing(self) -&gt; List[Section]:
+        &#34;&#34;&#34;
+        Get a list of the sections that leave the node (flow sense out of the node).
+        &#34;&#34;&#34;
+        return self._out</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="pypeflow.design.network.Node.create"><code class="name flex">
+<span>def <span class="ident">create</span></span>(<span>id_, height=(0.0, m))</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Create network node.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>id_</code>: (<em>str</em>) = the id of the node</li>
+<li>height: (<em>quantities.Length</em>) = height of the node with respect to a reference plane</li>
+</ul>
+<p><strong>Returns:</strong> (<em>Node</em>)</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def create(cls, id_: str, height: qty.Length = qty.Length(0.0)) -&gt; &#39;Node&#39;:
+    &#34;&#34;&#34;
+    Create network node.
+
+    **Parameters:**
+
+    - `id_`: (*str*) = the id of the node
+    - height: (*quantities.Length*) = height of the node with respect to a reference plane
+
+    **Returns:** (*Node*)
+
+    &#34;&#34;&#34;
+    n = cls()
+    n.id = id_
+    n.height = height
+    return n</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pypeflow.design.network.Node.height"><code class="name">var <span class="ident">height</span></code></dt>
+<dd>
+<section class="desc"><p>Get/set the height (<em>quantities.Length</em>) of the node with respect to a reference plane.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def height(self) -&gt; qty.Length:
+    &#34;&#34;&#34;Get/set the height (*quantities.Length*) of the node with respect to a reference plane.&#34;&#34;&#34;
+    return qty.Length(self._height)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Node.id"><code class="name">var <span class="ident">id</span></code></dt>
+<dd>
+<section class="desc"><p>Get/set id (<em>str</em>) of the node.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def id(self) -&gt; str:
+    &#34;&#34;&#34;Get/set id (*str*) of the node.&#34;&#34;&#34;
+    return self._id</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Node.incoming"><code class="name">var <span class="ident">incoming</span></code></dt>
+<dd>
+<section class="desc"><p>Get a list of the sections that arrive at the node (flow sense into the node).</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def incoming(self) -&gt; List[Section]:
+    &#34;&#34;&#34;
+    Get a list of the sections that arrive at the node (flow sense into the node).
+    &#34;&#34;&#34;
+    return self._in</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Node.outgoing"><code class="name">var <span class="ident">outgoing</span></code></dt>
+<dd>
+<section class="desc"><p>Get a list of the sections that leave the node (flow sense out of the node).</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def outgoing(self) -&gt; List[Section]:
+    &#34;&#34;&#34;
+    Get a list of the sections that leave the node (flow sense out of the node).
+    &#34;&#34;&#34;
+    return self._out</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pypeflow.design.network.Node.connect"><code class="name flex">
+<span>def <span class="ident">connect</span></span>(<span>self, section, direction)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Connect a section with the node.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>section</code>: (<em>Section</em>) = the section to connect with the node</li>
+<li><code>direction</code>: (<em>str</em>) = the flow sense in the section: into the node (value = <em>'in'</em>) or out of the node
+(value = <em>'out'</em>)</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def connect(self, section: Section, direction: str):
+    &#34;&#34;&#34;
+    Connect a section with the node.
+
+    **Parameters:**
+
+    - `section`: (*Section*) = the section to connect with the node
+    - `direction`: (*str*) = the flow sense in the section: into the node (value = *&#39;in&#39;*) or out of the node
+    (value = *&#39;out&#39;*)
+
+    &#34;&#34;&#34;
+    if direction.lower() == &#39;in&#39; and section not in self._in:
+        self._in.append(section)
+    if direction.lower() == &#39;out&#39; and section not in self._out:
+        self._out.append(section)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pypeflow.design.network.Section"><code class="flex name class">
+<span>class <span class="ident">Section</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>Class that models a pipe section in a network.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Section:
+    &#34;&#34;&#34;Class that models a pipe section in a network.&#34;&#34;&#34;
+
+    def __init__(self):
+        self._id: str = &#39;&#39;
+        self._start_node: Node = Node()
+        self._end_node: Node = Node()
+        self._pipe: Pipe = Pipe()
+        self._fittings: Dict[str, Fitting] = {}
+        self._balancing_valve: Optional[BalancingValve] = None
+        self._control_valve: Optional[ControlValve] = None
+        self._pump: Optional[Pump] = None
+        self._real: bool = False
+
+    @classmethod
+    def create_pseudo(cls, **kwargs):
+        &#34;&#34;&#34;
+        Create a pseudo section.&lt;br&gt;
+        A pseudo section is to be used in open networks (eg. drinking water installations) to make a closing connection
+        to the end node of the network. This is needed so that the program can find the flow paths in the network.
+        A flow path is any sequence of sections that connects the start node of the network with the end node of the
+        network.
+        Between the start node and end node of the network the feed pressure is present that establish the flow in the
+        network.
+
+        **kwargs:**
+
+        - `id`: (*str*) = id of the section in the network
+        - `start_node_id`: (*str*) = id of the start node of the section
+        - `end_node_id`: (*str*) = id of the exit node of the section
+        - `start_node_height`: (*quantities.Length*) = height of the start node with respect to a chosen reference plane
+        - `end_node_height`: (*quantities.Length*) = height of the end node with respect to a chosen reference plane
+
+        &#34;&#34;&#34;
+        id_: str = kwargs.get(&#39;id&#39;)
+        sn_id: str = kwargs.get(&#39;start_node_id&#39;)
+        en_id: str = kwargs.get(&#39;end_node_id&#39;)
+        sn_h: qty.Length = kwargs.get(&#39;start_node_height&#39;)
+        en_h: qty.Length = kwargs.get(&#39;end_node_height&#39;)
+
+        s = cls()
+        s._id = id_
+        s._start_node = Node.create(sn_id, sn_h)
+        s._end_node = Node.create(en_id, en_h)
+        return s
+
+    @classmethod
+    def create_real(cls, **kwargs):
+        &#34;&#34;&#34;
+        Create a real pipe section.
+
+        **kwargs:**
+
+        - `id`: (*str*) = id of the section in the network
+        - `start_node_id`: (*str*) = id of the start node of the section
+        - `end_node_id`: (*str*) = id of the exit node of the section
+        - `start_node_height`: (*quantities.Length*) = height of the start node with respect to a chosen reference plane
+        - `end_node_height`: (*quantities.Length*) = height of the end node with respect to a chosen reference plane
+        - `fluid`: (object of type *pyflow.core.fluids.Fluid*) = fluid that flows in the section
+        - `pipe_schedule`: (type of *pyflow.core.pipe_schedules.PipeSchedule*) = pipe schedule of the section
+        - `length`: (*quantities.Length*) = length of the section
+        - `nominal_diameter`: (*quantities.Length*) = nominal diameter of the section
+        - `flow_rate`: (*quantities.VolumeFlowRate*) = flow rate through the section
+        - `pressure_drop`: (*quantities.Pressure*) = pressure drop due to friction across the section
+
+        If flow rate and friction loss are set -&gt; diameter will be calculated&lt;br&gt;
+        If flow rate and nominal diameter are set -&gt; friction loss will be calculated
+
+        &#34;&#34;&#34;
+        s = cls.create_pseudo(**kwargs)
+        s._real = True
+
+        fluid: Fluid = kwargs.get(&#39;fluid&#39;)
+        pipe_schedule: Type[PipeSchedule] = kwargs.get(&#39;pipe_schedule&#39;)
+        l: qty.Length = kwargs.get(&#39;length&#39;)
+        dn: Optional[qty.Length] = kwargs.get(&#39;nominal_diameter&#39;)
+        V: Optional[qty.VolumeFlowRate] = kwargs.get(&#39;flow_rate&#39;)
+        dp: Optional[qty.Pressure] = kwargs.get(&#39;pressure_drop&#39;)
+
+        if (V is not None) and (dp is not None):  # diameter unknown
+            s._pipe = Pipe.create(fluid, pipe_schedule, l, flow_rate=V, friction_loss=dp)
+        if (V is not None) and (dn is not None):  # pressure drop unknown
+            s._pipe = Pipe.create(fluid, pipe_schedule, l, flow_rate=V, nominal_diameter=dn)
+        return s
+
+    def add_fitting(self, **kwargs):
+        &#34;&#34;&#34;
+        Add a fitting/valve to the section.
+
+        **kwargs:**
+
+        - `id`: (*str*) = id of the fitting/valve
+        - `type`: (*str*) = a description of the type of fitting/valve
+        - `zeta`: (*float*) = (1st) resistance coefficient of the fitting
+        - `zeta_inf`: (*float*) = 2nd resistance coefficient of the fitting (see 3K-method)
+        - `zeta_d`: (*float*) = 3th resistance coefficient of the fitting (see 3K-method)
+        - `ELR`: (*float*) = equivalent length ratio of the fitting (see Crane-K-method)
+        - `Kv`: (*float*) = flow coefficient of the fitting/valve
+
+        Based on the parameters that are set, the pressure drop across the fitting/valve is calculated using the
+        appropriate method (see pyflow.core.fitting.Fitting).
+
+        &#34;&#34;&#34;
+        id_: str = kwargs.get(&#39;id&#39;)
+        type_: str = kwargs.get(&#39;type&#39;)
+        zeta: float = kwargs.get(&#39;zeta&#39;, math.nan)
+        zeta_inf: float = kwargs.get(&#39;zeta_inf&#39;, math.nan)
+        zeta_d: float = kwargs.get(&#39;zeta_d&#39;, math.nan)
+        ELR: float = kwargs.get(&#39;ELR&#39;, math.nan)
+        Kv: float = kwargs.get(&#39;Kv&#39;, math.nan)
+
+        if not math.isnan(Kv):
+            f = Fitting.create_w_flow_rate(type_, self._pipe.fluid, self._pipe.flow_rate, Kv)
+        else:
+            f = Fitting.create_w_velocity(type_, self._pipe.fluid, self._pipe.velocity,
+                                          self._pipe.cross_section.diameter,
+                                          zeta=zeta, zeta_inf=zeta_inf, zeta_d=zeta_d, ELR=ELR)
+        v = self._fittings.setdefault(id_, f)
+        if v is not f: raise ValueError(f&#39;a fitting with {id_} was already added to the section&#39;)
+
+    def add_balancing_valve(self, dp_100: qty.Pressure) -&gt; float:
+        &#34;&#34;&#34;
+        Add a balancing valve to the section. A section can have only one balancing valve.
+
+        **Parameter:**
+
+        - `dp_100` (*quantities.Pressure*) = pressure drop across fully open valve.
+
+        **Returns:** (*float*)&lt;br&gt;
+        Preliminary calculated Kvs value for the balancing valve.
+
+        &#34;&#34;&#34;
+        self._balancing_valve = BalancingValve.create(
+            self._pipe.fluid,
+            self._pipe.flow_rate,
+            dp_100
+        )
+        return self._balancing_valve.Kvs
+
+    def init_balancing_valve(self, Kvs: float):
+        &#34;&#34;&#34;
+        Set commercial available Kvs value (*float*) for the balancing valve.
+        &#34;&#34;&#34;
+        self._balancing_valve.Kvs = Kvs
+
+    def set_balancing_valve(self, dp_excess: qty.Pressure) -&gt; float:
+        &#34;&#34;&#34;
+        Determine the calculated Kvr setting (*float*) of the balancing valve in order to dissipate the excess
+        feed pressure (*quantities.Pressure*).
+
+        **Returns:** (*float*) The Kvr setting for the balancing valve.
+
+        &#34;&#34;&#34;
+        self._balancing_valve.set_pressure_excess(dp_excess)
+        return self._balancing_valve.Kvr
+
+    def add_control_valve(self, target_authority: float) -&gt; float:
+        &#34;&#34;&#34;
+        Add a control valve to the section. A section can have only one control valve.
+
+        **Parameter:**
+
+        - `target_authority`: (*float*) = the valve authority aimed at
+
+        **Returns:** (*float*) Preliminary Kvs value for the control valve.
+
+        &#34;&#34;&#34;
+        self._control_valve = ControlValve.create(
+            self._pipe.fluid,
+            self._pipe.flow_rate,
+            target_authority,
+            self.pressure_drop
+        )
+        return self._control_valve.Kvs
+
+    def set_control_valve(self, Kvs: float):
+        &#34;&#34;&#34;Set commercial available Kvs value (*float*) for the control valve.&#34;&#34;&#34;
+        self._control_valve.Kvs = Kvs
+
+    def add_pump(self, pump_coefficients: Tuple[float, float, float]):
+        &#34;&#34;&#34;
+        Add a pump to the section.
+
+        Parameter `coefficients` is a tuple of 3 *float* values which are the coefficients of the pump curve described
+        by the equation: dp_pump = `coefficients[0]` + `coefficients[1]` * V + `coefficients[2]` * V **2.
+
+        &#34;&#34;&#34;
+        self._pump = Pump.create(*pump_coefficients)
+
+    @property
+    def id(self) -&gt; str:
+        &#34;&#34;&#34;Get id of the section.&#34;&#34;&#34;
+        return self._id
+
+    @property
+    def start_node(self) -&gt; &#39;Node&#39;:
+        &#34;&#34;&#34;Get start node (*Node*) of the section.&#34;&#34;&#34;
+        return self._start_node
+
+    @property
+    def end_node(self) -&gt; &#39;Node&#39;:
+        &#34;&#34;&#34;Get end node (*Node*) of the section.&#34;&#34;&#34;
+        return self._end_node
+
+    @property
+    def pipe(self) -&gt; Pipe:
+        &#34;&#34;&#34;Get the straight pipe (*pyflow.core.pipe.Pipe*) of the section.&#34;&#34;&#34;
+        return self._pipe
+
+    @property
+    def fittings(self) -&gt; Dict[str, Fitting]:
+        &#34;&#34;&#34;
+        Get a dictionary with the fittings in the section. Keys are the fitting ids (*str*) and values the
+        *Fitting* objects (*pyflow.core.fitting.Fitting*).
+
+        &#34;&#34;&#34;
+        return self._fittings
+
+    @property
+    def balancing_valve(self) -&gt; BalancingValve:
+        &#34;&#34;&#34;Get the balancing valve (*pyflow.core.valves.BalancingValve*) in the section.&#34;&#34;&#34;
+        return self._balancing_valve
+
+    @property
+    def control_valve(self) -&gt; ControlValve:
+        &#34;&#34;&#34;Get the control valve (*pyflow.core.valves.ControlValve*) in the section.&#34;&#34;&#34;
+        return self._control_valve
+
+    @property
+    def pressure_drop(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;Get the pressure drop (*quantities.Pressure*) across the section.&#34;&#34;&#34;
+        dp = self._pipe.friction_loss()
+        dp += sum([fitting.pressure_drop() for fitting in self._fittings.values()])
+        if self._balancing_valve is not None:
+            dp += self._balancing_valve.pressure_drop()
+        if self._pump is not None:
+            dp -= self._pump.added_head(self._pipe.flow_rate)()
+        if self._control_valve is not None:
+            dp += self._control_valve.pressure_drop()
+        return qty.Pressure(dp)
+
+    @property
+    def real(self) -&gt; bool:
+        &#34;&#34;&#34;Returns *True* if the section is not a pseudo section.&#34;&#34;&#34;
+        if self._real:
+            return True
+        return False
+
+    @property
+    def flow_rate(self) -&gt; qty.VolumeFlowRate:
+        &#34;&#34;&#34;Get the flow rate (*quantities.VolumeFlowRate*) in the section.&#34;&#34;&#34;
+        return self._pipe.flow_rate
+
+    @property
+    def zeta(self) -&gt; float:
+        &#34;&#34;&#34;Get the global resistance coefficient of all fittings, balancing valve and control valve in the section.&#34;&#34;&#34;
+        zeta = 0.0
+        for fitting in self._fittings.values():
+            zeta += fitting.zeta
+        if self._balancing_valve is not None:
+            if not math.isnan(self._balancing_valve.Kvr):
+                zeta_bal = ResistanceCoefficient.from_Kv(
+                    self._balancing_valve.Kvr,
+                    self._pipe.cross_section.diameter
+                )
+            else:
+                zeta_bal = ResistanceCoefficient.from_Kv(
+                    self._balancing_valve.Kvs,
+                    self._pipe.cross_section.diameter
+                )
+            zeta += zeta_bal
+        if self._control_valve is not None:
+            zeta_ctrl = ResistanceCoefficient.from_Kv(
+                self._control_valve.Kvs,
+                self._pipe.cross_section.diameter
+            )
+            zeta += zeta_ctrl
+        return zeta
+
+    @property
+    def length(self) -&gt; qty.Length:
+        &#34;&#34;&#34;Get the length (*quantities.Length*) of the section.&#34;&#34;&#34;
+        return self._pipe.length
+
+    @property
+    def nominal_diameter(self) -&gt; qty.Length:
+        &#34;&#34;&#34;Get the nominal diameter (*quantities.Length*) of the section pipe.&#34;&#34;&#34;
+        return self._pipe.cross_section.nominal_diameter
+
+    @property
+    def pump(self) -&gt; Pump:
+        &#34;&#34;&#34;Get the pump (*pyflow.core.pump.Pump*) in the section.&#34;&#34;&#34;
+        return self._pump</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="pypeflow.design.network.Section.create_pseudo"><code class="name flex">
+<span>def <span class="ident">create_pseudo</span></span>(<span>**kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Create a pseudo section.<br>
+A pseudo section is to be used in open networks (eg. drinking water installations) to make a closing connection
+to the end node of the network. This is needed so that the program can find the flow paths in the network.
+A flow path is any sequence of sections that connects the start node of the network with the end node of the
+network.
+Between the start node and end node of the network the feed pressure is present that establish the flow in the
+network.</p>
+<p><strong>kwargs:</strong></p>
+<ul>
+<li><code>id</code>: (<em>str</em>) = id of the section in the network</li>
+<li><code>start_node_id</code>: (<em>str</em>) = id of the start node of the section</li>
+<li><code>end_node_id</code>: (<em>str</em>) = id of the exit node of the section</li>
+<li><code>start_node_height</code>: (<em>quantities.Length</em>) = height of the start node with respect to a chosen reference plane</li>
+<li><code>end_node_height</code>: (<em>quantities.Length</em>) = height of the end node with respect to a chosen reference plane</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def create_pseudo(cls, **kwargs):
+    &#34;&#34;&#34;
+    Create a pseudo section.&lt;br&gt;
+    A pseudo section is to be used in open networks (eg. drinking water installations) to make a closing connection
+    to the end node of the network. This is needed so that the program can find the flow paths in the network.
+    A flow path is any sequence of sections that connects the start node of the network with the end node of the
+    network.
+    Between the start node and end node of the network the feed pressure is present that establish the flow in the
+    network.
+
+    **kwargs:**
+
+    - `id`: (*str*) = id of the section in the network
+    - `start_node_id`: (*str*) = id of the start node of the section
+    - `end_node_id`: (*str*) = id of the exit node of the section
+    - `start_node_height`: (*quantities.Length*) = height of the start node with respect to a chosen reference plane
+    - `end_node_height`: (*quantities.Length*) = height of the end node with respect to a chosen reference plane
+
+    &#34;&#34;&#34;
+    id_: str = kwargs.get(&#39;id&#39;)
+    sn_id: str = kwargs.get(&#39;start_node_id&#39;)
+    en_id: str = kwargs.get(&#39;end_node_id&#39;)
+    sn_h: qty.Length = kwargs.get(&#39;start_node_height&#39;)
+    en_h: qty.Length = kwargs.get(&#39;end_node_height&#39;)
+
+    s = cls()
+    s._id = id_
+    s._start_node = Node.create(sn_id, sn_h)
+    s._end_node = Node.create(en_id, en_h)
+    return s</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Section.create_real"><code class="name flex">
+<span>def <span class="ident">create_real</span></span>(<span>**kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Create a real pipe section.</p>
+<p><strong>kwargs:</strong></p>
+<ul>
+<li><code>id</code>: (<em>str</em>) = id of the section in the network</li>
+<li><code>start_node_id</code>: (<em>str</em>) = id of the start node of the section</li>
+<li><code>end_node_id</code>: (<em>str</em>) = id of the exit node of the section</li>
+<li><code>start_node_height</code>: (<em>quantities.Length</em>) = height of the start node with respect to a chosen reference plane</li>
+<li><code>end_node_height</code>: (<em>quantities.Length</em>) = height of the end node with respect to a chosen reference plane</li>
+<li><code>fluid</code>: (object of type <em>pyflow.core.fluids.Fluid</em>) = fluid that flows in the section</li>
+<li><code>pipe_schedule</code>: (type of <em>pyflow.core.pipe_schedules.PipeSchedule</em>) = pipe schedule of the section</li>
+<li><code>length</code>: (<em>quantities.Length</em>) = length of the section</li>
+<li><code>nominal_diameter</code>: (<em>quantities.Length</em>) = nominal diameter of the section</li>
+<li><code>flow_rate</code>: (<em>quantities.VolumeFlowRate</em>) = flow rate through the section</li>
+<li><code>pressure_drop</code>: (<em>quantities.Pressure</em>) = pressure drop due to friction across the section</li>
+</ul>
+<p>If flow rate and friction loss are set -&gt; diameter will be calculated<br>
+If flow rate and nominal diameter are set -&gt; friction loss will be calculated</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def create_real(cls, **kwargs):
+    &#34;&#34;&#34;
+    Create a real pipe section.
+
+    **kwargs:**
+
+    - `id`: (*str*) = id of the section in the network
+    - `start_node_id`: (*str*) = id of the start node of the section
+    - `end_node_id`: (*str*) = id of the exit node of the section
+    - `start_node_height`: (*quantities.Length*) = height of the start node with respect to a chosen reference plane
+    - `end_node_height`: (*quantities.Length*) = height of the end node with respect to a chosen reference plane
+    - `fluid`: (object of type *pyflow.core.fluids.Fluid*) = fluid that flows in the section
+    - `pipe_schedule`: (type of *pyflow.core.pipe_schedules.PipeSchedule*) = pipe schedule of the section
+    - `length`: (*quantities.Length*) = length of the section
+    - `nominal_diameter`: (*quantities.Length*) = nominal diameter of the section
+    - `flow_rate`: (*quantities.VolumeFlowRate*) = flow rate through the section
+    - `pressure_drop`: (*quantities.Pressure*) = pressure drop due to friction across the section
+
+    If flow rate and friction loss are set -&gt; diameter will be calculated&lt;br&gt;
+    If flow rate and nominal diameter are set -&gt; friction loss will be calculated
+
+    &#34;&#34;&#34;
+    s = cls.create_pseudo(**kwargs)
+    s._real = True
+
+    fluid: Fluid = kwargs.get(&#39;fluid&#39;)
+    pipe_schedule: Type[PipeSchedule] = kwargs.get(&#39;pipe_schedule&#39;)
+    l: qty.Length = kwargs.get(&#39;length&#39;)
+    dn: Optional[qty.Length] = kwargs.get(&#39;nominal_diameter&#39;)
+    V: Optional[qty.VolumeFlowRate] = kwargs.get(&#39;flow_rate&#39;)
+    dp: Optional[qty.Pressure] = kwargs.get(&#39;pressure_drop&#39;)
+
+    if (V is not None) and (dp is not None):  # diameter unknown
+        s._pipe = Pipe.create(fluid, pipe_schedule, l, flow_rate=V, friction_loss=dp)
+    if (V is not None) and (dn is not None):  # pressure drop unknown
+        s._pipe = Pipe.create(fluid, pipe_schedule, l, flow_rate=V, nominal_diameter=dn)
+    return s</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pypeflow.design.network.Section.balancing_valve"><code class="name">var <span class="ident">balancing_valve</span></code></dt>
+<dd>
+<section class="desc"><p>Get the balancing valve (<em>pyflow.core.valves.BalancingValve</em>) in the section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def balancing_valve(self) -&gt; BalancingValve:
+    &#34;&#34;&#34;Get the balancing valve (*pyflow.core.valves.BalancingValve*) in the section.&#34;&#34;&#34;
+    return self._balancing_valve</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Section.control_valve"><code class="name">var <span class="ident">control_valve</span></code></dt>
+<dd>
+<section class="desc"><p>Get the control valve (<em>pyflow.core.valves.ControlValve</em>) in the section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def control_valve(self) -&gt; ControlValve:
+    &#34;&#34;&#34;Get the control valve (*pyflow.core.valves.ControlValve*) in the section.&#34;&#34;&#34;
+    return self._control_valve</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Section.end_node"><code class="name">var <span class="ident">end_node</span></code></dt>
+<dd>
+<section class="desc"><p>Get end node (<em>Node</em>) of the section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def end_node(self) -&gt; &#39;Node&#39;:
+    &#34;&#34;&#34;Get end node (*Node*) of the section.&#34;&#34;&#34;
+    return self._end_node</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Section.fittings"><code class="name">var <span class="ident">fittings</span></code></dt>
+<dd>
+<section class="desc"><p>Get a dictionary with the fittings in the section. Keys are the fitting ids (<em>str</em>) and values the
+<em>Fitting</em> objects (<em>pyflow.core.fitting.Fitting</em>).</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def fittings(self) -&gt; Dict[str, Fitting]:
+    &#34;&#34;&#34;
+    Get a dictionary with the fittings in the section. Keys are the fitting ids (*str*) and values the
+    *Fitting* objects (*pyflow.core.fitting.Fitting*).
+
+    &#34;&#34;&#34;
+    return self._fittings</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Section.flow_rate"><code class="name">var <span class="ident">flow_rate</span></code></dt>
+<dd>
+<section class="desc"><p>Get the flow rate (<em>quantities.VolumeFlowRate</em>) in the section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def flow_rate(self) -&gt; qty.VolumeFlowRate:
+    &#34;&#34;&#34;Get the flow rate (*quantities.VolumeFlowRate*) in the section.&#34;&#34;&#34;
+    return self._pipe.flow_rate</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Section.id"><code class="name">var <span class="ident">id</span></code></dt>
+<dd>
+<section class="desc"><p>Get id of the section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def id(self) -&gt; str:
+    &#34;&#34;&#34;Get id of the section.&#34;&#34;&#34;
+    return self._id</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Section.length"><code class="name">var <span class="ident">length</span></code></dt>
+<dd>
+<section class="desc"><p>Get the length (<em>quantities.Length</em>) of the section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def length(self) -&gt; qty.Length:
+    &#34;&#34;&#34;Get the length (*quantities.Length*) of the section.&#34;&#34;&#34;
+    return self._pipe.length</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Section.nominal_diameter"><code class="name">var <span class="ident">nominal_diameter</span></code></dt>
+<dd>
+<section class="desc"><p>Get the nominal diameter (<em>quantities.Length</em>) of the section pipe.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def nominal_diameter(self) -&gt; qty.Length:
+    &#34;&#34;&#34;Get the nominal diameter (*quantities.Length*) of the section pipe.&#34;&#34;&#34;
+    return self._pipe.cross_section.nominal_diameter</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Section.pipe"><code class="name">var <span class="ident">pipe</span></code></dt>
+<dd>
+<section class="desc"><p>Get the straight pipe (<em>pyflow.core.pipe.Pipe</em>) of the section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def pipe(self) -&gt; Pipe:
+    &#34;&#34;&#34;Get the straight pipe (*pyflow.core.pipe.Pipe*) of the section.&#34;&#34;&#34;
+    return self._pipe</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Section.pressure_drop"><code class="name">var <span class="ident">pressure_drop</span></code></dt>
+<dd>
+<section class="desc"><p>Get the pressure drop (<em>quantities.Pressure</em>) across the section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def pressure_drop(self) -&gt; qty.Pressure:
+    &#34;&#34;&#34;Get the pressure drop (*quantities.Pressure*) across the section.&#34;&#34;&#34;
+    dp = self._pipe.friction_loss()
+    dp += sum([fitting.pressure_drop() for fitting in self._fittings.values()])
+    if self._balancing_valve is not None:
+        dp += self._balancing_valve.pressure_drop()
+    if self._pump is not None:
+        dp -= self._pump.added_head(self._pipe.flow_rate)()
+    if self._control_valve is not None:
+        dp += self._control_valve.pressure_drop()
+    return qty.Pressure(dp)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Section.pump"><code class="name">var <span class="ident">pump</span></code></dt>
+<dd>
+<section class="desc"><p>Get the pump (<em>pyflow.core.pump.Pump</em>) in the section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def pump(self) -&gt; Pump:
+    &#34;&#34;&#34;Get the pump (*pyflow.core.pump.Pump*) in the section.&#34;&#34;&#34;
+    return self._pump</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Section.real"><code class="name">var <span class="ident">real</span></code></dt>
+<dd>
+<section class="desc"><p>Returns <em>True</em> if the section is not a pseudo section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def real(self) -&gt; bool:
+    &#34;&#34;&#34;Returns *True* if the section is not a pseudo section.&#34;&#34;&#34;
+    if self._real:
+        return True
+    return False</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Section.start_node"><code class="name">var <span class="ident">start_node</span></code></dt>
+<dd>
+<section class="desc"><p>Get start node (<em>Node</em>) of the section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def start_node(self) -&gt; &#39;Node&#39;:
+    &#34;&#34;&#34;Get start node (*Node*) of the section.&#34;&#34;&#34;
+    return self._start_node</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Section.zeta"><code class="name">var <span class="ident">zeta</span></code></dt>
+<dd>
+<section class="desc"><p>Get the global resistance coefficient of all fittings, balancing valve and control valve in the section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def zeta(self) -&gt; float:
+    &#34;&#34;&#34;Get the global resistance coefficient of all fittings, balancing valve and control valve in the section.&#34;&#34;&#34;
+    zeta = 0.0
+    for fitting in self._fittings.values():
+        zeta += fitting.zeta
+    if self._balancing_valve is not None:
+        if not math.isnan(self._balancing_valve.Kvr):
+            zeta_bal = ResistanceCoefficient.from_Kv(
+                self._balancing_valve.Kvr,
+                self._pipe.cross_section.diameter
+            )
+        else:
+            zeta_bal = ResistanceCoefficient.from_Kv(
+                self._balancing_valve.Kvs,
+                self._pipe.cross_section.diameter
+            )
+        zeta += zeta_bal
+    if self._control_valve is not None:
+        zeta_ctrl = ResistanceCoefficient.from_Kv(
+            self._control_valve.Kvs,
+            self._pipe.cross_section.diameter
+        )
+        zeta += zeta_ctrl
+    return zeta</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pypeflow.design.network.Section.add_balancing_valve"><code class="name flex">
+<span>def <span class="ident">add_balancing_valve</span></span>(<span>self, dp_100)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Add a balancing valve to the section. A section can have only one balancing valve.</p>
+<p><strong>Parameter:</strong></p>
+<ul>
+<li><code>dp_100</code> (<em>quantities.Pressure</em>) = pressure drop across fully open valve.</li>
+</ul>
+<p><strong>Returns:</strong> (<em>float</em>)<br>
+Preliminary calculated Kvs value for the balancing valve.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_balancing_valve(self, dp_100: qty.Pressure) -&gt; float:
+    &#34;&#34;&#34;
+    Add a balancing valve to the section. A section can have only one balancing valve.
+
+    **Parameter:**
+
+    - `dp_100` (*quantities.Pressure*) = pressure drop across fully open valve.
+
+    **Returns:** (*float*)&lt;br&gt;
+    Preliminary calculated Kvs value for the balancing valve.
+
+    &#34;&#34;&#34;
+    self._balancing_valve = BalancingValve.create(
+        self._pipe.fluid,
+        self._pipe.flow_rate,
+        dp_100
+    )
+    return self._balancing_valve.Kvs</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Section.add_control_valve"><code class="name flex">
+<span>def <span class="ident">add_control_valve</span></span>(<span>self, target_authority)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Add a control valve to the section. A section can have only one control valve.</p>
+<p><strong>Parameter:</strong></p>
+<ul>
+<li><code>target_authority</code>: (<em>float</em>) = the valve authority aimed at</li>
+</ul>
+<p><strong>Returns:</strong> (<em>float</em>) Preliminary Kvs value for the control valve.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_control_valve(self, target_authority: float) -&gt; float:
+    &#34;&#34;&#34;
+    Add a control valve to the section. A section can have only one control valve.
+
+    **Parameter:**
+
+    - `target_authority`: (*float*) = the valve authority aimed at
+
+    **Returns:** (*float*) Preliminary Kvs value for the control valve.
+
+    &#34;&#34;&#34;
+    self._control_valve = ControlValve.create(
+        self._pipe.fluid,
+        self._pipe.flow_rate,
+        target_authority,
+        self.pressure_drop
+    )
+    return self._control_valve.Kvs</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Section.add_fitting"><code class="name flex">
+<span>def <span class="ident">add_fitting</span></span>(<span>self, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Add a fitting/valve to the section.</p>
+<p><strong>kwargs:</strong></p>
+<ul>
+<li><code>id</code>: (<em>str</em>) = id of the fitting/valve</li>
+<li><code>type</code>: (<em>str</em>) = a description of the type of fitting/valve</li>
+<li><code>zeta</code>: (<em>float</em>) = (1st) resistance coefficient of the fitting</li>
+<li><code>zeta_inf</code>: (<em>float</em>) = 2nd resistance coefficient of the fitting (see 3K-method)</li>
+<li><code>zeta_d</code>: (<em>float</em>) = 3th resistance coefficient of the fitting (see 3K-method)</li>
+<li><code>ELR</code>: (<em>float</em>) = equivalent length ratio of the fitting (see Crane-K-method)</li>
+<li><code>Kv</code>: (<em>float</em>) = flow coefficient of the fitting/valve</li>
+</ul>
+<p>Based on the parameters that are set, the pressure drop across the fitting/valve is calculated using the
+appropriate method (see pyflow.core.fitting.Fitting).</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_fitting(self, **kwargs):
+    &#34;&#34;&#34;
+    Add a fitting/valve to the section.
+
+    **kwargs:**
+
+    - `id`: (*str*) = id of the fitting/valve
+    - `type`: (*str*) = a description of the type of fitting/valve
+    - `zeta`: (*float*) = (1st) resistance coefficient of the fitting
+    - `zeta_inf`: (*float*) = 2nd resistance coefficient of the fitting (see 3K-method)
+    - `zeta_d`: (*float*) = 3th resistance coefficient of the fitting (see 3K-method)
+    - `ELR`: (*float*) = equivalent length ratio of the fitting (see Crane-K-method)
+    - `Kv`: (*float*) = flow coefficient of the fitting/valve
+
+    Based on the parameters that are set, the pressure drop across the fitting/valve is calculated using the
+    appropriate method (see pyflow.core.fitting.Fitting).
+
+    &#34;&#34;&#34;
+    id_: str = kwargs.get(&#39;id&#39;)
+    type_: str = kwargs.get(&#39;type&#39;)
+    zeta: float = kwargs.get(&#39;zeta&#39;, math.nan)
+    zeta_inf: float = kwargs.get(&#39;zeta_inf&#39;, math.nan)
+    zeta_d: float = kwargs.get(&#39;zeta_d&#39;, math.nan)
+    ELR: float = kwargs.get(&#39;ELR&#39;, math.nan)
+    Kv: float = kwargs.get(&#39;Kv&#39;, math.nan)
+
+    if not math.isnan(Kv):
+        f = Fitting.create_w_flow_rate(type_, self._pipe.fluid, self._pipe.flow_rate, Kv)
+    else:
+        f = Fitting.create_w_velocity(type_, self._pipe.fluid, self._pipe.velocity,
+                                      self._pipe.cross_section.diameter,
+                                      zeta=zeta, zeta_inf=zeta_inf, zeta_d=zeta_d, ELR=ELR)
+    v = self._fittings.setdefault(id_, f)
+    if v is not f: raise ValueError(f&#39;a fitting with {id_} was already added to the section&#39;)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Section.add_pump"><code class="name flex">
+<span>def <span class="ident">add_pump</span></span>(<span>self, pump_coefficients)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Add a pump to the section.</p>
+<p>Parameter <code>coefficients</code> is a tuple of 3 <em>float</em> values which are the coefficients of the pump curve described
+by the equation: dp_pump = <code>coefficients[0]</code> + <code>coefficients[1]</code> * V + <code>coefficients[2]</code> * V **2.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_pump(self, pump_coefficients: Tuple[float, float, float]):
+    &#34;&#34;&#34;
+    Add a pump to the section.
+
+    Parameter `coefficients` is a tuple of 3 *float* values which are the coefficients of the pump curve described
+    by the equation: dp_pump = `coefficients[0]` + `coefficients[1]` * V + `coefficients[2]` * V **2.
+
+    &#34;&#34;&#34;
+    self._pump = Pump.create(*pump_coefficients)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Section.init_balancing_valve"><code class="name flex">
+<span>def <span class="ident">init_balancing_valve</span></span>(<span>self, Kvs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Set commercial available Kvs value (<em>float</em>) for the balancing valve.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def init_balancing_valve(self, Kvs: float):
+    &#34;&#34;&#34;
+    Set commercial available Kvs value (*float*) for the balancing valve.
+    &#34;&#34;&#34;
+    self._balancing_valve.Kvs = Kvs</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Section.set_balancing_valve"><code class="name flex">
+<span>def <span class="ident">set_balancing_valve</span></span>(<span>self, dp_excess)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Determine the calculated Kvr setting (<em>float</em>) of the balancing valve in order to dissipate the excess
+feed pressure (<em>quantities.Pressure</em>).</p>
+<p><strong>Returns:</strong> (<em>float</em>) The Kvr setting for the balancing valve.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_balancing_valve(self, dp_excess: qty.Pressure) -&gt; float:
+    &#34;&#34;&#34;
+    Determine the calculated Kvr setting (*float*) of the balancing valve in order to dissipate the excess
+    feed pressure (*quantities.Pressure*).
+
+    **Returns:** (*float*) The Kvr setting for the balancing valve.
+
+    &#34;&#34;&#34;
+    self._balancing_valve.set_pressure_excess(dp_excess)
+    return self._balancing_valve.Kvr</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Section.set_control_valve"><code class="name flex">
+<span>def <span class="ident">set_control_valve</span></span>(<span>self, Kvs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Set commercial available Kvs value (<em>float</em>) for the control valve.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_control_valve(self, Kvs: float):
+    &#34;&#34;&#34;Set commercial available Kvs value (*float*) for the control valve.&#34;&#34;&#34;
+    self._control_valve.Kvs = Kvs</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#modeling-the-components-for-piping-network-design">Modeling the components for piping network design</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pypeflow.design" href="index.html">pypeflow.design</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pypeflow.design.network.FlowPath" href="#pypeflow.design.network.FlowPath">FlowPath</a></code></h4>
+<ul class="">
+<li><code><a title="pypeflow.design.network.FlowPath.dynamic_head" href="#pypeflow.design.network.FlowPath.dynamic_head">dynamic_head</a></code></li>
+<li><code><a title="pypeflow.design.network.FlowPath.elevation_head" href="#pypeflow.design.network.FlowPath.elevation_head">elevation_head</a></code></li>
+<li><code><a title="pypeflow.design.network.FlowPath.get_first_real_section" href="#pypeflow.design.network.FlowPath.get_first_real_section">get_first_real_section</a></code></li>
+<li><code><a title="pypeflow.design.network.FlowPath.get_last_real_section" href="#pypeflow.design.network.FlowPath.get_last_real_section">get_last_real_section</a></code></li>
+<li><code><a title="pypeflow.design.network.FlowPath.height" href="#pypeflow.design.network.FlowPath.height">height</a></code></li>
+<li><code><a title="pypeflow.design.network.FlowPath.static_head_required" href="#pypeflow.design.network.FlowPath.static_head_required">static_head_required</a></code></li>
+<li><code><a title="pypeflow.design.network.FlowPath.velocity_head" href="#pypeflow.design.network.FlowPath.velocity_head">velocity_head</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pypeflow.design.network.Network" href="#pypeflow.design.network.Network">Network</a></code></h4>
+<ul class="">
+<li><code><a title="pypeflow.design.network.Network.add_section" href="#pypeflow.design.network.Network.add_section">add_section</a></code></li>
+<li><code><a title="pypeflow.design.network.Network.create" href="#pypeflow.design.network.Network.create">create</a></code></li>
+<li><code><a title="pypeflow.design.network.Network.critical_path" href="#pypeflow.design.network.Network.critical_path">critical_path</a></code></li>
+<li><code><a title="pypeflow.design.network.Network.end_node_id" href="#pypeflow.design.network.Network.end_node_id">end_node_id</a></code></li>
+<li><code><a title="pypeflow.design.network.Network.get_balancing_valves" href="#pypeflow.design.network.Network.get_balancing_valves">get_balancing_valves</a></code></li>
+<li><code><a title="pypeflow.design.network.Network.get_control_valves" href="#pypeflow.design.network.Network.get_control_valves">get_control_valves</a></code></li>
+<li><code><a title="pypeflow.design.network.Network.paths" href="#pypeflow.design.network.Network.paths">paths</a></code></li>
+<li><code><a title="pypeflow.design.network.Network.sections" href="#pypeflow.design.network.Network.sections">sections</a></code></li>
+<li><code><a title="pypeflow.design.network.Network.start_node_id" href="#pypeflow.design.network.Network.start_node_id">start_node_id</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pypeflow.design.network.Node" href="#pypeflow.design.network.Node">Node</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pypeflow.design.network.Node.connect" href="#pypeflow.design.network.Node.connect">connect</a></code></li>
+<li><code><a title="pypeflow.design.network.Node.create" href="#pypeflow.design.network.Node.create">create</a></code></li>
+<li><code><a title="pypeflow.design.network.Node.height" href="#pypeflow.design.network.Node.height">height</a></code></li>
+<li><code><a title="pypeflow.design.network.Node.id" href="#pypeflow.design.network.Node.id">id</a></code></li>
+<li><code><a title="pypeflow.design.network.Node.incoming" href="#pypeflow.design.network.Node.incoming">incoming</a></code></li>
+<li><code><a title="pypeflow.design.network.Node.outgoing" href="#pypeflow.design.network.Node.outgoing">outgoing</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pypeflow.design.network.Section" href="#pypeflow.design.network.Section">Section</a></code></h4>
+<ul class="">
+<li><code><a title="pypeflow.design.network.Section.add_balancing_valve" href="#pypeflow.design.network.Section.add_balancing_valve">add_balancing_valve</a></code></li>
+<li><code><a title="pypeflow.design.network.Section.add_control_valve" href="#pypeflow.design.network.Section.add_control_valve">add_control_valve</a></code></li>
+<li><code><a title="pypeflow.design.network.Section.add_fitting" href="#pypeflow.design.network.Section.add_fitting">add_fitting</a></code></li>
+<li><code><a title="pypeflow.design.network.Section.add_pump" href="#pypeflow.design.network.Section.add_pump">add_pump</a></code></li>
+<li><code><a title="pypeflow.design.network.Section.balancing_valve" href="#pypeflow.design.network.Section.balancing_valve">balancing_valve</a></code></li>
+<li><code><a title="pypeflow.design.network.Section.control_valve" href="#pypeflow.design.network.Section.control_valve">control_valve</a></code></li>
+<li><code><a title="pypeflow.design.network.Section.create_pseudo" href="#pypeflow.design.network.Section.create_pseudo">create_pseudo</a></code></li>
+<li><code><a title="pypeflow.design.network.Section.create_real" href="#pypeflow.design.network.Section.create_real">create_real</a></code></li>
+<li><code><a title="pypeflow.design.network.Section.end_node" href="#pypeflow.design.network.Section.end_node">end_node</a></code></li>
+<li><code><a title="pypeflow.design.network.Section.fittings" href="#pypeflow.design.network.Section.fittings">fittings</a></code></li>
+<li><code><a title="pypeflow.design.network.Section.flow_rate" href="#pypeflow.design.network.Section.flow_rate">flow_rate</a></code></li>
+<li><code><a title="pypeflow.design.network.Section.id" href="#pypeflow.design.network.Section.id">id</a></code></li>
+<li><code><a title="pypeflow.design.network.Section.init_balancing_valve" href="#pypeflow.design.network.Section.init_balancing_valve">init_balancing_valve</a></code></li>
+<li><code><a title="pypeflow.design.network.Section.length" href="#pypeflow.design.network.Section.length">length</a></code></li>
+<li><code><a title="pypeflow.design.network.Section.nominal_diameter" href="#pypeflow.design.network.Section.nominal_diameter">nominal_diameter</a></code></li>
+<li><code><a title="pypeflow.design.network.Section.pipe" href="#pypeflow.design.network.Section.pipe">pipe</a></code></li>
+<li><code><a title="pypeflow.design.network.Section.pressure_drop" href="#pypeflow.design.network.Section.pressure_drop">pressure_drop</a></code></li>
+<li><code><a title="pypeflow.design.network.Section.pump" href="#pypeflow.design.network.Section.pump">pump</a></code></li>
+<li><code><a title="pypeflow.design.network.Section.real" href="#pypeflow.design.network.Section.real">real</a></code></li>
+<li><code><a title="pypeflow.design.network.Section.set_balancing_valve" href="#pypeflow.design.network.Section.set_balancing_valve">set_balancing_valve</a></code></li>
+<li><code><a title="pypeflow.design.network.Section.set_control_valve" href="#pypeflow.design.network.Section.set_control_valve">set_control_valve</a></code></li>
+<li><code><a title="pypeflow.design.network.Section.start_node" href="#pypeflow.design.network.Section.start_node">start_node</a></code></li>
+<li><code><a title="pypeflow.design.network.Section.zeta" href="#pypeflow.design.network.Section.zeta">zeta</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

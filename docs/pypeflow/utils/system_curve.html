@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>pypeflow.utils.system_curve API documentation</title>
+<meta name="description" content="Calculate and draw the system curve of a flow path in a piping network" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pypeflow.utils.system_curve</code></h1>
+</header>
+<section id="section-intro">
+<h2 id="calculate-and-draw-the-system-curve-of-a-flow-path-in-a-piping-network">Calculate and draw the system curve of a flow path in a piping network</h2>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+## Calculate and draw the system curve of a flow path in a piping network
+
+&#34;&#34;&#34;
+from typing import Dict, Tuple
+import numpy as np
+import quantities as qty
+from nummath.graphing2 import LineGraph
+
+
+class SystemCurve:
+
+    def __init__(self, R_hyd: float, src_units: Dict[str, str], dest_units: Dict[str, str]):
+        &#34;&#34;&#34;
+        Create *SystemCurve* object.
+
+        **Parameters:**
+
+        - `R_hyd`: (*float*) = (equivalent) hydraulic resistance of flow path
+        - `src_units`: (*Dict[str, str]*) = the measuring units associated with the hydraulic resistance. Keys:
+            + &#39;flow_rate&#39;
+            + &#39;pressure&#39;
+        - `dest_units`: (*Dict[str, str]*) = the desired measuring units in which to express the system curve
+
+        &#34;&#34;&#34;
+        self._R_hyd: float = R_hyd
+        self._V_unit: str = src_units[&#39;flow_rate&#39;]
+        self._p_unit: str = src_units[&#39;pressure&#39;]
+        self._dest_units: Dict[str, str] = dest_units
+        self._dp_stat: float = 0.0
+        self._dp_elev: float = 0.0
+
+    def set_static_head(self, p_stat: qty.Pressure):
+        &#34;&#34;&#34;Set static head (*quantities.Pressure*) of flow path.&#34;&#34;&#34;
+        self._dp_stat: float = p_stat(self._p_unit)
+
+    def set_elevation_head(self, p_elev: qty.Pressure):
+        &#34;&#34;&#34;Set elevation head (*quantities.Pressure*) of flow path.&#34;&#34;&#34;
+        self._dp_elev: float = p_elev(self._p_unit)
+
+    def create_system_curve(self, V_initial: qty.VolumeFlowRate, V_final: qty.VolumeFlowRate, num: int = 50):
+        &#34;&#34;&#34;
+        Calculate the system curve between an initial and final flow rate.
+
+        **Parameters:**
+
+        - `V_initial`: (*quantities.VolumeFlowRate*) = initial flow rate
+        - `V_final`: (*quantities.VolumeFlowRate*) = final flow rate
+        - `num`: (*int*) = number of calculation points (default = 50)
+
+        **Returns:** (*Tuple[np.array, np.array]*)
+        Tuple with 1st element a numpy array of the flow rates and 2nd element a numpy array of the corresponding
+        pressures, both expressed in the desired measuring units set at instantiation of the *SystemCurve*-object.
+
+        &#34;&#34;&#34;
+        V_i = V_initial(self._V_unit)
+        V_f = V_final(self._V_unit)
+        V_arr = np.linspace(V_i, V_f, num, endpoint=True)
+        p_arr = self._R_hyd * V_arr ** 2 + self._dp_stat + self._dp_elev
+        V_qty = [qty.VolumeFlowRate(V, self._V_unit) for V in V_arr]
+        p_qty = [qty.Pressure(p, self._p_unit) for p in p_arr]
+        V_sys = [V(self._dest_units[&#39;flow_rate&#39;]) for V in V_qty]
+        p_sys = [p(self._dest_units[&#39;pressure&#39;]) for p in p_qty]
+        return V_sys, p_sys
+
+    def draw_system_curve(self, V_initial: qty.VolumeFlowRate, V_final: qty.VolumeFlowRate, **kwargs) -&gt; LineGraph:
+        &#34;&#34;&#34;
+        Draw the calculated system curve.
+
+        **Parameters:**
+
+        - `V_initial`: (*quantities.VolumeFlowRate*) = initial flow rate
+        - `V_final`: (*quantities.VolumeFlowRate*) = final flow rate
+        - `kwargs`: optional keyword arguments
+            + `fig_size`: (*Tuple[float, float]*) = the width and height of the figure in inches
+            + `dpi`: (*int*) = dots per inch of the figure
+            + `num`: (*int*) = number of calculated points to draw
+            + `V_step`: (*quantities.VolumeFlowRate*) = step between ticks on the flow rate axis of the diagram
+            + `V_max`: (*quantities.VolumeFlowRate*) = the maximum flow rate shown on the axis
+            + `p_step`: (*quantities.Pressure*) = step between ticks on the pressure axis of the diagram
+            + `p_max`: (*quantities.Pressure*) = maximum pressure shown on the axis
+
+        **Returns:** (*nummath.graphing2.LineGraph*)&lt;br&gt;
+        Call show() on the returned *LineGraph* object to show the diagram.
+        &#34;&#34;&#34;
+        fig_size: Tuple[int, int] = kwargs.get(&#39;fig_size&#39;, (6, 4))
+        dpi: int = kwargs.get(&#39;dpi&#39;, 96)
+        num: int = kwargs.get(&#39;num&#39;, 50)
+        V_step: qty.VolumeFlowRate = kwargs.get(&#39;V_step&#39;)
+        V_max: qty.VolumeFlowRate = kwargs.get(&#39;V_max&#39;)
+        p_step: qty.Pressure = kwargs.get(&#39;p_step&#39;)
+        p_max: qty.Pressure = kwargs.get(&#39;p_max&#39;)
+        V, p = self.create_system_curve(V_initial, V_final, num)
+        graph = LineGraph(fig_size=fig_size, dpi=dpi)
+        graph.add_dataset(name=&#34;system curve&#34;, x1_data=V, y1_data=p)
+        graph.x1.set_title(f&#39;flow rate [{self._dest_units[&#34;flow_rate&#34;]}]&#39;)
+        if V_max is not None and V_step is not None:
+            graph.x1.scale(
+                lim_down=0.0,
+                lim_up=V_max(self._dest_units[&#39;flow_rate&#39;]),
+                step_size=V_step(self._dest_units[&#39;flow_rate&#39;])
+            )
+        graph.y1.set_title(f&#39;pressure [{self._dest_units[&#34;pressure&#34;]}]&#39;)
+        if p_max is not None and p_step is not None:
+            graph.y1.scale(
+                lim_down=0.0,
+                lim_up=p_max(self._dest_units[&#39;pressure&#39;]),
+                step_size=p_step(self._dest_units[&#39;pressure&#39;])
+            )
+        return graph</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pypeflow.utils.system_curve.SystemCurve"><code class="flex name class">
+<span>class <span class="ident">SystemCurve</span></span>
+<span>(</span><span>R_hyd, src_units, dest_units)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Create <em>SystemCurve</em> object.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>R_hyd</code>: (<em>float</em>) = (equivalent) hydraulic resistance of flow path</li>
+<li><code>src_units</code>: (<em>Dict[str, str]</em>) = the measuring units associated with the hydraulic resistance. Keys:<ul>
+<li>'flow_rate'</li>
+<li>'pressure'</li>
+</ul>
+</li>
+<li><code>dest_units</code>: (<em>Dict[str, str]</em>) = the desired measuring units in which to express the system curve</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SystemCurve:
+
+    def __init__(self, R_hyd: float, src_units: Dict[str, str], dest_units: Dict[str, str]):
+        &#34;&#34;&#34;
+        Create *SystemCurve* object.
+
+        **Parameters:**
+
+        - `R_hyd`: (*float*) = (equivalent) hydraulic resistance of flow path
+        - `src_units`: (*Dict[str, str]*) = the measuring units associated with the hydraulic resistance. Keys:
+            + &#39;flow_rate&#39;
+            + &#39;pressure&#39;
+        - `dest_units`: (*Dict[str, str]*) = the desired measuring units in which to express the system curve
+
+        &#34;&#34;&#34;
+        self._R_hyd: float = R_hyd
+        self._V_unit: str = src_units[&#39;flow_rate&#39;]
+        self._p_unit: str = src_units[&#39;pressure&#39;]
+        self._dest_units: Dict[str, str] = dest_units
+        self._dp_stat: float = 0.0
+        self._dp_elev: float = 0.0
+
+    def set_static_head(self, p_stat: qty.Pressure):
+        &#34;&#34;&#34;Set static head (*quantities.Pressure*) of flow path.&#34;&#34;&#34;
+        self._dp_stat: float = p_stat(self._p_unit)
+
+    def set_elevation_head(self, p_elev: qty.Pressure):
+        &#34;&#34;&#34;Set elevation head (*quantities.Pressure*) of flow path.&#34;&#34;&#34;
+        self._dp_elev: float = p_elev(self._p_unit)
+
+    def create_system_curve(self, V_initial: qty.VolumeFlowRate, V_final: qty.VolumeFlowRate, num: int = 50):
+        &#34;&#34;&#34;
+        Calculate the system curve between an initial and final flow rate.
+
+        **Parameters:**
+
+        - `V_initial`: (*quantities.VolumeFlowRate*) = initial flow rate
+        - `V_final`: (*quantities.VolumeFlowRate*) = final flow rate
+        - `num`: (*int*) = number of calculation points (default = 50)
+
+        **Returns:** (*Tuple[np.array, np.array]*)
+        Tuple with 1st element a numpy array of the flow rates and 2nd element a numpy array of the corresponding
+        pressures, both expressed in the desired measuring units set at instantiation of the *SystemCurve*-object.
+
+        &#34;&#34;&#34;
+        V_i = V_initial(self._V_unit)
+        V_f = V_final(self._V_unit)
+        V_arr = np.linspace(V_i, V_f, num, endpoint=True)
+        p_arr = self._R_hyd * V_arr ** 2 + self._dp_stat + self._dp_elev
+        V_qty = [qty.VolumeFlowRate(V, self._V_unit) for V in V_arr]
+        p_qty = [qty.Pressure(p, self._p_unit) for p in p_arr]
+        V_sys = [V(self._dest_units[&#39;flow_rate&#39;]) for V in V_qty]
+        p_sys = [p(self._dest_units[&#39;pressure&#39;]) for p in p_qty]
+        return V_sys, p_sys
+
+    def draw_system_curve(self, V_initial: qty.VolumeFlowRate, V_final: qty.VolumeFlowRate, **kwargs) -&gt; LineGraph:
+        &#34;&#34;&#34;
+        Draw the calculated system curve.
+
+        **Parameters:**
+
+        - `V_initial`: (*quantities.VolumeFlowRate*) = initial flow rate
+        - `V_final`: (*quantities.VolumeFlowRate*) = final flow rate
+        - `kwargs`: optional keyword arguments
+            + `fig_size`: (*Tuple[float, float]*) = the width and height of the figure in inches
+            + `dpi`: (*int*) = dots per inch of the figure
+            + `num`: (*int*) = number of calculated points to draw
+            + `V_step`: (*quantities.VolumeFlowRate*) = step between ticks on the flow rate axis of the diagram
+            + `V_max`: (*quantities.VolumeFlowRate*) = the maximum flow rate shown on the axis
+            + `p_step`: (*quantities.Pressure*) = step between ticks on the pressure axis of the diagram
+            + `p_max`: (*quantities.Pressure*) = maximum pressure shown on the axis
+
+        **Returns:** (*nummath.graphing2.LineGraph*)&lt;br&gt;
+        Call show() on the returned *LineGraph* object to show the diagram.
+        &#34;&#34;&#34;
+        fig_size: Tuple[int, int] = kwargs.get(&#39;fig_size&#39;, (6, 4))
+        dpi: int = kwargs.get(&#39;dpi&#39;, 96)
+        num: int = kwargs.get(&#39;num&#39;, 50)
+        V_step: qty.VolumeFlowRate = kwargs.get(&#39;V_step&#39;)
+        V_max: qty.VolumeFlowRate = kwargs.get(&#39;V_max&#39;)
+        p_step: qty.Pressure = kwargs.get(&#39;p_step&#39;)
+        p_max: qty.Pressure = kwargs.get(&#39;p_max&#39;)
+        V, p = self.create_system_curve(V_initial, V_final, num)
+        graph = LineGraph(fig_size=fig_size, dpi=dpi)
+        graph.add_dataset(name=&#34;system curve&#34;, x1_data=V, y1_data=p)
+        graph.x1.set_title(f&#39;flow rate [{self._dest_units[&#34;flow_rate&#34;]}]&#39;)
+        if V_max is not None and V_step is not None:
+            graph.x1.scale(
+                lim_down=0.0,
+                lim_up=V_max(self._dest_units[&#39;flow_rate&#39;]),
+                step_size=V_step(self._dest_units[&#39;flow_rate&#39;])
+            )
+        graph.y1.set_title(f&#39;pressure [{self._dest_units[&#34;pressure&#34;]}]&#39;)
+        if p_max is not None and p_step is not None:
+            graph.y1.scale(
+                lim_down=0.0,
+                lim_up=p_max(self._dest_units[&#39;pressure&#39;]),
+                step_size=p_step(self._dest_units[&#39;pressure&#39;])
+            )
+        return graph</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pypeflow.utils.system_curve.SystemCurve.create_system_curve"><code class="name flex">
+<span>def <span class="ident">create_system_curve</span></span>(<span>self, V_initial, V_final, num=50)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Calculate the system curve between an initial and final flow rate.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>V_initial</code>: (<em>quantities.VolumeFlowRate</em>) = initial flow rate</li>
+<li><code>V_final</code>: (<em>quantities.VolumeFlowRate</em>) = final flow rate</li>
+<li><code>num</code>: (<em>int</em>) = number of calculation points (default = 50)</li>
+</ul>
+<p><strong>Returns:</strong> (<em>Tuple[np.array, np.array]</em>)
+Tuple with 1st element a numpy array of the flow rates and 2nd element a numpy array of the corresponding
+pressures, both expressed in the desired measuring units set at instantiation of the <em>SystemCurve</em>-object.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_system_curve(self, V_initial: qty.VolumeFlowRate, V_final: qty.VolumeFlowRate, num: int = 50):
+    &#34;&#34;&#34;
+    Calculate the system curve between an initial and final flow rate.
+
+    **Parameters:**
+
+    - `V_initial`: (*quantities.VolumeFlowRate*) = initial flow rate
+    - `V_final`: (*quantities.VolumeFlowRate*) = final flow rate
+    - `num`: (*int*) = number of calculation points (default = 50)
+
+    **Returns:** (*Tuple[np.array, np.array]*)
+    Tuple with 1st element a numpy array of the flow rates and 2nd element a numpy array of the corresponding
+    pressures, both expressed in the desired measuring units set at instantiation of the *SystemCurve*-object.
+
+    &#34;&#34;&#34;
+    V_i = V_initial(self._V_unit)
+    V_f = V_final(self._V_unit)
+    V_arr = np.linspace(V_i, V_f, num, endpoint=True)
+    p_arr = self._R_hyd * V_arr ** 2 + self._dp_stat + self._dp_elev
+    V_qty = [qty.VolumeFlowRate(V, self._V_unit) for V in V_arr]
+    p_qty = [qty.Pressure(p, self._p_unit) for p in p_arr]
+    V_sys = [V(self._dest_units[&#39;flow_rate&#39;]) for V in V_qty]
+    p_sys = [p(self._dest_units[&#39;pressure&#39;]) for p in p_qty]
+    return V_sys, p_sys</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.utils.system_curve.SystemCurve.draw_system_curve"><code class="name flex">
+<span>def <span class="ident">draw_system_curve</span></span>(<span>self, V_initial, V_final, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Draw the calculated system curve.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>V_initial</code>: (<em>quantities.VolumeFlowRate</em>) = initial flow rate</li>
+<li><code>V_final</code>: (<em>quantities.VolumeFlowRate</em>) = final flow rate</li>
+<li><code>kwargs</code>: optional keyword arguments<ul>
+<li><code>fig_size</code>: (<em>Tuple[float, float]</em>) = the width and height of the figure in inches</li>
+<li><code>dpi</code>: (<em>int</em>) = dots per inch of the figure</li>
+<li><code>num</code>: (<em>int</em>) = number of calculated points to draw</li>
+<li><code>V_step</code>: (<em>quantities.VolumeFlowRate</em>) = step between ticks on the flow rate axis of the diagram</li>
+<li><code>V_max</code>: (<em>quantities.VolumeFlowRate</em>) = the maximum flow rate shown on the axis</li>
+<li><code>p_step</code>: (<em>quantities.Pressure</em>) = step between ticks on the pressure axis of the diagram</li>
+<li><code>p_max</code>: (<em>quantities.Pressure</em>) = maximum pressure shown on the axis</li>
+</ul>
+</li>
+</ul>
+<p><strong>Returns:</strong> (<em>nummath.graphing2.LineGraph</em>)<br>
+Call show() on the returned <em>LineGraph</em> object to show the diagram.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def draw_system_curve(self, V_initial: qty.VolumeFlowRate, V_final: qty.VolumeFlowRate, **kwargs) -&gt; LineGraph:
+    &#34;&#34;&#34;
+    Draw the calculated system curve.
+
+    **Parameters:**
+
+    - `V_initial`: (*quantities.VolumeFlowRate*) = initial flow rate
+    - `V_final`: (*quantities.VolumeFlowRate*) = final flow rate
+    - `kwargs`: optional keyword arguments
+        + `fig_size`: (*Tuple[float, float]*) = the width and height of the figure in inches
+        + `dpi`: (*int*) = dots per inch of the figure
+        + `num`: (*int*) = number of calculated points to draw
+        + `V_step`: (*quantities.VolumeFlowRate*) = step between ticks on the flow rate axis of the diagram
+        + `V_max`: (*quantities.VolumeFlowRate*) = the maximum flow rate shown on the axis
+        + `p_step`: (*quantities.Pressure*) = step between ticks on the pressure axis of the diagram
+        + `p_max`: (*quantities.Pressure*) = maximum pressure shown on the axis
+
+    **Returns:** (*nummath.graphing2.LineGraph*)&lt;br&gt;
+    Call show() on the returned *LineGraph* object to show the diagram.
+    &#34;&#34;&#34;
+    fig_size: Tuple[int, int] = kwargs.get(&#39;fig_size&#39;, (6, 4))
+    dpi: int = kwargs.get(&#39;dpi&#39;, 96)
+    num: int = kwargs.get(&#39;num&#39;, 50)
+    V_step: qty.VolumeFlowRate = kwargs.get(&#39;V_step&#39;)
+    V_max: qty.VolumeFlowRate = kwargs.get(&#39;V_max&#39;)
+    p_step: qty.Pressure = kwargs.get(&#39;p_step&#39;)
+    p_max: qty.Pressure = kwargs.get(&#39;p_max&#39;)
+    V, p = self.create_system_curve(V_initial, V_final, num)
+    graph = LineGraph(fig_size=fig_size, dpi=dpi)
+    graph.add_dataset(name=&#34;system curve&#34;, x1_data=V, y1_data=p)
+    graph.x1.set_title(f&#39;flow rate [{self._dest_units[&#34;flow_rate&#34;]}]&#39;)
+    if V_max is not None and V_step is not None:
+        graph.x1.scale(
+            lim_down=0.0,
+            lim_up=V_max(self._dest_units[&#39;flow_rate&#39;]),
+            step_size=V_step(self._dest_units[&#39;flow_rate&#39;])
+        )
+    graph.y1.set_title(f&#39;pressure [{self._dest_units[&#34;pressure&#34;]}]&#39;)
+    if p_max is not None and p_step is not None:
+        graph.y1.scale(
+            lim_down=0.0,
+            lim_up=p_max(self._dest_units[&#39;pressure&#39;]),
+            step_size=p_step(self._dest_units[&#39;pressure&#39;])
+        )
+    return graph</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.utils.system_curve.SystemCurve.set_elevation_head"><code class="name flex">
+<span>def <span class="ident">set_elevation_head</span></span>(<span>self, p_elev)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Set elevation head (<em>quantities.Pressure</em>) of flow path.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_elevation_head(self, p_elev: qty.Pressure):
+    &#34;&#34;&#34;Set elevation head (*quantities.Pressure*) of flow path.&#34;&#34;&#34;
+    self._dp_elev: float = p_elev(self._p_unit)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.utils.system_curve.SystemCurve.set_static_head"><code class="name flex">
+<span>def <span class="ident">set_static_head</span></span>(<span>self, p_stat)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Set static head (<em>quantities.Pressure</em>) of flow path.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_static_head(self, p_stat: qty.Pressure):
+    &#34;&#34;&#34;Set static head (*quantities.Pressure*) of flow path.&#34;&#34;&#34;
+    self._dp_stat: float = p_stat(self._p_unit)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#calculate-and-draw-the-system-curve-of-a-flow-path-in-a-piping-network">Calculate and draw the system curve of a flow path in a piping network</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pypeflow.utils" href="index.html">pypeflow.utils</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pypeflow.utils.system_curve.SystemCurve" href="#pypeflow.utils.system_curve.SystemCurve">SystemCurve</a></code></h4>
+<ul class="">
+<li><code><a title="pypeflow.utils.system_curve.SystemCurve.create_system_curve" href="#pypeflow.utils.system_curve.SystemCurve.create_system_curve">create_system_curve</a></code></li>
+<li><code><a title="pypeflow.utils.system_curve.SystemCurve.draw_system_curve" href="#pypeflow.utils.system_curve.SystemCurve.draw_system_curve">draw_system_curve</a></code></li>
+<li><code><a title="pypeflow.utils.system_curve.SystemCurve.set_elevation_head" href="#pypeflow.utils.system_curve.SystemCurve.set_elevation_head">set_elevation_head</a></code></li>
+<li><code><a title="pypeflow.utils.system_curve.SystemCurve.set_static_head" href="#pypeflow.utils.system_curve.SystemCurve.set_static_head">set_static_head</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

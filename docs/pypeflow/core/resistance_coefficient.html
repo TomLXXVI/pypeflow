@@ -1,0 +1,1636 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>pypeflow.core.resistance_coefficient API documentation</title>
+<meta name="description" content="Calculate resistance coefficients of fittings/valves" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pypeflow.core.resistance_coefficient</code></h1>
+</header>
+<section id="section-intro">
+<h2 id="calculate-resistance-coefficients-of-fittingsvalves">Calculate resistance coefficients of fittings/valves</h2>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+## Calculate resistance coefficients of fittings/valves
+&#34;&#34;&#34;
+
+from typing import Tuple
+import math
+from pypeflow.core.pipe_schedules import PipeSchedule40
+from pypeflow.core.flow_coefficient import FlowCoefficient
+import quantities as qty
+
+
+class ResistanceCoefficient:
+    &#34;&#34;&#34;
+    Base class that groups some static methods to convert a flow coefficient or equivalent length ratio (ELR) into
+    a corresponding resistance coefficient.
+    &#34;&#34;&#34;
+
+    @staticmethod
+    def from_Kv(Kv: float, di: qty.Length) -&gt; float:
+        &#34;&#34;&#34;Calculate resistance coefficient of fitting from Kv flow coefficient.
+
+        **Parameters:**
+
+        - `Kv`: (*float*) = flow coefficient of fitting/valve [flow rate m^3/h, pressure drop bar]
+        - `di`: (*qty.Length*) = referenced internal pipe diameter
+
+        **Returns:** (*float*)
+
+        &#34;&#34;&#34;
+        Av = FlowCoefficient.Kv_to_Av(Kv)
+        zeta = math.pi ** 2 * di(&#39;m&#39;) ** 4 / (8.0 * Av ** 2)
+        return zeta
+
+    @staticmethod
+    def from_Av(Av: float, di: qty.Length) -&gt; float:
+        &#34;&#34;&#34;Calculate the resistance coefficient of fitting/valve from its flow coefficient Av.
+
+        **Parameters:**
+
+        - `Av`: (*float*) = flow coefficient of fitting/valve [flow rate m^3/s, pressure drop Pa]
+        - `di`: (*qty.Length*) = referenced internal pipe diameter
+
+        **Returns:** (*float*)
+
+        &#34;&#34;&#34;
+        zeta = math.pi ** 2 * di(&#39;m&#39;) ** 4 / (8.0 * Av ** 2)
+        return zeta
+
+    @staticmethod
+    def from_ELR(ELR: float, di: qty.Length) -&gt; float:
+        &#34;&#34;&#34;Calculate resistance coefficient of fitting/valve from equivalent length ratio ELR (see Crane-K-method).
+
+        **Parameters:**
+
+        - `ELR`: (*float*) = equivalent length ratio (Le/di) of fitting/valve.
+        - `di`: (*qty.Length*) = referenced internal pipe diameter.
+
+        **Returns:** (*float*)
+
+        &#34;&#34;&#34;
+        dn = PipeSchedule40.nominal_diameter(d_int=di)
+        di_40 = PipeSchedule40.inside_diameter(dn)
+        # pipe roughness for schedule 40 [mm]
+        eps = PipeSchedule40.pipe_roughness(&#39;mm&#39;)
+        # friction factor for completely turbulent flow
+        f = 0.25 / (math.log10(eps / (3.7 * di_40(&#39;mm&#39;)))) ** 2
+        zeta = f * ELR * (di(&#39;mm&#39;) / di_40(&#39;mm&#39;)) ** 4.0
+        return zeta
+
+
+class Tee(ResistanceCoefficient):
+    &#34;&#34;&#34;Calculate resistance coefficient of a Tee or Wye.&#34;&#34;&#34;
+
+    def __init__(self, **kwargs):
+        &#34;&#34;&#34;
+        **kwargs:**
+
+        - `flow_pattern`: (*str*) = possible values: &#39;diverging&#39;/&#39;converging&#39;
+        - `d_branch`: (*float*) = branch leg diameter [mm]
+        - `d_combined`: (*float*) = combined leg diameter [mm]
+        - `flow_rate_branch`: (*float*) = flow rate in branch leg [m^3/s]
+        - `flow_rate_combined`: (*float*) = flow rate in combined leg [m^3/s]
+        - `theta`: (*float*) = branch leg angle [deg]
+
+        &#34;&#34;&#34;
+        self._flow_pattern: str = kwargs.get(&#39;flow_pattern&#39;)
+        self._d_branch: float = kwargs.get(&#39;d_branch&#39;)  # mm
+        self._d_combined: float = kwargs.get(&#39;d_combined&#39;)  # mm
+        self._flow_rate_branch: float = kwargs.get(&#39;flow_rate_branch&#39;)  # m^3/s
+        self._flow_rate_combined: float = kwargs.get(&#39;flow_rate_combined&#39;)  # m^3/s
+        self._theta: float = kwargs.get(&#39;theta&#39;, 90.0)  # deg
+
+        self._zeta_run: float = 0.0
+        self._zeta_branch: float = 0.0
+        if self._flow_pattern == &#39;converging&#39;:
+            self._zeta_run, self._zeta_branch = self._tee_converging()
+        if self._flow_pattern == &#39;diverging&#39;:
+            self._zeta_run, self._zeta_branch = self._tee_diverging()
+
+    def _tee_converging(self) -&gt; Tuple[float, float]:
+        &#34;&#34;&#34;Calculate resistance coefficient of straight leg and branch leg of a converging tee or wye.&#34;&#34;&#34;
+        beta = (self._d_branch / self._d_combined) ** 2
+        V_rat = self._flow_rate_branch / self._flow_rate_combined
+        cb = self._calc_c_branch(beta, V_rat)
+        db, eb, fb, cr, dr, er, fr = self._get_coefficients(self._theta)
+        zeta_branch = cb * (1.0 + db * (V_rat * 1.0 / beta) ** 2
+                            - eb * (1.0 - V_rat) ** 2 - fb * 1.0 / beta * V_rat ** 2)
+        if self._theta == 90.0:
+            zeta_run = 1.55 * V_rat - V_rat ** 2
+        else:
+            zeta_run = cr * (1.0 + dr * (V_rat * 1.0 / beta) ** 2 - er * (1.0 - V_rat) ** 2
+                             - fr * 1.0 / beta * V_rat ** 2)
+        # zeta_branch and zeta_run are both referenced to the pipe section velocity in the combined leg, but
+        # we want zeta_branch to be referenced to the pipe section velocity in the branch leg, therefore:
+        zeta_branch = zeta_branch * beta * (1.0 / V_rat) ** 2
+        return zeta_run, zeta_branch
+
+    @staticmethod
+    def _calc_c_branch(beta: float, V_rat: float) -&gt; float:
+        cb = math.nan
+        if beta &lt;= 0.35:
+            cb = 1.0
+        elif beta &gt; 0.35:
+            if V_rat &lt;= 0.4:
+                cb = 0.9 * (1.0 - V_rat)
+            elif V_rat &gt; 0.4:
+                cb = 0.55
+        return cb
+
+    @staticmethod
+    def _get_coefficients(theta: float) -&gt; Tuple[float, ...]:
+        data = {
+            30.0: [1.0, 2.0, 1.74, 1.0, 0.0, 1.0, 1.74],
+            45.0: [1.0, 2.0, 1.41, 1.0, 0.0, 1.0, 1.41],
+            60.0: [1.0, 2.0, 1.0, 1.0, 0.0, 1.0, 1.0],
+            90.0: [1.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        }
+        return tuple(data[theta])
+
+    def _tee_diverging(self) -&gt; Tuple[float, float]:
+        &#34;&#34;&#34;Calculate resistance coefficient of straight leg and branch leg of a diverging tee or wye.&#34;&#34;&#34;
+        beta = (self._d_branch / self._d_combined) ** 2
+        V_rat = self._flow_rate_branch / self._flow_rate_combined
+        g = h = j = 0.0
+        if 0.0 &lt; self._theta &lt;= 60.0:
+            if beta &lt;= 0.35:
+                if V_rat &lt;= 0.4:
+                    g = 1.1 - 0.7 * V_rat
+                elif V_rat &gt; 0.4:
+                    g = 0.85
+            elif beta &gt; 0.35:
+                if V_rat &lt;= 0.6:
+                    g = 1.0 - 0.6 * V_rat
+                elif V_rat &gt; 0.6:
+                    g = 0.6
+            h = 1.0
+            j = 2.0
+        elif self._theta == 90.0:
+            if math.sqrt(beta) &lt;= 2.0 / 3.0:
+                g = 1.0
+                h = 1.0
+                j = 2.0
+            elif beta == 1.0 or V_rat * 1.0 / beta &lt;= 2.0:
+                g = 1.0 + 0.3 * V_rat ** 2
+                h = 0.3
+                j = 0.0
+        zeta_branch = g * (1.0 + h * (V_rat * 1.0 / beta) ** 2
+                           - j * (V_rat * 1.0 / beta) * math.cos(math.radians(self._theta)))
+        m = 0.0
+        if beta &lt;= 0.4:
+            m = 0.4
+        elif beta &gt; 0.4:
+            if V_rat &lt;= 0.5:
+                m = 2.0 * (2.0 * V_rat - 1.0)
+            elif V_rat &gt; 0.5:
+                m = 0.3 * (2.0 * V_rat - 1.0)
+        zeta_run = m * V_rat ** 2
+        # zeta_branch and zeta_run are both referenced to the pipe section velocity in the combined leg
+        # we want zeta_branch to be referenced to the pipe section velocity in the branch leg, therefore:
+        zeta_branch = zeta_branch * beta * (1.0 / V_rat) ** 2
+        return zeta_run, zeta_branch
+
+    @property
+    def zeta_branch(self) -&gt; float:
+        &#34;&#34;&#34;Get resistance coefficient (*float*) of branch leg.&#34;&#34;&#34;
+        return self._zeta_branch
+
+    @property
+    def zeta_run(self) -&gt; float:
+        &#34;&#34;&#34;Get resistance coefficient (*float*) of run or straight leg.&#34;&#34;&#34;
+        return self._zeta_run
+
+
+class Reducer(ResistanceCoefficient):
+    &#34;&#34;&#34;Calculate resistance coefficient of a reducer.&#34;&#34;&#34;
+
+    def __init__(self, **kwargs):
+        &#34;&#34;&#34;
+        **kwargs:**
+
+        - `d_large`: (*float*) = diameter of large side [mm]
+        - `d_small`: (*float*) = diameter of small side [mm]
+        - `length`: (*float*) = length of reducer [mm]
+
+        &#34;&#34;&#34;
+        self._d_large: float = kwargs.get(&#39;d_large&#39;)  # mm
+        self._d_small: float = kwargs.get(&#39;d_small&#39;)  # mm
+        self._length: float = kwargs.get(&#39;length&#39;)    # mm
+
+        self._zeta_small, self._zeta_large = self._reducer()
+
+    def _reducer(self) -&gt; Tuple[float, float]:
+        beta = self._d_small / self._d_large
+        theta = 2.0 * math.atan((self._d_large - self._d_small) / (2.0 * self._length))
+        zeta_small = math.nan
+        zeta_large = math.nan
+        if theta &lt;= math.pi / 4.0:
+            zeta_small = 0.8 * math.sin(theta / 2.0) * (1 - beta ** 2)
+            zeta_large = zeta_small / beta ** 4
+        elif math.pi / 4.0 &lt; theta &lt;= math.pi:
+            zeta_small = 0.5 * math.sqrt(math.sin(theta / 2.0)) * (1 - beta ** 2)
+            zeta_large = zeta_small / beta ** 4
+        return zeta_small, zeta_large
+
+    @property
+    def zeta_small(self) -&gt; float:
+        &#34;&#34;&#34;Get resistance coefficient (*float*) of small side of reducer.&#34;&#34;&#34;
+        return self._zeta_small
+
+    @property
+    def zeta_large(self):
+        &#34;&#34;&#34;Get resistance coefficient (*float*) of large side of reducer.&#34;&#34;&#34;
+        return self._zeta_large
+
+
+class Enlarger(ResistanceCoefficient):
+    &#34;&#34;&#34;Resistance coefficient of an Enlarger.&#34;&#34;&#34;
+
+    def __init__(self, **kwargs):
+        &#34;&#34;&#34;
+        **kwargs:**
+
+        - `d_large`: (*float*) = diameter of large side [mm]
+        - `d_small`: (*float*) = diameter of small side [mm]
+        - `length`: (*float*) = length of enlarger [mm]
+
+        &#34;&#34;&#34;
+        self._d_large: float = kwargs.get(&#39;d_large&#39;)  # mm
+        self._d_small: float = kwargs.get(&#39;d_small&#39;)  # mm
+        self._length: float = kwargs.get(&#39;length&#39;)    # mm
+
+        self._zeta_small, self._zeta_large = self._enlarger()
+
+    def _enlarger(self) -&gt; Tuple[float, float]:
+        beta = self._d_small / self._d_large
+        theta = 2 * math.atan((self._d_large - self._d_small) / (2 * self._length))
+        zeta_small = math.nan
+        zeta_large = math.nan
+        if theta &lt;= math.pi / 4.0:
+            zeta_small = 2.6 * math.sin(theta / 2) * (1 - beta ** 2) ** 2
+            zeta_large = zeta_small / beta ** 4
+        elif math.pi / 4.0 &lt; theta &lt;= math.pi:
+            zeta_small = (1 - beta ** 2) ** 2
+            zeta_large = zeta_small / beta ** 4
+        return zeta_small, zeta_large
+
+    @property
+    def zeta_small(self) -&gt; float:
+        &#34;&#34;&#34;Get resistance coefficient (*float*) referred to small side of enlarger.&#34;&#34;&#34;
+        return self._zeta_small
+
+    @property
+    def zeta_large(self) -&gt; float:
+        &#34;&#34;&#34;Get resistance coefficient (*float*) referred to large side of enlarger.&#34;&#34;&#34;
+        return self._zeta_large
+
+
+class ValveReducedPortType1(ResistanceCoefficient):
+    &#34;&#34;&#34;
+    Resistance coefficient of a Reduced Port Valve Type 1:
+
+    - gate valve
+    - ball valve
+
+    &#34;&#34;&#34;
+
+    def __init__(self, **kwargs):
+        &#34;&#34;&#34;
+        **kwargs:**
+
+        - `d_large`: (*float*) = diameter of large side [mm]
+        - `d_small`: (*float*) = diameter of small side [mm]
+        - `reduction_angle`: (*float*) = angle of port reduction [deg]
+        - `zeta_unreduced`: (*float*) = resistance coefficient without reduced port.
+
+        &#34;&#34;&#34;
+        self._d_small: float = kwargs.get(&#39;d_small&#39;)  # mm
+        self._d_large: float = kwargs.get(&#39;d_large&#39;)  # mm
+        self._theta: float = kwargs.get(&#39;reduction_angle&#39;)  # deg
+        self._zeta_unreduced: float = kwargs.get(&#39;zeta_unreduced&#39;)  # resistance_coefficient without reduced port
+
+        self._zeta = self._valve_reduced_port_type1()
+
+    def _valve_reduced_port_type1(self) -&gt; float:
+        beta = self._d_small / self._d_large
+        zeta_reduced = math.nan
+        theta = math.radians(self._theta)
+        if beta &lt; 1.0 and theta &lt;= math.pi / 4.0:
+            zeta_reduced = ((self._zeta_unreduced + math.sin(theta / 2.0)
+                             * (0.8 * (1.0 - beta ** 2) + 2.6 * (1.0 - beta ** 2) ** 2)) / beta ** 4)
+        elif beta &lt; 1.0 and math.pi / 4.0 &lt; theta &lt;= math.pi:
+            zeta_reduced = ((self._zeta_unreduced + 0.5 * math.sqrt(math.sin(theta / 2.0)) * (1.0 - beta ** 2)
+                             + (1.0 - beta ** 2) ** 2) / beta ** 4)
+        return zeta_reduced
+
+    @property
+    def zeta(self) -&gt; float:
+        &#34;&#34;&#34;Get the resistance coefficient (*float*) of the reduced port valve.&#34;&#34;&#34;
+        return self._zeta
+
+
+class GateValveReducedPort(ValveReducedPortType1):
+    &#34;&#34;&#34;Derived class of ValveReducedPortType1.&#34;&#34;&#34;
+    pass
+
+
+class BallValveReducedPort(ValveReducedPortType1):
+    &#34;&#34;&#34;Derived class of ValveReducedPortType1.&#34;&#34;&#34;
+    pass
+
+
+class ValveReducedPortType2(ResistanceCoefficient):
+    &#34;&#34;&#34;
+    Resistance coefficient of a Reduced Port Valve Type 2:
+
+    - globe valve
+    - angle valve
+    - check valve of lift type
+    - check valve of stop type
+    - plug valve
+    - cock
+
+    &#34;&#34;&#34;
+
+    def __init__(self, **kwargs):
+        &#34;&#34;&#34;
+        **kwargs:**
+
+        - `d_large`: (*float*) = diameter of large side [mm]
+        - `d_small`: (*float*) = diameter of small side [mm]
+        - `zeta_unreduced`: (*float*) = resistance coefficient without reduced ports.
+
+        &#34;&#34;&#34;
+
+        self._d_small = kwargs.get(&#39;d_small&#39;)  # mm
+        self._d_large = kwargs.get(&#39;d_large&#39;)  # mm
+        self._zeta_unreduced = kwargs.get(&#39;zeta_unreduced&#39;)  # resistance_coefficient without reduced port
+
+        self._zeta = self._valve_reduced_port_type2()
+
+    def _valve_reduced_port_type2(self) -&gt; float:
+        beta = self._d_small / self._d_large
+        zeta_reduced = (self._zeta_unreduced + beta * (0.5 * (1.0 - beta ** 2) + (1.0 - beta ** 2) ** 2)) / beta ** 4
+        return zeta_reduced
+
+    @property
+    def zeta(self):
+        &#34;&#34;&#34;Get resistance coefficient of reduced port valve.&#34;&#34;&#34;
+        return self._zeta
+
+
+class GlobeValveReducedPort(ValveReducedPortType2):
+    pass
+
+
+class AngleValveReducedPort(ValveReducedPortType2):
+    pass
+
+
+class LiftCheckValveReducedPort(ValveReducedPortType2):
+    pass
+
+
+class StopCheckValveReducedPort(ValveReducedPortType2):
+    pass
+
+
+class PlugValveReducedPort(ValveReducedPortType2):
+    pass
+
+
+class CockReducedPort(ValveReducedPortType2):
+    pass</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pypeflow.core.resistance_coefficient.AngleValveReducedPort"><code class="flex name class">
+<span>class <span class="ident">AngleValveReducedPort</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Resistance coefficient of a Reduced Port Valve Type 2:</p>
+<ul>
+<li>globe valve</li>
+<li>angle valve</li>
+<li>check valve of lift type</li>
+<li>check valve of stop type</li>
+<li>plug valve</li>
+<li>cock</li>
+</ul>
+<p><strong>kwargs:</strong></p>
+<ul>
+<li><code>d_large</code>: (<em>float</em>) = diameter of large side [mm]</li>
+<li><code>d_small</code>: (<em>float</em>) = diameter of small side [mm]</li>
+<li><code>zeta_unreduced</code>: (<em>float</em>) = resistance coefficient without reduced ports.</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AngleValveReducedPort(ValveReducedPortType2):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType2">ValveReducedPortType2</a></li>
+<li><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient">ResistanceCoefficient</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType2">ValveReducedPortType2</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.from_Av" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Av">from_Av</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.from_ELR" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_ELR">from_ELR</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.from_Kv" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Kv">from_Kv</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.zeta" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType2.zeta">zeta</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="pypeflow.core.resistance_coefficient.BallValveReducedPort"><code class="flex name class">
+<span>class <span class="ident">BallValveReducedPort</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Derived class of ValveReducedPortType1.</p>
+<p><strong>kwargs:</strong></p>
+<ul>
+<li><code>d_large</code>: (<em>float</em>) = diameter of large side [mm]</li>
+<li><code>d_small</code>: (<em>float</em>) = diameter of small side [mm]</li>
+<li><code>reduction_angle</code>: (<em>float</em>) = angle of port reduction [deg]</li>
+<li><code>zeta_unreduced</code>: (<em>float</em>) = resistance coefficient without reduced port.</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BallValveReducedPort(ValveReducedPortType1):
+    &#34;&#34;&#34;Derived class of ValveReducedPortType1.&#34;&#34;&#34;
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType1" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType1">ValveReducedPortType1</a></li>
+<li><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient">ResistanceCoefficient</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType1" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType1">ValveReducedPortType1</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType1.from_Av" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Av">from_Av</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType1.from_ELR" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_ELR">from_ELR</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType1.from_Kv" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Kv">from_Kv</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType1.zeta" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType1.zeta">zeta</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="pypeflow.core.resistance_coefficient.CockReducedPort"><code class="flex name class">
+<span>class <span class="ident">CockReducedPort</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Resistance coefficient of a Reduced Port Valve Type 2:</p>
+<ul>
+<li>globe valve</li>
+<li>angle valve</li>
+<li>check valve of lift type</li>
+<li>check valve of stop type</li>
+<li>plug valve</li>
+<li>cock</li>
+</ul>
+<p><strong>kwargs:</strong></p>
+<ul>
+<li><code>d_large</code>: (<em>float</em>) = diameter of large side [mm]</li>
+<li><code>d_small</code>: (<em>float</em>) = diameter of small side [mm]</li>
+<li><code>zeta_unreduced</code>: (<em>float</em>) = resistance coefficient without reduced ports.</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CockReducedPort(ValveReducedPortType2):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType2">ValveReducedPortType2</a></li>
+<li><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient">ResistanceCoefficient</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType2">ValveReducedPortType2</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.from_Av" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Av">from_Av</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.from_ELR" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_ELR">from_ELR</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.from_Kv" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Kv">from_Kv</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.zeta" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType2.zeta">zeta</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="pypeflow.core.resistance_coefficient.Enlarger"><code class="flex name class">
+<span>class <span class="ident">Enlarger</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Resistance coefficient of an Enlarger.</p>
+<p><strong>kwargs:</strong></p>
+<ul>
+<li><code>d_large</code>: (<em>float</em>) = diameter of large side [mm]</li>
+<li><code>d_small</code>: (<em>float</em>) = diameter of small side [mm]</li>
+<li><code>length</code>: (<em>float</em>) = length of enlarger [mm]</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Enlarger(ResistanceCoefficient):
+    &#34;&#34;&#34;Resistance coefficient of an Enlarger.&#34;&#34;&#34;
+
+    def __init__(self, **kwargs):
+        &#34;&#34;&#34;
+        **kwargs:**
+
+        - `d_large`: (*float*) = diameter of large side [mm]
+        - `d_small`: (*float*) = diameter of small side [mm]
+        - `length`: (*float*) = length of enlarger [mm]
+
+        &#34;&#34;&#34;
+        self._d_large: float = kwargs.get(&#39;d_large&#39;)  # mm
+        self._d_small: float = kwargs.get(&#39;d_small&#39;)  # mm
+        self._length: float = kwargs.get(&#39;length&#39;)    # mm
+
+        self._zeta_small, self._zeta_large = self._enlarger()
+
+    def _enlarger(self) -&gt; Tuple[float, float]:
+        beta = self._d_small / self._d_large
+        theta = 2 * math.atan((self._d_large - self._d_small) / (2 * self._length))
+        zeta_small = math.nan
+        zeta_large = math.nan
+        if theta &lt;= math.pi / 4.0:
+            zeta_small = 2.6 * math.sin(theta / 2) * (1 - beta ** 2) ** 2
+            zeta_large = zeta_small / beta ** 4
+        elif math.pi / 4.0 &lt; theta &lt;= math.pi:
+            zeta_small = (1 - beta ** 2) ** 2
+            zeta_large = zeta_small / beta ** 4
+        return zeta_small, zeta_large
+
+    @property
+    def zeta_small(self) -&gt; float:
+        &#34;&#34;&#34;Get resistance coefficient (*float*) referred to small side of enlarger.&#34;&#34;&#34;
+        return self._zeta_small
+
+    @property
+    def zeta_large(self) -&gt; float:
+        &#34;&#34;&#34;Get resistance coefficient (*float*) referred to large side of enlarger.&#34;&#34;&#34;
+        return self._zeta_large</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient">ResistanceCoefficient</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pypeflow.core.resistance_coefficient.Enlarger.zeta_large"><code class="name">var <span class="ident">zeta_large</span></code></dt>
+<dd>
+<section class="desc"><p>Get resistance coefficient (<em>float</em>) referred to large side of enlarger.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def zeta_large(self) -&gt; float:
+    &#34;&#34;&#34;Get resistance coefficient (*float*) referred to large side of enlarger.&#34;&#34;&#34;
+    return self._zeta_large</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.core.resistance_coefficient.Enlarger.zeta_small"><code class="name">var <span class="ident">zeta_small</span></code></dt>
+<dd>
+<section class="desc"><p>Get resistance coefficient (<em>float</em>) referred to small side of enlarger.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def zeta_small(self) -&gt; float:
+    &#34;&#34;&#34;Get resistance coefficient (*float*) referred to small side of enlarger.&#34;&#34;&#34;
+    return self._zeta_small</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient">ResistanceCoefficient</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Av" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Av">from_Av</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_ELR" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_ELR">from_ELR</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Kv" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Kv">from_Kv</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="pypeflow.core.resistance_coefficient.GateValveReducedPort"><code class="flex name class">
+<span>class <span class="ident">GateValveReducedPort</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Derived class of ValveReducedPortType1.</p>
+<p><strong>kwargs:</strong></p>
+<ul>
+<li><code>d_large</code>: (<em>float</em>) = diameter of large side [mm]</li>
+<li><code>d_small</code>: (<em>float</em>) = diameter of small side [mm]</li>
+<li><code>reduction_angle</code>: (<em>float</em>) = angle of port reduction [deg]</li>
+<li><code>zeta_unreduced</code>: (<em>float</em>) = resistance coefficient without reduced port.</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GateValveReducedPort(ValveReducedPortType1):
+    &#34;&#34;&#34;Derived class of ValveReducedPortType1.&#34;&#34;&#34;
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType1" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType1">ValveReducedPortType1</a></li>
+<li><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient">ResistanceCoefficient</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType1" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType1">ValveReducedPortType1</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType1.from_Av" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Av">from_Av</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType1.from_ELR" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_ELR">from_ELR</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType1.from_Kv" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Kv">from_Kv</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType1.zeta" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType1.zeta">zeta</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="pypeflow.core.resistance_coefficient.GlobeValveReducedPort"><code class="flex name class">
+<span>class <span class="ident">GlobeValveReducedPort</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Resistance coefficient of a Reduced Port Valve Type 2:</p>
+<ul>
+<li>globe valve</li>
+<li>angle valve</li>
+<li>check valve of lift type</li>
+<li>check valve of stop type</li>
+<li>plug valve</li>
+<li>cock</li>
+</ul>
+<p><strong>kwargs:</strong></p>
+<ul>
+<li><code>d_large</code>: (<em>float</em>) = diameter of large side [mm]</li>
+<li><code>d_small</code>: (<em>float</em>) = diameter of small side [mm]</li>
+<li><code>zeta_unreduced</code>: (<em>float</em>) = resistance coefficient without reduced ports.</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GlobeValveReducedPort(ValveReducedPortType2):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType2">ValveReducedPortType2</a></li>
+<li><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient">ResistanceCoefficient</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType2">ValveReducedPortType2</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.from_Av" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Av">from_Av</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.from_ELR" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_ELR">from_ELR</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.from_Kv" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Kv">from_Kv</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.zeta" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType2.zeta">zeta</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="pypeflow.core.resistance_coefficient.LiftCheckValveReducedPort"><code class="flex name class">
+<span>class <span class="ident">LiftCheckValveReducedPort</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Resistance coefficient of a Reduced Port Valve Type 2:</p>
+<ul>
+<li>globe valve</li>
+<li>angle valve</li>
+<li>check valve of lift type</li>
+<li>check valve of stop type</li>
+<li>plug valve</li>
+<li>cock</li>
+</ul>
+<p><strong>kwargs:</strong></p>
+<ul>
+<li><code>d_large</code>: (<em>float</em>) = diameter of large side [mm]</li>
+<li><code>d_small</code>: (<em>float</em>) = diameter of small side [mm]</li>
+<li><code>zeta_unreduced</code>: (<em>float</em>) = resistance coefficient without reduced ports.</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LiftCheckValveReducedPort(ValveReducedPortType2):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType2">ValveReducedPortType2</a></li>
+<li><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient">ResistanceCoefficient</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType2">ValveReducedPortType2</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.from_Av" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Av">from_Av</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.from_ELR" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_ELR">from_ELR</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.from_Kv" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Kv">from_Kv</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.zeta" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType2.zeta">zeta</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="pypeflow.core.resistance_coefficient.PlugValveReducedPort"><code class="flex name class">
+<span>class <span class="ident">PlugValveReducedPort</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Resistance coefficient of a Reduced Port Valve Type 2:</p>
+<ul>
+<li>globe valve</li>
+<li>angle valve</li>
+<li>check valve of lift type</li>
+<li>check valve of stop type</li>
+<li>plug valve</li>
+<li>cock</li>
+</ul>
+<p><strong>kwargs:</strong></p>
+<ul>
+<li><code>d_large</code>: (<em>float</em>) = diameter of large side [mm]</li>
+<li><code>d_small</code>: (<em>float</em>) = diameter of small side [mm]</li>
+<li><code>zeta_unreduced</code>: (<em>float</em>) = resistance coefficient without reduced ports.</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PlugValveReducedPort(ValveReducedPortType2):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType2">ValveReducedPortType2</a></li>
+<li><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient">ResistanceCoefficient</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType2">ValveReducedPortType2</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.from_Av" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Av">from_Av</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.from_ELR" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_ELR">from_ELR</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.from_Kv" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Kv">from_Kv</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.zeta" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType2.zeta">zeta</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="pypeflow.core.resistance_coefficient.Reducer"><code class="flex name class">
+<span>class <span class="ident">Reducer</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Calculate resistance coefficient of a reducer.</p>
+<p><strong>kwargs:</strong></p>
+<ul>
+<li><code>d_large</code>: (<em>float</em>) = diameter of large side [mm]</li>
+<li><code>d_small</code>: (<em>float</em>) = diameter of small side [mm]</li>
+<li><code>length</code>: (<em>float</em>) = length of reducer [mm]</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Reducer(ResistanceCoefficient):
+    &#34;&#34;&#34;Calculate resistance coefficient of a reducer.&#34;&#34;&#34;
+
+    def __init__(self, **kwargs):
+        &#34;&#34;&#34;
+        **kwargs:**
+
+        - `d_large`: (*float*) = diameter of large side [mm]
+        - `d_small`: (*float*) = diameter of small side [mm]
+        - `length`: (*float*) = length of reducer [mm]
+
+        &#34;&#34;&#34;
+        self._d_large: float = kwargs.get(&#39;d_large&#39;)  # mm
+        self._d_small: float = kwargs.get(&#39;d_small&#39;)  # mm
+        self._length: float = kwargs.get(&#39;length&#39;)    # mm
+
+        self._zeta_small, self._zeta_large = self._reducer()
+
+    def _reducer(self) -&gt; Tuple[float, float]:
+        beta = self._d_small / self._d_large
+        theta = 2.0 * math.atan((self._d_large - self._d_small) / (2.0 * self._length))
+        zeta_small = math.nan
+        zeta_large = math.nan
+        if theta &lt;= math.pi / 4.0:
+            zeta_small = 0.8 * math.sin(theta / 2.0) * (1 - beta ** 2)
+            zeta_large = zeta_small / beta ** 4
+        elif math.pi / 4.0 &lt; theta &lt;= math.pi:
+            zeta_small = 0.5 * math.sqrt(math.sin(theta / 2.0)) * (1 - beta ** 2)
+            zeta_large = zeta_small / beta ** 4
+        return zeta_small, zeta_large
+
+    @property
+    def zeta_small(self) -&gt; float:
+        &#34;&#34;&#34;Get resistance coefficient (*float*) of small side of reducer.&#34;&#34;&#34;
+        return self._zeta_small
+
+    @property
+    def zeta_large(self):
+        &#34;&#34;&#34;Get resistance coefficient (*float*) of large side of reducer.&#34;&#34;&#34;
+        return self._zeta_large</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient">ResistanceCoefficient</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pypeflow.core.resistance_coefficient.Reducer.zeta_large"><code class="name">var <span class="ident">zeta_large</span></code></dt>
+<dd>
+<section class="desc"><p>Get resistance coefficient (<em>float</em>) of large side of reducer.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def zeta_large(self):
+    &#34;&#34;&#34;Get resistance coefficient (*float*) of large side of reducer.&#34;&#34;&#34;
+    return self._zeta_large</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.core.resistance_coefficient.Reducer.zeta_small"><code class="name">var <span class="ident">zeta_small</span></code></dt>
+<dd>
+<section class="desc"><p>Get resistance coefficient (<em>float</em>) of small side of reducer.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def zeta_small(self) -&gt; float:
+    &#34;&#34;&#34;Get resistance coefficient (*float*) of small side of reducer.&#34;&#34;&#34;
+    return self._zeta_small</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient">ResistanceCoefficient</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Av" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Av">from_Av</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_ELR" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_ELR">from_ELR</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Kv" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Kv">from_Kv</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="pypeflow.core.resistance_coefficient.ResistanceCoefficient"><code class="flex name class">
+<span>class <span class="ident">ResistanceCoefficient</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>Base class that groups some static methods to convert a flow coefficient or equivalent length ratio (ELR) into
+a corresponding resistance coefficient.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ResistanceCoefficient:
+    &#34;&#34;&#34;
+    Base class that groups some static methods to convert a flow coefficient or equivalent length ratio (ELR) into
+    a corresponding resistance coefficient.
+    &#34;&#34;&#34;
+
+    @staticmethod
+    def from_Kv(Kv: float, di: qty.Length) -&gt; float:
+        &#34;&#34;&#34;Calculate resistance coefficient of fitting from Kv flow coefficient.
+
+        **Parameters:**
+
+        - `Kv`: (*float*) = flow coefficient of fitting/valve [flow rate m^3/h, pressure drop bar]
+        - `di`: (*qty.Length*) = referenced internal pipe diameter
+
+        **Returns:** (*float*)
+
+        &#34;&#34;&#34;
+        Av = FlowCoefficient.Kv_to_Av(Kv)
+        zeta = math.pi ** 2 * di(&#39;m&#39;) ** 4 / (8.0 * Av ** 2)
+        return zeta
+
+    @staticmethod
+    def from_Av(Av: float, di: qty.Length) -&gt; float:
+        &#34;&#34;&#34;Calculate the resistance coefficient of fitting/valve from its flow coefficient Av.
+
+        **Parameters:**
+
+        - `Av`: (*float*) = flow coefficient of fitting/valve [flow rate m^3/s, pressure drop Pa]
+        - `di`: (*qty.Length*) = referenced internal pipe diameter
+
+        **Returns:** (*float*)
+
+        &#34;&#34;&#34;
+        zeta = math.pi ** 2 * di(&#39;m&#39;) ** 4 / (8.0 * Av ** 2)
+        return zeta
+
+    @staticmethod
+    def from_ELR(ELR: float, di: qty.Length) -&gt; float:
+        &#34;&#34;&#34;Calculate resistance coefficient of fitting/valve from equivalent length ratio ELR (see Crane-K-method).
+
+        **Parameters:**
+
+        - `ELR`: (*float*) = equivalent length ratio (Le/di) of fitting/valve.
+        - `di`: (*qty.Length*) = referenced internal pipe diameter.
+
+        **Returns:** (*float*)
+
+        &#34;&#34;&#34;
+        dn = PipeSchedule40.nominal_diameter(d_int=di)
+        di_40 = PipeSchedule40.inside_diameter(dn)
+        # pipe roughness for schedule 40 [mm]
+        eps = PipeSchedule40.pipe_roughness(&#39;mm&#39;)
+        # friction factor for completely turbulent flow
+        f = 0.25 / (math.log10(eps / (3.7 * di_40(&#39;mm&#39;)))) ** 2
+        zeta = f * ELR * (di(&#39;mm&#39;) / di_40(&#39;mm&#39;)) ** 4.0
+        return zeta</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pypeflow.core.resistance_coefficient.Enlarger" href="#pypeflow.core.resistance_coefficient.Enlarger">Enlarger</a></li>
+<li><a title="pypeflow.core.resistance_coefficient.Reducer" href="#pypeflow.core.resistance_coefficient.Reducer">Reducer</a></li>
+<li><a title="pypeflow.core.resistance_coefficient.Tee" href="#pypeflow.core.resistance_coefficient.Tee">Tee</a></li>
+<li><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType1" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType1">ValveReducedPortType1</a></li>
+<li><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType2">ValveReducedPortType2</a></li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Av"><code class="name flex">
+<span>def <span class="ident">from_Av</span></span>(<span>Av, di)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Calculate the resistance coefficient of fitting/valve from its flow coefficient Av.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>Av</code>: (<em>float</em>) = flow coefficient of fitting/valve [flow rate m^3/s, pressure drop Pa]</li>
+<li><code>di</code>: (<em>qty.Length</em>) = referenced internal pipe diameter</li>
+</ul>
+<p><strong>Returns:</strong> (<em>float</em>)</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def from_Av(Av: float, di: qty.Length) -&gt; float:
+    &#34;&#34;&#34;Calculate the resistance coefficient of fitting/valve from its flow coefficient Av.
+
+    **Parameters:**
+
+    - `Av`: (*float*) = flow coefficient of fitting/valve [flow rate m^3/s, pressure drop Pa]
+    - `di`: (*qty.Length*) = referenced internal pipe diameter
+
+    **Returns:** (*float*)
+
+    &#34;&#34;&#34;
+    zeta = math.pi ** 2 * di(&#39;m&#39;) ** 4 / (8.0 * Av ** 2)
+    return zeta</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_ELR"><code class="name flex">
+<span>def <span class="ident">from_ELR</span></span>(<span>ELR, di)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Calculate resistance coefficient of fitting/valve from equivalent length ratio ELR (see Crane-K-method).</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>ELR</code>: (<em>float</em>) = equivalent length ratio (Le/di) of fitting/valve.</li>
+<li><code>di</code>: (<em>qty.Length</em>) = referenced internal pipe diameter.</li>
+</ul>
+<p><strong>Returns:</strong> (<em>float</em>)</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def from_ELR(ELR: float, di: qty.Length) -&gt; float:
+    &#34;&#34;&#34;Calculate resistance coefficient of fitting/valve from equivalent length ratio ELR (see Crane-K-method).
+
+    **Parameters:**
+
+    - `ELR`: (*float*) = equivalent length ratio (Le/di) of fitting/valve.
+    - `di`: (*qty.Length*) = referenced internal pipe diameter.
+
+    **Returns:** (*float*)
+
+    &#34;&#34;&#34;
+    dn = PipeSchedule40.nominal_diameter(d_int=di)
+    di_40 = PipeSchedule40.inside_diameter(dn)
+    # pipe roughness for schedule 40 [mm]
+    eps = PipeSchedule40.pipe_roughness(&#39;mm&#39;)
+    # friction factor for completely turbulent flow
+    f = 0.25 / (math.log10(eps / (3.7 * di_40(&#39;mm&#39;)))) ** 2
+    zeta = f * ELR * (di(&#39;mm&#39;) / di_40(&#39;mm&#39;)) ** 4.0
+    return zeta</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Kv"><code class="name flex">
+<span>def <span class="ident">from_Kv</span></span>(<span>Kv, di)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Calculate resistance coefficient of fitting from Kv flow coefficient.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>Kv</code>: (<em>float</em>) = flow coefficient of fitting/valve [flow rate m^3/h, pressure drop bar]</li>
+<li><code>di</code>: (<em>qty.Length</em>) = referenced internal pipe diameter</li>
+</ul>
+<p><strong>Returns:</strong> (<em>float</em>)</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def from_Kv(Kv: float, di: qty.Length) -&gt; float:
+    &#34;&#34;&#34;Calculate resistance coefficient of fitting from Kv flow coefficient.
+
+    **Parameters:**
+
+    - `Kv`: (*float*) = flow coefficient of fitting/valve [flow rate m^3/h, pressure drop bar]
+    - `di`: (*qty.Length*) = referenced internal pipe diameter
+
+    **Returns:** (*float*)
+
+    &#34;&#34;&#34;
+    Av = FlowCoefficient.Kv_to_Av(Kv)
+    zeta = math.pi ** 2 * di(&#39;m&#39;) ** 4 / (8.0 * Av ** 2)
+    return zeta</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pypeflow.core.resistance_coefficient.StopCheckValveReducedPort"><code class="flex name class">
+<span>class <span class="ident">StopCheckValveReducedPort</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Resistance coefficient of a Reduced Port Valve Type 2:</p>
+<ul>
+<li>globe valve</li>
+<li>angle valve</li>
+<li>check valve of lift type</li>
+<li>check valve of stop type</li>
+<li>plug valve</li>
+<li>cock</li>
+</ul>
+<p><strong>kwargs:</strong></p>
+<ul>
+<li><code>d_large</code>: (<em>float</em>) = diameter of large side [mm]</li>
+<li><code>d_small</code>: (<em>float</em>) = diameter of small side [mm]</li>
+<li><code>zeta_unreduced</code>: (<em>float</em>) = resistance coefficient without reduced ports.</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class StopCheckValveReducedPort(ValveReducedPortType2):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType2">ValveReducedPortType2</a></li>
+<li><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient">ResistanceCoefficient</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType2">ValveReducedPortType2</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.from_Av" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Av">from_Av</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.from_ELR" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_ELR">from_ELR</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.from_Kv" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Kv">from_Kv</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.zeta" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType2.zeta">zeta</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="pypeflow.core.resistance_coefficient.Tee"><code class="flex name class">
+<span>class <span class="ident">Tee</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Calculate resistance coefficient of a Tee or Wye.</p>
+<p><strong>kwargs:</strong></p>
+<ul>
+<li><code>flow_pattern</code>: (<em>str</em>) = possible values: 'diverging'/'converging'</li>
+<li><code>d_branch</code>: (<em>float</em>) = branch leg diameter [mm]</li>
+<li><code>d_combined</code>: (<em>float</em>) = combined leg diameter [mm]</li>
+<li><code>flow_rate_branch</code>: (<em>float</em>) = flow rate in branch leg [m^3/s]</li>
+<li><code>flow_rate_combined</code>: (<em>float</em>) = flow rate in combined leg [m^3/s]</li>
+<li><code>theta</code>: (<em>float</em>) = branch leg angle [deg]</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Tee(ResistanceCoefficient):
+    &#34;&#34;&#34;Calculate resistance coefficient of a Tee or Wye.&#34;&#34;&#34;
+
+    def __init__(self, **kwargs):
+        &#34;&#34;&#34;
+        **kwargs:**
+
+        - `flow_pattern`: (*str*) = possible values: &#39;diverging&#39;/&#39;converging&#39;
+        - `d_branch`: (*float*) = branch leg diameter [mm]
+        - `d_combined`: (*float*) = combined leg diameter [mm]
+        - `flow_rate_branch`: (*float*) = flow rate in branch leg [m^3/s]
+        - `flow_rate_combined`: (*float*) = flow rate in combined leg [m^3/s]
+        - `theta`: (*float*) = branch leg angle [deg]
+
+        &#34;&#34;&#34;
+        self._flow_pattern: str = kwargs.get(&#39;flow_pattern&#39;)
+        self._d_branch: float = kwargs.get(&#39;d_branch&#39;)  # mm
+        self._d_combined: float = kwargs.get(&#39;d_combined&#39;)  # mm
+        self._flow_rate_branch: float = kwargs.get(&#39;flow_rate_branch&#39;)  # m^3/s
+        self._flow_rate_combined: float = kwargs.get(&#39;flow_rate_combined&#39;)  # m^3/s
+        self._theta: float = kwargs.get(&#39;theta&#39;, 90.0)  # deg
+
+        self._zeta_run: float = 0.0
+        self._zeta_branch: float = 0.0
+        if self._flow_pattern == &#39;converging&#39;:
+            self._zeta_run, self._zeta_branch = self._tee_converging()
+        if self._flow_pattern == &#39;diverging&#39;:
+            self._zeta_run, self._zeta_branch = self._tee_diverging()
+
+    def _tee_converging(self) -&gt; Tuple[float, float]:
+        &#34;&#34;&#34;Calculate resistance coefficient of straight leg and branch leg of a converging tee or wye.&#34;&#34;&#34;
+        beta = (self._d_branch / self._d_combined) ** 2
+        V_rat = self._flow_rate_branch / self._flow_rate_combined
+        cb = self._calc_c_branch(beta, V_rat)
+        db, eb, fb, cr, dr, er, fr = self._get_coefficients(self._theta)
+        zeta_branch = cb * (1.0 + db * (V_rat * 1.0 / beta) ** 2
+                            - eb * (1.0 - V_rat) ** 2 - fb * 1.0 / beta * V_rat ** 2)
+        if self._theta == 90.0:
+            zeta_run = 1.55 * V_rat - V_rat ** 2
+        else:
+            zeta_run = cr * (1.0 + dr * (V_rat * 1.0 / beta) ** 2 - er * (1.0 - V_rat) ** 2
+                             - fr * 1.0 / beta * V_rat ** 2)
+        # zeta_branch and zeta_run are both referenced to the pipe section velocity in the combined leg, but
+        # we want zeta_branch to be referenced to the pipe section velocity in the branch leg, therefore:
+        zeta_branch = zeta_branch * beta * (1.0 / V_rat) ** 2
+        return zeta_run, zeta_branch
+
+    @staticmethod
+    def _calc_c_branch(beta: float, V_rat: float) -&gt; float:
+        cb = math.nan
+        if beta &lt;= 0.35:
+            cb = 1.0
+        elif beta &gt; 0.35:
+            if V_rat &lt;= 0.4:
+                cb = 0.9 * (1.0 - V_rat)
+            elif V_rat &gt; 0.4:
+                cb = 0.55
+        return cb
+
+    @staticmethod
+    def _get_coefficients(theta: float) -&gt; Tuple[float, ...]:
+        data = {
+            30.0: [1.0, 2.0, 1.74, 1.0, 0.0, 1.0, 1.74],
+            45.0: [1.0, 2.0, 1.41, 1.0, 0.0, 1.0, 1.41],
+            60.0: [1.0, 2.0, 1.0, 1.0, 0.0, 1.0, 1.0],
+            90.0: [1.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        }
+        return tuple(data[theta])
+
+    def _tee_diverging(self) -&gt; Tuple[float, float]:
+        &#34;&#34;&#34;Calculate resistance coefficient of straight leg and branch leg of a diverging tee or wye.&#34;&#34;&#34;
+        beta = (self._d_branch / self._d_combined) ** 2
+        V_rat = self._flow_rate_branch / self._flow_rate_combined
+        g = h = j = 0.0
+        if 0.0 &lt; self._theta &lt;= 60.0:
+            if beta &lt;= 0.35:
+                if V_rat &lt;= 0.4:
+                    g = 1.1 - 0.7 * V_rat
+                elif V_rat &gt; 0.4:
+                    g = 0.85
+            elif beta &gt; 0.35:
+                if V_rat &lt;= 0.6:
+                    g = 1.0 - 0.6 * V_rat
+                elif V_rat &gt; 0.6:
+                    g = 0.6
+            h = 1.0
+            j = 2.0
+        elif self._theta == 90.0:
+            if math.sqrt(beta) &lt;= 2.0 / 3.0:
+                g = 1.0
+                h = 1.0
+                j = 2.0
+            elif beta == 1.0 or V_rat * 1.0 / beta &lt;= 2.0:
+                g = 1.0 + 0.3 * V_rat ** 2
+                h = 0.3
+                j = 0.0
+        zeta_branch = g * (1.0 + h * (V_rat * 1.0 / beta) ** 2
+                           - j * (V_rat * 1.0 / beta) * math.cos(math.radians(self._theta)))
+        m = 0.0
+        if beta &lt;= 0.4:
+            m = 0.4
+        elif beta &gt; 0.4:
+            if V_rat &lt;= 0.5:
+                m = 2.0 * (2.0 * V_rat - 1.0)
+            elif V_rat &gt; 0.5:
+                m = 0.3 * (2.0 * V_rat - 1.0)
+        zeta_run = m * V_rat ** 2
+        # zeta_branch and zeta_run are both referenced to the pipe section velocity in the combined leg
+        # we want zeta_branch to be referenced to the pipe section velocity in the branch leg, therefore:
+        zeta_branch = zeta_branch * beta * (1.0 / V_rat) ** 2
+        return zeta_run, zeta_branch
+
+    @property
+    def zeta_branch(self) -&gt; float:
+        &#34;&#34;&#34;Get resistance coefficient (*float*) of branch leg.&#34;&#34;&#34;
+        return self._zeta_branch
+
+    @property
+    def zeta_run(self) -&gt; float:
+        &#34;&#34;&#34;Get resistance coefficient (*float*) of run or straight leg.&#34;&#34;&#34;
+        return self._zeta_run</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient">ResistanceCoefficient</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pypeflow.core.resistance_coefficient.Tee.zeta_branch"><code class="name">var <span class="ident">zeta_branch</span></code></dt>
+<dd>
+<section class="desc"><p>Get resistance coefficient (<em>float</em>) of branch leg.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def zeta_branch(self) -&gt; float:
+    &#34;&#34;&#34;Get resistance coefficient (*float*) of branch leg.&#34;&#34;&#34;
+    return self._zeta_branch</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.core.resistance_coefficient.Tee.zeta_run"><code class="name">var <span class="ident">zeta_run</span></code></dt>
+<dd>
+<section class="desc"><p>Get resistance coefficient (<em>float</em>) of run or straight leg.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def zeta_run(self) -&gt; float:
+    &#34;&#34;&#34;Get resistance coefficient (*float*) of run or straight leg.&#34;&#34;&#34;
+    return self._zeta_run</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient">ResistanceCoefficient</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Av" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Av">from_Av</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_ELR" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_ELR">from_ELR</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Kv" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Kv">from_Kv</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="pypeflow.core.resistance_coefficient.ValveReducedPortType1"><code class="flex name class">
+<span>class <span class="ident">ValveReducedPortType1</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Resistance coefficient of a Reduced Port Valve Type 1:</p>
+<ul>
+<li>gate valve</li>
+<li>ball valve</li>
+</ul>
+<p><strong>kwargs:</strong></p>
+<ul>
+<li><code>d_large</code>: (<em>float</em>) = diameter of large side [mm]</li>
+<li><code>d_small</code>: (<em>float</em>) = diameter of small side [mm]</li>
+<li><code>reduction_angle</code>: (<em>float</em>) = angle of port reduction [deg]</li>
+<li><code>zeta_unreduced</code>: (<em>float</em>) = resistance coefficient without reduced port.</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ValveReducedPortType1(ResistanceCoefficient):
+    &#34;&#34;&#34;
+    Resistance coefficient of a Reduced Port Valve Type 1:
+
+    - gate valve
+    - ball valve
+
+    &#34;&#34;&#34;
+
+    def __init__(self, **kwargs):
+        &#34;&#34;&#34;
+        **kwargs:**
+
+        - `d_large`: (*float*) = diameter of large side [mm]
+        - `d_small`: (*float*) = diameter of small side [mm]
+        - `reduction_angle`: (*float*) = angle of port reduction [deg]
+        - `zeta_unreduced`: (*float*) = resistance coefficient without reduced port.
+
+        &#34;&#34;&#34;
+        self._d_small: float = kwargs.get(&#39;d_small&#39;)  # mm
+        self._d_large: float = kwargs.get(&#39;d_large&#39;)  # mm
+        self._theta: float = kwargs.get(&#39;reduction_angle&#39;)  # deg
+        self._zeta_unreduced: float = kwargs.get(&#39;zeta_unreduced&#39;)  # resistance_coefficient without reduced port
+
+        self._zeta = self._valve_reduced_port_type1()
+
+    def _valve_reduced_port_type1(self) -&gt; float:
+        beta = self._d_small / self._d_large
+        zeta_reduced = math.nan
+        theta = math.radians(self._theta)
+        if beta &lt; 1.0 and theta &lt;= math.pi / 4.0:
+            zeta_reduced = ((self._zeta_unreduced + math.sin(theta / 2.0)
+                             * (0.8 * (1.0 - beta ** 2) + 2.6 * (1.0 - beta ** 2) ** 2)) / beta ** 4)
+        elif beta &lt; 1.0 and math.pi / 4.0 &lt; theta &lt;= math.pi:
+            zeta_reduced = ((self._zeta_unreduced + 0.5 * math.sqrt(math.sin(theta / 2.0)) * (1.0 - beta ** 2)
+                             + (1.0 - beta ** 2) ** 2) / beta ** 4)
+        return zeta_reduced
+
+    @property
+    def zeta(self) -&gt; float:
+        &#34;&#34;&#34;Get the resistance coefficient (*float*) of the reduced port valve.&#34;&#34;&#34;
+        return self._zeta</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient">ResistanceCoefficient</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pypeflow.core.resistance_coefficient.BallValveReducedPort" href="#pypeflow.core.resistance_coefficient.BallValveReducedPort">BallValveReducedPort</a></li>
+<li><a title="pypeflow.core.resistance_coefficient.GateValveReducedPort" href="#pypeflow.core.resistance_coefficient.GateValveReducedPort">GateValveReducedPort</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pypeflow.core.resistance_coefficient.ValveReducedPortType1.zeta"><code class="name">var <span class="ident">zeta</span></code></dt>
+<dd>
+<section class="desc"><p>Get the resistance coefficient (<em>float</em>) of the reduced port valve.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def zeta(self) -&gt; float:
+    &#34;&#34;&#34;Get the resistance coefficient (*float*) of the reduced port valve.&#34;&#34;&#34;
+    return self._zeta</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient">ResistanceCoefficient</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Av" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Av">from_Av</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_ELR" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_ELR">from_ELR</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Kv" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Kv">from_Kv</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="pypeflow.core.resistance_coefficient.ValveReducedPortType2"><code class="flex name class">
+<span>class <span class="ident">ValveReducedPortType2</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Resistance coefficient of a Reduced Port Valve Type 2:</p>
+<ul>
+<li>globe valve</li>
+<li>angle valve</li>
+<li>check valve of lift type</li>
+<li>check valve of stop type</li>
+<li>plug valve</li>
+<li>cock</li>
+</ul>
+<p><strong>kwargs:</strong></p>
+<ul>
+<li><code>d_large</code>: (<em>float</em>) = diameter of large side [mm]</li>
+<li><code>d_small</code>: (<em>float</em>) = diameter of small side [mm]</li>
+<li><code>zeta_unreduced</code>: (<em>float</em>) = resistance coefficient without reduced ports.</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ValveReducedPortType2(ResistanceCoefficient):
+    &#34;&#34;&#34;
+    Resistance coefficient of a Reduced Port Valve Type 2:
+
+    - globe valve
+    - angle valve
+    - check valve of lift type
+    - check valve of stop type
+    - plug valve
+    - cock
+
+    &#34;&#34;&#34;
+
+    def __init__(self, **kwargs):
+        &#34;&#34;&#34;
+        **kwargs:**
+
+        - `d_large`: (*float*) = diameter of large side [mm]
+        - `d_small`: (*float*) = diameter of small side [mm]
+        - `zeta_unreduced`: (*float*) = resistance coefficient without reduced ports.
+
+        &#34;&#34;&#34;
+
+        self._d_small = kwargs.get(&#39;d_small&#39;)  # mm
+        self._d_large = kwargs.get(&#39;d_large&#39;)  # mm
+        self._zeta_unreduced = kwargs.get(&#39;zeta_unreduced&#39;)  # resistance_coefficient without reduced port
+
+        self._zeta = self._valve_reduced_port_type2()
+
+    def _valve_reduced_port_type2(self) -&gt; float:
+        beta = self._d_small / self._d_large
+        zeta_reduced = (self._zeta_unreduced + beta * (0.5 * (1.0 - beta ** 2) + (1.0 - beta ** 2) ** 2)) / beta ** 4
+        return zeta_reduced
+
+    @property
+    def zeta(self):
+        &#34;&#34;&#34;Get resistance coefficient of reduced port valve.&#34;&#34;&#34;
+        return self._zeta</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient">ResistanceCoefficient</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pypeflow.core.resistance_coefficient.AngleValveReducedPort" href="#pypeflow.core.resistance_coefficient.AngleValveReducedPort">AngleValveReducedPort</a></li>
+<li><a title="pypeflow.core.resistance_coefficient.CockReducedPort" href="#pypeflow.core.resistance_coefficient.CockReducedPort">CockReducedPort</a></li>
+<li><a title="pypeflow.core.resistance_coefficient.GlobeValveReducedPort" href="#pypeflow.core.resistance_coefficient.GlobeValveReducedPort">GlobeValveReducedPort</a></li>
+<li><a title="pypeflow.core.resistance_coefficient.LiftCheckValveReducedPort" href="#pypeflow.core.resistance_coefficient.LiftCheckValveReducedPort">LiftCheckValveReducedPort</a></li>
+<li><a title="pypeflow.core.resistance_coefficient.PlugValveReducedPort" href="#pypeflow.core.resistance_coefficient.PlugValveReducedPort">PlugValveReducedPort</a></li>
+<li><a title="pypeflow.core.resistance_coefficient.StopCheckValveReducedPort" href="#pypeflow.core.resistance_coefficient.StopCheckValveReducedPort">StopCheckValveReducedPort</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pypeflow.core.resistance_coefficient.ValveReducedPortType2.zeta"><code class="name">var <span class="ident">zeta</span></code></dt>
+<dd>
+<section class="desc"><p>Get resistance coefficient of reduced port valve.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def zeta(self):
+    &#34;&#34;&#34;Get resistance coefficient of reduced port valve.&#34;&#34;&#34;
+    return self._zeta</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient">ResistanceCoefficient</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Av" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Av">from_Av</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_ELR" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_ELR">from_ELR</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Kv" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Kv">from_Kv</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#calculate-resistance-coefficients-of-fittingsvalves">Calculate resistance coefficients of fittings/valves</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pypeflow.core" href="index.html">pypeflow.core</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pypeflow.core.resistance_coefficient.AngleValveReducedPort" href="#pypeflow.core.resistance_coefficient.AngleValveReducedPort">AngleValveReducedPort</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pypeflow.core.resistance_coefficient.BallValveReducedPort" href="#pypeflow.core.resistance_coefficient.BallValveReducedPort">BallValveReducedPort</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pypeflow.core.resistance_coefficient.CockReducedPort" href="#pypeflow.core.resistance_coefficient.CockReducedPort">CockReducedPort</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pypeflow.core.resistance_coefficient.Enlarger" href="#pypeflow.core.resistance_coefficient.Enlarger">Enlarger</a></code></h4>
+<ul class="">
+<li><code><a title="pypeflow.core.resistance_coefficient.Enlarger.zeta_large" href="#pypeflow.core.resistance_coefficient.Enlarger.zeta_large">zeta_large</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.Enlarger.zeta_small" href="#pypeflow.core.resistance_coefficient.Enlarger.zeta_small">zeta_small</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pypeflow.core.resistance_coefficient.GateValveReducedPort" href="#pypeflow.core.resistance_coefficient.GateValveReducedPort">GateValveReducedPort</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pypeflow.core.resistance_coefficient.GlobeValveReducedPort" href="#pypeflow.core.resistance_coefficient.GlobeValveReducedPort">GlobeValveReducedPort</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pypeflow.core.resistance_coefficient.LiftCheckValveReducedPort" href="#pypeflow.core.resistance_coefficient.LiftCheckValveReducedPort">LiftCheckValveReducedPort</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pypeflow.core.resistance_coefficient.PlugValveReducedPort" href="#pypeflow.core.resistance_coefficient.PlugValveReducedPort">PlugValveReducedPort</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pypeflow.core.resistance_coefficient.Reducer" href="#pypeflow.core.resistance_coefficient.Reducer">Reducer</a></code></h4>
+<ul class="">
+<li><code><a title="pypeflow.core.resistance_coefficient.Reducer.zeta_large" href="#pypeflow.core.resistance_coefficient.Reducer.zeta_large">zeta_large</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.Reducer.zeta_small" href="#pypeflow.core.resistance_coefficient.Reducer.zeta_small">zeta_small</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient">ResistanceCoefficient</a></code></h4>
+<ul class="">
+<li><code><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Av" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Av">from_Av</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_ELR" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_ELR">from_ELR</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Kv" href="#pypeflow.core.resistance_coefficient.ResistanceCoefficient.from_Kv">from_Kv</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pypeflow.core.resistance_coefficient.StopCheckValveReducedPort" href="#pypeflow.core.resistance_coefficient.StopCheckValveReducedPort">StopCheckValveReducedPort</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pypeflow.core.resistance_coefficient.Tee" href="#pypeflow.core.resistance_coefficient.Tee">Tee</a></code></h4>
+<ul class="">
+<li><code><a title="pypeflow.core.resistance_coefficient.Tee.zeta_branch" href="#pypeflow.core.resistance_coefficient.Tee.zeta_branch">zeta_branch</a></code></li>
+<li><code><a title="pypeflow.core.resistance_coefficient.Tee.zeta_run" href="#pypeflow.core.resistance_coefficient.Tee.zeta_run">zeta_run</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType1" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType1">ValveReducedPortType1</a></code></h4>
+<ul class="">
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType1.zeta" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType1.zeta">zeta</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType2">ValveReducedPortType2</a></code></h4>
+<ul class="">
+<li><code><a title="pypeflow.core.resistance_coefficient.ValveReducedPortType2.zeta" href="#pypeflow.core.resistance_coefficient.ValveReducedPortType2.zeta">zeta</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

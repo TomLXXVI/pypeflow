@@ -1,0 +1,825 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>pypeflow.analysis.analysis API documentation</title>
+<meta name="description" content="User interface for doing network flow analysis using the Hardy Cross method" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pypeflow.analysis.analysis</code></h1>
+</header>
+<section id="section-intro">
+<h2 id="user-interface-for-doing-network-flow-analysis-using-the-hardy-cross-method">User interface for doing network flow analysis using the Hardy Cross method</h2>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+##  User interface for doing network flow analysis using the Hardy Cross method
+&#34;&#34;&#34;
+from typing import Dict, Optional, Tuple
+import csv
+import pandas as pd
+import quantities as qty
+from pypeflow.analysis.network import Network
+from pypeflow.core.fluids import FLUIDS
+from pypeflow.core.pipe_schedules import PIPE_SCHEDULES
+
+
+class Analyzer:
+    &#34;&#34;&#34;Class that encapsulates the user interface methods for network flow analysis&#34;&#34;&#34;
+    network: Network = Network()
+    &#34;&#34;&#34;Reference to the *Network* object&#34;&#34;&#34;
+    units: Dict[str, str] = {
+        &#39;length&#39;: &#39;m&#39;,
+        &#39;diameter&#39;: &#39;mm&#39;,
+        &#39;flow_rate&#39;: &#39;L/s&#39;,
+        &#39;pressure&#39;: &#39;bar&#39;,
+        &#39;velocity&#39;: &#39;m/s&#39;
+    }
+    &#34;&#34;&#34;Dictionary that holds the measuring units in which the quantity values are expressed&#34;&#34;&#34;
+
+    @classmethod
+    def set_units(cls, units: Dict[str, str]):
+        &#34;&#34;&#34;
+        Set the measuring SI-units of the quantities that will be used as input and that will be returned as output.
+
+        Parameter `units` is a dictionary (*Dict[str, str]*) that can contain the following keys with corresponding
+        measuring units assigned to them:
+
+        - *&#39;length&#39;* (default value = *&#39;m&#39;*)
+        - *&#39;diameter&#39;* (default value = *&#39;mm&#39;*)
+        - *&#39;flow_rate&#39;* (default value = *&#39;L/s&#39;*)
+        - *&#39;pressure&#39;* (default value = *&#39;bar&#39;*)
+        - *&#39;velocity&#39;* (default value = *&#39;m/s&#39;*)
+
+        &#34;&#34;&#34;
+        cls.units.update(units)
+
+    @classmethod
+    def create_network(cls, **kwargs):
+        &#34;&#34;&#34;
+        Create the *Network* object.
+
+        **kwargs:**
+
+        - `start_node_id`: (*str*) = start node id of the network
+        - `end_node_id`: (*str*) = end node id of the network
+        - `fluid`: (*str*) = the fluid that flows in the network (default = *&#39;water&#39;*)
+        - `fluid_temperature`: (*float*) = the fluid temperature [°C]
+        - `pipe_schedule`: (*str*) = the pipe schedule of the sections (default = *&#39;pipe_schedule_40&#39;*)
+
+        &#34;&#34;&#34;
+        start_node_id: str = kwargs.get(&#39;start_node_id&#39;, &#39;&#39;)
+        end_node_id: str = kwargs.get(&#39;end_node_id&#39;, &#39;&#39;)
+        fluid_str: str = kwargs.get(&#39;fluid&#39;, &#39;water&#39;)
+        fluid_temperature: float = kwargs.get(&#39;fluid_temperature&#39;, 10.0)
+        sch_str: str = kwargs.get(&#39;pipe_schedule&#39;, &#39;pipe_schedule_40&#39;)
+
+        fluid = cls._create_fluid(fluid_str, fluid_temperature)
+        pipe_schedule = cls._create_pipe_schedule(sch_str)
+        cls.network = Network.create(
+            start_node_id=start_node_id,
+            end_node_id=end_node_id,
+            fluid=fluid,
+            pipe_schedule=pipe_schedule
+        )
+
+    @classmethod
+    def _create_fluid(cls, fluid: str, temperature: float):
+        try:
+            fl = FLUIDS[fluid.lower()]
+        except KeyError:
+            raise KeyError(f&#39;Fluid {fluid} unknown.&#39;)
+        else:
+            return fl(temperature)
+
+    @classmethod
+    def _create_pipe_schedule(cls, pipe_schedule: str):
+        try:
+            sch = PIPE_SCHEDULES[pipe_schedule.lower()]
+        except KeyError:
+            raise KeyError(f&#39;Pipe schedule {pipe_schedule} unknown.&#39;)
+        else:
+            return sch
+
+    @classmethod
+    def configure_network(cls, file_path: str):
+        &#34;&#34;&#34;
+        Configure network via a network configuration file (.csv-file). Parameter `file_path` (*str*) is the file path
+        to this configuration file. The configuration data is organised in a table. Each row contains the configuration
+        data of a pipe section in the network. Each row has the following fields (columns) in the order as
+        mentioned here:
+
+        0. id of the loop to which the section belongs
+        1. id of the section in the network
+        2. id of the start node of the section
+        3. id of the end node of the section
+        4. nominal diameter of the section
+        5. length of the section
+        6. sum of the resistance coefficients of fittings/valves in the section
+        7. pump coefficient a0 in the equation dp_pump = a0 + a1 * V + a2 * V ** 2 (leave empty if no pump is present
+        in the section)
+        8. pump coefficient a1
+        9. pump coefficient a2
+        10. fixed pressure difference between start and end node of the section (only in case of pseudo section, leave
+        empty if the section is not a pseudo section)
+        11. flow rate through the section (leave empty in case of a pseudo section)
+
+        Fixed pressure differences and flow rates in sections must carry a sign with reference to the positive loop
+        sense (by convention clockwise sense).
+        &#34;&#34;&#34;
+        with open(file_path) as f:
+            reader = csv.reader(f)
+            for i, row in enumerate(reader):
+                if i == 0:
+                    continue
+                else:
+                    cls.network.add_section(
+                        loop_id=row[0],
+                        section_id=row[1],
+                        start_node_id=row[2],
+                        end_node_id=row[3],
+                        nominal_diameter=qty.create(qty.Length, row[4], cls.units[&#39;diameter&#39;], 0.0),
+                        length=qty.create(qty.Length, row[5], cls.units[&#39;length&#39;], 0.0),
+                        zeta=cls._set_zeta(row[6], 0.0),
+                        pump_curve=cls._set_pump_curve(row[7], row[8], row[9]),
+                        dp_fixed=qty.create(qty.Pressure, row[10], cls.units[&#39;pressure&#39;], None),
+                        flow_rate=qty.create(qty.VolumeFlowRate, row[11], cls.units[&#39;flow_rate&#39;], 0.0)
+                    )
+
+    @staticmethod
+    def _set_pump_curve(a0: str, a1: str, a2: str) -&gt; Optional[Tuple[float, float, float]]:
+        try:
+            a0 = float(a0)
+            a1 = float(a1)
+            a2 = float(a2)
+        except ValueError:
+            return None
+        else:
+            return a0, a1, a2
+
+    @staticmethod
+    def _set_zeta(value: str, fallback_value: float = 0.0) -&gt; Optional[float]:
+        try:
+            value = float(value)
+        except ValueError:
+            return fallback_value
+        else:
+            return value
+
+    @classmethod
+    def solve(cls, error: float = 1.0e-3, i_max: int = 30):
+        &#34;&#34;&#34;
+        Solve the piping network for flow rates and pressure drops.
+
+        **Parameters:**
+
+        - `error`: (*float*) = allowable deviation from zero for the pressure drop around each loop
+        - `i_max`: (*int*) = the maximum number of iterations to find a solution within the given error tolerance
+
+        If no solution within the given fault tolerance is found after maximum number of iterations an *OverflowError*
+        exception is raised.
+
+        &#34;&#34;&#34;
+        cls.network.solve(error, i_max)
+
+    @classmethod
+    def get_network(cls) -&gt; pd.DataFrame:
+        &#34;&#34;&#34;Return the solved network as a Pandas DataFrame.&#34;&#34;&#34;
+        keys = [
+            &#39;loop_id&#39;,
+            &#39;section_id&#39;,
+            &#39;start_node_id&#39;,
+            &#39;end_node_id&#39;,
+            f&#39;length [{cls.units[&#34;length&#34;]}]&#39;,
+            f&#39;diameter [{cls.units[&#34;diameter&#34;]}]&#39;,
+            &#39;zeta&#39;,
+            f&#39;flow_rate [{cls.units[&#34;flow_rate&#34;]}]&#39;,
+            f&#39;velocity [{cls.units[&#34;velocity&#34;]}]&#39;,
+            f&#39;pressure_drop [{cls.units[&#34;pressure&#34;]}]&#39;
+        ]
+        d = {k: [] for k in keys}
+        for loop in cls.network.loops.values():
+            for section in loop.sections.values():
+                d[keys[0]].append(loop.id)
+                d[keys[1]].append(section.id)
+                d[keys[2]].append(section.start_node.id)
+                d[keys[3]].append(section.end_node.id)
+                d[keys[4]].append(section.length(cls.units[&#39;length&#39;], 3))
+                d[keys[5]].append(section.nominal_diameter(cls.units[&#39;diameter&#39;], 3))
+                d[keys[6]].append(section.zeta)
+                d[keys[7]].append(section.sign * section.flow_rate(cls.units[&#39;flow_rate&#39;], 3))
+                d[keys[8]].append(section.sign * section.velocity(cls.units[&#39;velocity&#39;], 3))
+                d[keys[9]].append(section.pressure_drop(cls.units[&#39;pressure&#39;], 3))
+        return pd.DataFrame(d)
+
+    @classmethod
+    def get_paths(cls) -&gt; pd.DataFrame:
+        &#34;&#34;&#34;
+        Get the flow paths in the solved network, returned as a Pandas DataFrame.
+        For each flow path is returned:
+
+        - velocity head
+        - elevation head
+        - dynamic head
+        - static head
+
+        &#34;&#34;&#34;
+        keys = [
+            &#39;path&#39;,
+            f&#39;dp,vel [{cls.units[&#34;pressure&#34;]}]&#39;,
+            f&#39;dp,elev [{cls.units[&#34;pressure&#34;]}]&#39;,
+            f&#39;dp,dyn [{cls.units[&#34;pressure&#34;]}]&#39;,
+            f&#39;dp,stat [{cls.units[&#34;pressure&#34;]}]&#39;,
+        ]
+        d = {k: [] for k in keys}
+        for path in cls.network.paths:
+            d[keys[0]].append(repr(path))
+            d[keys[1]].append(path.velocity_head(cls.units[&#39;pressure&#39;], 3))
+            d[keys[2]].append(path.elevation_head(cls.units[&#39;pressure&#39;], 3))
+            d[keys[3]].append(path.dynamic_head(cls.units[&#39;pressure&#39;], 3))
+            d[keys[4]].append(path.static_head(cls.units[&#39;pressure&#39;], 3))
+        return pd.DataFrame(d)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pypeflow.analysis.analysis.Analyzer"><code class="flex name class">
+<span>class <span class="ident">Analyzer</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>Class that encapsulates the user interface methods for network flow analysis</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Analyzer:
+    &#34;&#34;&#34;Class that encapsulates the user interface methods for network flow analysis&#34;&#34;&#34;
+    network: Network = Network()
+    &#34;&#34;&#34;Reference to the *Network* object&#34;&#34;&#34;
+    units: Dict[str, str] = {
+        &#39;length&#39;: &#39;m&#39;,
+        &#39;diameter&#39;: &#39;mm&#39;,
+        &#39;flow_rate&#39;: &#39;L/s&#39;,
+        &#39;pressure&#39;: &#39;bar&#39;,
+        &#39;velocity&#39;: &#39;m/s&#39;
+    }
+    &#34;&#34;&#34;Dictionary that holds the measuring units in which the quantity values are expressed&#34;&#34;&#34;
+
+    @classmethod
+    def set_units(cls, units: Dict[str, str]):
+        &#34;&#34;&#34;
+        Set the measuring SI-units of the quantities that will be used as input and that will be returned as output.
+
+        Parameter `units` is a dictionary (*Dict[str, str]*) that can contain the following keys with corresponding
+        measuring units assigned to them:
+
+        - *&#39;length&#39;* (default value = *&#39;m&#39;*)
+        - *&#39;diameter&#39;* (default value = *&#39;mm&#39;*)
+        - *&#39;flow_rate&#39;* (default value = *&#39;L/s&#39;*)
+        - *&#39;pressure&#39;* (default value = *&#39;bar&#39;*)
+        - *&#39;velocity&#39;* (default value = *&#39;m/s&#39;*)
+
+        &#34;&#34;&#34;
+        cls.units.update(units)
+
+    @classmethod
+    def create_network(cls, **kwargs):
+        &#34;&#34;&#34;
+        Create the *Network* object.
+
+        **kwargs:**
+
+        - `start_node_id`: (*str*) = start node id of the network
+        - `end_node_id`: (*str*) = end node id of the network
+        - `fluid`: (*str*) = the fluid that flows in the network (default = *&#39;water&#39;*)
+        - `fluid_temperature`: (*float*) = the fluid temperature [°C]
+        - `pipe_schedule`: (*str*) = the pipe schedule of the sections (default = *&#39;pipe_schedule_40&#39;*)
+
+        &#34;&#34;&#34;
+        start_node_id: str = kwargs.get(&#39;start_node_id&#39;, &#39;&#39;)
+        end_node_id: str = kwargs.get(&#39;end_node_id&#39;, &#39;&#39;)
+        fluid_str: str = kwargs.get(&#39;fluid&#39;, &#39;water&#39;)
+        fluid_temperature: float = kwargs.get(&#39;fluid_temperature&#39;, 10.0)
+        sch_str: str = kwargs.get(&#39;pipe_schedule&#39;, &#39;pipe_schedule_40&#39;)
+
+        fluid = cls._create_fluid(fluid_str, fluid_temperature)
+        pipe_schedule = cls._create_pipe_schedule(sch_str)
+        cls.network = Network.create(
+            start_node_id=start_node_id,
+            end_node_id=end_node_id,
+            fluid=fluid,
+            pipe_schedule=pipe_schedule
+        )
+
+    @classmethod
+    def _create_fluid(cls, fluid: str, temperature: float):
+        try:
+            fl = FLUIDS[fluid.lower()]
+        except KeyError:
+            raise KeyError(f&#39;Fluid {fluid} unknown.&#39;)
+        else:
+            return fl(temperature)
+
+    @classmethod
+    def _create_pipe_schedule(cls, pipe_schedule: str):
+        try:
+            sch = PIPE_SCHEDULES[pipe_schedule.lower()]
+        except KeyError:
+            raise KeyError(f&#39;Pipe schedule {pipe_schedule} unknown.&#39;)
+        else:
+            return sch
+
+    @classmethod
+    def configure_network(cls, file_path: str):
+        &#34;&#34;&#34;
+        Configure network via a network configuration file (.csv-file). Parameter `file_path` (*str*) is the file path
+        to this configuration file. The configuration data is organised in a table. Each row contains the configuration
+        data of a pipe section in the network. Each row has the following fields (columns) in the order as
+        mentioned here:
+
+        0. id of the loop to which the section belongs
+        1. id of the section in the network
+        2. id of the start node of the section
+        3. id of the end node of the section
+        4. nominal diameter of the section
+        5. length of the section
+        6. sum of the resistance coefficients of fittings/valves in the section
+        7. pump coefficient a0 in the equation dp_pump = a0 + a1 * V + a2 * V ** 2 (leave empty if no pump is present
+        in the section)
+        8. pump coefficient a1
+        9. pump coefficient a2
+        10. fixed pressure difference between start and end node of the section (only in case of pseudo section, leave
+        empty if the section is not a pseudo section)
+        11. flow rate through the section (leave empty in case of a pseudo section)
+
+        Fixed pressure differences and flow rates in sections must carry a sign with reference to the positive loop
+        sense (by convention clockwise sense).
+        &#34;&#34;&#34;
+        with open(file_path) as f:
+            reader = csv.reader(f)
+            for i, row in enumerate(reader):
+                if i == 0:
+                    continue
+                else:
+                    cls.network.add_section(
+                        loop_id=row[0],
+                        section_id=row[1],
+                        start_node_id=row[2],
+                        end_node_id=row[3],
+                        nominal_diameter=qty.create(qty.Length, row[4], cls.units[&#39;diameter&#39;], 0.0),
+                        length=qty.create(qty.Length, row[5], cls.units[&#39;length&#39;], 0.0),
+                        zeta=cls._set_zeta(row[6], 0.0),
+                        pump_curve=cls._set_pump_curve(row[7], row[8], row[9]),
+                        dp_fixed=qty.create(qty.Pressure, row[10], cls.units[&#39;pressure&#39;], None),
+                        flow_rate=qty.create(qty.VolumeFlowRate, row[11], cls.units[&#39;flow_rate&#39;], 0.0)
+                    )
+
+    @staticmethod
+    def _set_pump_curve(a0: str, a1: str, a2: str) -&gt; Optional[Tuple[float, float, float]]:
+        try:
+            a0 = float(a0)
+            a1 = float(a1)
+            a2 = float(a2)
+        except ValueError:
+            return None
+        else:
+            return a0, a1, a2
+
+    @staticmethod
+    def _set_zeta(value: str, fallback_value: float = 0.0) -&gt; Optional[float]:
+        try:
+            value = float(value)
+        except ValueError:
+            return fallback_value
+        else:
+            return value
+
+    @classmethod
+    def solve(cls, error: float = 1.0e-3, i_max: int = 30):
+        &#34;&#34;&#34;
+        Solve the piping network for flow rates and pressure drops.
+
+        **Parameters:**
+
+        - `error`: (*float*) = allowable deviation from zero for the pressure drop around each loop
+        - `i_max`: (*int*) = the maximum number of iterations to find a solution within the given error tolerance
+
+        If no solution within the given fault tolerance is found after maximum number of iterations an *OverflowError*
+        exception is raised.
+
+        &#34;&#34;&#34;
+        cls.network.solve(error, i_max)
+
+    @classmethod
+    def get_network(cls) -&gt; pd.DataFrame:
+        &#34;&#34;&#34;Return the solved network as a Pandas DataFrame.&#34;&#34;&#34;
+        keys = [
+            &#39;loop_id&#39;,
+            &#39;section_id&#39;,
+            &#39;start_node_id&#39;,
+            &#39;end_node_id&#39;,
+            f&#39;length [{cls.units[&#34;length&#34;]}]&#39;,
+            f&#39;diameter [{cls.units[&#34;diameter&#34;]}]&#39;,
+            &#39;zeta&#39;,
+            f&#39;flow_rate [{cls.units[&#34;flow_rate&#34;]}]&#39;,
+            f&#39;velocity [{cls.units[&#34;velocity&#34;]}]&#39;,
+            f&#39;pressure_drop [{cls.units[&#34;pressure&#34;]}]&#39;
+        ]
+        d = {k: [] for k in keys}
+        for loop in cls.network.loops.values():
+            for section in loop.sections.values():
+                d[keys[0]].append(loop.id)
+                d[keys[1]].append(section.id)
+                d[keys[2]].append(section.start_node.id)
+                d[keys[3]].append(section.end_node.id)
+                d[keys[4]].append(section.length(cls.units[&#39;length&#39;], 3))
+                d[keys[5]].append(section.nominal_diameter(cls.units[&#39;diameter&#39;], 3))
+                d[keys[6]].append(section.zeta)
+                d[keys[7]].append(section.sign * section.flow_rate(cls.units[&#39;flow_rate&#39;], 3))
+                d[keys[8]].append(section.sign * section.velocity(cls.units[&#39;velocity&#39;], 3))
+                d[keys[9]].append(section.pressure_drop(cls.units[&#39;pressure&#39;], 3))
+        return pd.DataFrame(d)
+
+    @classmethod
+    def get_paths(cls) -&gt; pd.DataFrame:
+        &#34;&#34;&#34;
+        Get the flow paths in the solved network, returned as a Pandas DataFrame.
+        For each flow path is returned:
+
+        - velocity head
+        - elevation head
+        - dynamic head
+        - static head
+
+        &#34;&#34;&#34;
+        keys = [
+            &#39;path&#39;,
+            f&#39;dp,vel [{cls.units[&#34;pressure&#34;]}]&#39;,
+            f&#39;dp,elev [{cls.units[&#34;pressure&#34;]}]&#39;,
+            f&#39;dp,dyn [{cls.units[&#34;pressure&#34;]}]&#39;,
+            f&#39;dp,stat [{cls.units[&#34;pressure&#34;]}]&#39;,
+        ]
+        d = {k: [] for k in keys}
+        for path in cls.network.paths:
+            d[keys[0]].append(repr(path))
+            d[keys[1]].append(path.velocity_head(cls.units[&#39;pressure&#39;], 3))
+            d[keys[2]].append(path.elevation_head(cls.units[&#39;pressure&#39;], 3))
+            d[keys[3]].append(path.dynamic_head(cls.units[&#39;pressure&#39;], 3))
+            d[keys[4]].append(path.static_head(cls.units[&#39;pressure&#39;], 3))
+        return pd.DataFrame(d)</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="pypeflow.analysis.analysis.Analyzer.network"><code class="name">var <span class="ident">network</span></code></dt>
+<dd>
+<section class="desc"><p>Reference to the <em>Network</em> object</p></section>
+</dd>
+<dt id="pypeflow.analysis.analysis.Analyzer.units"><code class="name">var <span class="ident">units</span></code></dt>
+<dd>
+<section class="desc"><p>Dictionary that holds the measuring units in which the quantity values are expressed</p></section>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="pypeflow.analysis.analysis.Analyzer.configure_network"><code class="name flex">
+<span>def <span class="ident">configure_network</span></span>(<span>file_path)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Configure network via a network configuration file (.csv-file). Parameter <code>file_path</code> (<em>str</em>) is the file path
+to this configuration file. The configuration data is organised in a table. Each row contains the configuration
+data of a pipe section in the network. Each row has the following fields (columns) in the order as
+mentioned here:</p>
+<ol>
+<li>id of the loop to which the section belongs</li>
+<li>id of the section in the network</li>
+<li>id of the start node of the section</li>
+<li>id of the end node of the section</li>
+<li>nominal diameter of the section</li>
+<li>length of the section</li>
+<li>sum of the resistance coefficients of fittings/valves in the section</li>
+<li>pump coefficient a0 in the equation dp_pump = a0 + a1 * V + a2 * V ** 2 (leave empty if no pump is present
+in the section)</li>
+<li>pump coefficient a1</li>
+<li>pump coefficient a2</li>
+<li>fixed pressure difference between start and end node of the section (only in case of pseudo section, leave
+empty if the section is not a pseudo section)</li>
+<li>flow rate through the section (leave empty in case of a pseudo section)</li>
+</ol>
+<p>Fixed pressure differences and flow rates in sections must carry a sign with reference to the positive loop
+sense (by convention clockwise sense).</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def configure_network(cls, file_path: str):
+    &#34;&#34;&#34;
+    Configure network via a network configuration file (.csv-file). Parameter `file_path` (*str*) is the file path
+    to this configuration file. The configuration data is organised in a table. Each row contains the configuration
+    data of a pipe section in the network. Each row has the following fields (columns) in the order as
+    mentioned here:
+
+    0. id of the loop to which the section belongs
+    1. id of the section in the network
+    2. id of the start node of the section
+    3. id of the end node of the section
+    4. nominal diameter of the section
+    5. length of the section
+    6. sum of the resistance coefficients of fittings/valves in the section
+    7. pump coefficient a0 in the equation dp_pump = a0 + a1 * V + a2 * V ** 2 (leave empty if no pump is present
+    in the section)
+    8. pump coefficient a1
+    9. pump coefficient a2
+    10. fixed pressure difference between start and end node of the section (only in case of pseudo section, leave
+    empty if the section is not a pseudo section)
+    11. flow rate through the section (leave empty in case of a pseudo section)
+
+    Fixed pressure differences and flow rates in sections must carry a sign with reference to the positive loop
+    sense (by convention clockwise sense).
+    &#34;&#34;&#34;
+    with open(file_path) as f:
+        reader = csv.reader(f)
+        for i, row in enumerate(reader):
+            if i == 0:
+                continue
+            else:
+                cls.network.add_section(
+                    loop_id=row[0],
+                    section_id=row[1],
+                    start_node_id=row[2],
+                    end_node_id=row[3],
+                    nominal_diameter=qty.create(qty.Length, row[4], cls.units[&#39;diameter&#39;], 0.0),
+                    length=qty.create(qty.Length, row[5], cls.units[&#39;length&#39;], 0.0),
+                    zeta=cls._set_zeta(row[6], 0.0),
+                    pump_curve=cls._set_pump_curve(row[7], row[8], row[9]),
+                    dp_fixed=qty.create(qty.Pressure, row[10], cls.units[&#39;pressure&#39;], None),
+                    flow_rate=qty.create(qty.VolumeFlowRate, row[11], cls.units[&#39;flow_rate&#39;], 0.0)
+                )</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.analysis.Analyzer.create_network"><code class="name flex">
+<span>def <span class="ident">create_network</span></span>(<span>**kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Create the <em>Network</em> object.</p>
+<p><strong>kwargs:</strong></p>
+<ul>
+<li><code>start_node_id</code>: (<em>str</em>) = start node id of the network</li>
+<li><code>end_node_id</code>: (<em>str</em>) = end node id of the network</li>
+<li><code>fluid</code>: (<em>str</em>) = the fluid that flows in the network (default = <em>'water'</em>)</li>
+<li><code>fluid_temperature</code>: (<em>float</em>) = the fluid temperature [°C]</li>
+<li><code>pipe_schedule</code>: (<em>str</em>) = the pipe schedule of the sections (default = <em>'pipe_schedule_40'</em>)</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def create_network(cls, **kwargs):
+    &#34;&#34;&#34;
+    Create the *Network* object.
+
+    **kwargs:**
+
+    - `start_node_id`: (*str*) = start node id of the network
+    - `end_node_id`: (*str*) = end node id of the network
+    - `fluid`: (*str*) = the fluid that flows in the network (default = *&#39;water&#39;*)
+    - `fluid_temperature`: (*float*) = the fluid temperature [°C]
+    - `pipe_schedule`: (*str*) = the pipe schedule of the sections (default = *&#39;pipe_schedule_40&#39;*)
+
+    &#34;&#34;&#34;
+    start_node_id: str = kwargs.get(&#39;start_node_id&#39;, &#39;&#39;)
+    end_node_id: str = kwargs.get(&#39;end_node_id&#39;, &#39;&#39;)
+    fluid_str: str = kwargs.get(&#39;fluid&#39;, &#39;water&#39;)
+    fluid_temperature: float = kwargs.get(&#39;fluid_temperature&#39;, 10.0)
+    sch_str: str = kwargs.get(&#39;pipe_schedule&#39;, &#39;pipe_schedule_40&#39;)
+
+    fluid = cls._create_fluid(fluid_str, fluid_temperature)
+    pipe_schedule = cls._create_pipe_schedule(sch_str)
+    cls.network = Network.create(
+        start_node_id=start_node_id,
+        end_node_id=end_node_id,
+        fluid=fluid,
+        pipe_schedule=pipe_schedule
+    )</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.analysis.Analyzer.get_network"><code class="name flex">
+<span>def <span class="ident">get_network</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Return the solved network as a Pandas DataFrame.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def get_network(cls) -&gt; pd.DataFrame:
+    &#34;&#34;&#34;Return the solved network as a Pandas DataFrame.&#34;&#34;&#34;
+    keys = [
+        &#39;loop_id&#39;,
+        &#39;section_id&#39;,
+        &#39;start_node_id&#39;,
+        &#39;end_node_id&#39;,
+        f&#39;length [{cls.units[&#34;length&#34;]}]&#39;,
+        f&#39;diameter [{cls.units[&#34;diameter&#34;]}]&#39;,
+        &#39;zeta&#39;,
+        f&#39;flow_rate [{cls.units[&#34;flow_rate&#34;]}]&#39;,
+        f&#39;velocity [{cls.units[&#34;velocity&#34;]}]&#39;,
+        f&#39;pressure_drop [{cls.units[&#34;pressure&#34;]}]&#39;
+    ]
+    d = {k: [] for k in keys}
+    for loop in cls.network.loops.values():
+        for section in loop.sections.values():
+            d[keys[0]].append(loop.id)
+            d[keys[1]].append(section.id)
+            d[keys[2]].append(section.start_node.id)
+            d[keys[3]].append(section.end_node.id)
+            d[keys[4]].append(section.length(cls.units[&#39;length&#39;], 3))
+            d[keys[5]].append(section.nominal_diameter(cls.units[&#39;diameter&#39;], 3))
+            d[keys[6]].append(section.zeta)
+            d[keys[7]].append(section.sign * section.flow_rate(cls.units[&#39;flow_rate&#39;], 3))
+            d[keys[8]].append(section.sign * section.velocity(cls.units[&#39;velocity&#39;], 3))
+            d[keys[9]].append(section.pressure_drop(cls.units[&#39;pressure&#39;], 3))
+    return pd.DataFrame(d)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.analysis.Analyzer.get_paths"><code class="name flex">
+<span>def <span class="ident">get_paths</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Get the flow paths in the solved network, returned as a Pandas DataFrame.
+For each flow path is returned:</p>
+<ul>
+<li>velocity head</li>
+<li>elevation head</li>
+<li>dynamic head</li>
+<li>static head</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def get_paths(cls) -&gt; pd.DataFrame:
+    &#34;&#34;&#34;
+    Get the flow paths in the solved network, returned as a Pandas DataFrame.
+    For each flow path is returned:
+
+    - velocity head
+    - elevation head
+    - dynamic head
+    - static head
+
+    &#34;&#34;&#34;
+    keys = [
+        &#39;path&#39;,
+        f&#39;dp,vel [{cls.units[&#34;pressure&#34;]}]&#39;,
+        f&#39;dp,elev [{cls.units[&#34;pressure&#34;]}]&#39;,
+        f&#39;dp,dyn [{cls.units[&#34;pressure&#34;]}]&#39;,
+        f&#39;dp,stat [{cls.units[&#34;pressure&#34;]}]&#39;,
+    ]
+    d = {k: [] for k in keys}
+    for path in cls.network.paths:
+        d[keys[0]].append(repr(path))
+        d[keys[1]].append(path.velocity_head(cls.units[&#39;pressure&#39;], 3))
+        d[keys[2]].append(path.elevation_head(cls.units[&#39;pressure&#39;], 3))
+        d[keys[3]].append(path.dynamic_head(cls.units[&#39;pressure&#39;], 3))
+        d[keys[4]].append(path.static_head(cls.units[&#39;pressure&#39;], 3))
+    return pd.DataFrame(d)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.analysis.Analyzer.set_units"><code class="name flex">
+<span>def <span class="ident">set_units</span></span>(<span>units)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Set the measuring SI-units of the quantities that will be used as input and that will be returned as output.</p>
+<p>Parameter <code>units</code> is a dictionary (<em>Dict[str, str]</em>) that can contain the following keys with corresponding
+measuring units assigned to them:</p>
+<ul>
+<li><em>'length'</em> (default value = <em>'m'</em>)</li>
+<li><em>'diameter'</em> (default value = <em>'mm'</em>)</li>
+<li><em>'flow_rate'</em> (default value = <em>'L/s'</em>)</li>
+<li><em>'pressure'</em> (default value = <em>'bar'</em>)</li>
+<li><em>'velocity'</em> (default value = <em>'m/s'</em>)</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def set_units(cls, units: Dict[str, str]):
+    &#34;&#34;&#34;
+    Set the measuring SI-units of the quantities that will be used as input and that will be returned as output.
+
+    Parameter `units` is a dictionary (*Dict[str, str]*) that can contain the following keys with corresponding
+    measuring units assigned to them:
+
+    - *&#39;length&#39;* (default value = *&#39;m&#39;*)
+    - *&#39;diameter&#39;* (default value = *&#39;mm&#39;*)
+    - *&#39;flow_rate&#39;* (default value = *&#39;L/s&#39;*)
+    - *&#39;pressure&#39;* (default value = *&#39;bar&#39;*)
+    - *&#39;velocity&#39;* (default value = *&#39;m/s&#39;*)
+
+    &#34;&#34;&#34;
+    cls.units.update(units)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.analysis.Analyzer.solve"><code class="name flex">
+<span>def <span class="ident">solve</span></span>(<span>error=0.001, i_max=30)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Solve the piping network for flow rates and pressure drops.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>error</code>: (<em>float</em>) = allowable deviation from zero for the pressure drop around each loop</li>
+<li><code>i_max</code>: (<em>int</em>) = the maximum number of iterations to find a solution within the given error tolerance</li>
+</ul>
+<p>If no solution within the given fault tolerance is found after maximum number of iterations an <em>OverflowError</em>
+exception is raised.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def solve(cls, error: float = 1.0e-3, i_max: int = 30):
+    &#34;&#34;&#34;
+    Solve the piping network for flow rates and pressure drops.
+
+    **Parameters:**
+
+    - `error`: (*float*) = allowable deviation from zero for the pressure drop around each loop
+    - `i_max`: (*int*) = the maximum number of iterations to find a solution within the given error tolerance
+
+    If no solution within the given fault tolerance is found after maximum number of iterations an *OverflowError*
+    exception is raised.
+
+    &#34;&#34;&#34;
+    cls.network.solve(error, i_max)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#user-interface-for-doing-network-flow-analysis-using-the-hardy-cross-method">User interface for doing network flow analysis using the Hardy Cross method</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pypeflow.analysis" href="index.html">pypeflow.analysis</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pypeflow.analysis.analysis.Analyzer" href="#pypeflow.analysis.analysis.Analyzer">Analyzer</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pypeflow.analysis.analysis.Analyzer.configure_network" href="#pypeflow.analysis.analysis.Analyzer.configure_network">configure_network</a></code></li>
+<li><code><a title="pypeflow.analysis.analysis.Analyzer.create_network" href="#pypeflow.analysis.analysis.Analyzer.create_network">create_network</a></code></li>
+<li><code><a title="pypeflow.analysis.analysis.Analyzer.get_network" href="#pypeflow.analysis.analysis.Analyzer.get_network">get_network</a></code></li>
+<li><code><a title="pypeflow.analysis.analysis.Analyzer.get_paths" href="#pypeflow.analysis.analysis.Analyzer.get_paths">get_paths</a></code></li>
+<li><code><a title="pypeflow.analysis.analysis.Analyzer.network" href="#pypeflow.analysis.analysis.Analyzer.network">network</a></code></li>
+<li><code><a title="pypeflow.analysis.analysis.Analyzer.set_units" href="#pypeflow.analysis.analysis.Analyzer.set_units">set_units</a></code></li>
+<li><code><a title="pypeflow.analysis.analysis.Analyzer.solve" href="#pypeflow.analysis.analysis.Analyzer.solve">solve</a></code></li>
+<li><code><a title="pypeflow.analysis.analysis.Analyzer.units" href="#pypeflow.analysis.analysis.Analyzer.units">units</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

@@ -1,0 +1,1892 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>pypeflow.analysis.network API documentation</title>
+<meta name="description" content="Modeling the components for network flow analysis" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pypeflow.analysis.network</code></h1>
+</header>
+<section id="section-intro">
+<h2 id="modeling-the-components-for-network-flow-analysis">Modeling the components for network flow analysis</h2>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+## Modeling the components for network flow analysis
+&#34;&#34;&#34;
+from typing import Dict, Tuple, Optional, List, Type
+import math
+import threading
+import quantities as qty
+from pypeflow.core.fluids import Fluid
+from pypeflow.core.pipe_schedules import PipeSchedule
+from pypeflow.core.pipe import Pipe
+
+
+class Node:
+    &#34;&#34;&#34;Class that models a network node.&#34;&#34;&#34;
+
+    def __init__(self, id_: str):
+        &#34;&#34;&#34;Create a Node with given id (*str*).&#34;&#34;&#34;
+        self.id: str = id_
+        self._in: Dict[str, Section] = {}
+        self._out: Dict[str, Section] = {}
+
+    def connect(self, section: &#39;Section&#39;, direction: str):
+        &#34;&#34;&#34;
+        Connect a pipe section (*Section* object) to the node.
+
+        Parameter `direction` (*str*) needs to specify if the section leaves the node (value = *&#39;out&#39;*) or arrives at
+        the node (value = *&#39;in&#39;*).
+        &#34;&#34;&#34;
+        if direction == &#39;in&#39;:
+            self._in.setdefault(section.id, section)  # only add section if key section.id does not exist
+        if direction == &#39;out&#39; and section not in self._out:
+            self._out.setdefault(section.id, section)
+
+    def check_flow_balance(self, V_ext_in: Optional[List[qty.VolumeFlowRate]] = None,
+                           V_ext_out: Optional[List[qty.VolumeFlowRate]] = None) -&gt; float:
+        &#34;&#34;&#34;
+        Check if the sum of entering and exiting flow rates at the network node equals zero (see physical law of the
+        conservation of mass).
+
+        **Parameters:**
+
+        - `V_ext_in`: (list of *quantities.VolumeFlowRate* objects) = external flow rates that enter the network at
+        the node
+        - `V_ext_out`: (list of *quantities.VolumeFlowRate* objects) = flow rates that leave the network at the node
+
+        **Returns:** (*float*) = the difference between entering and exiting flow rates at the node
+
+        &#34;&#34;&#34;
+        sum_V_in = sum([section.V for section in self._in.values() if section.type != &#39;pseudo&#39;])
+        sum_V_out = sum([section.V for section in self._out.values() if section.type != &#39;pseudo&#39;])
+        if V_ext_in is not None:
+            sum_V_in += sum([V() for V in V_ext_in])
+        if V_ext_out is not None:
+            sum_V_out += sum([V() for V in V_ext_out])
+        return sum_V_in - sum_V_out
+
+    @property
+    def incoming(self) -&gt; List[&#39;Section&#39;]:
+        &#34;&#34;&#34;Get a list of the *Section* objects that are entering the node.&#34;&#34;&#34;
+        return list(self._in.values())
+
+    @property
+    def outgoing(self) -&gt; List[&#39;Section&#39;]:
+        &#34;&#34;&#34;Get a list of the *Section* objects that are leaving the node.&#34;&#34;&#34;
+        return list(self._out.values())
+
+
+class Section:
+    &#34;&#34;&#34;Class that models a pipe section in a network.&#34;&#34;&#34;
+
+    def __init__(self, section_id: str, loop_id: str, start_node: Node, end_node: Node):
+        &#34;&#34;&#34;
+        Create *Section* object.
+
+        **Parameters:**
+
+        - `section_id`: (*str*) = id of the pipe section in the network
+        - `loop_id`: (*str*) = id of the primary network loop to which the section belongs
+        - `start_node`: (*Node* object) = start node of the pipe section
+        - `end_node`: (*Node* object) = end node of the pipe section
+
+        &#34;&#34;&#34;
+        self.id: str = section_id
+        self.loop_id: str = loop_id
+        self.start_node: Node = start_node
+        self.end_node: Node = end_node
+        self.start_node.connect(self, &#39;out&#39;)
+        self.end_node.connect(self, &#39;in&#39;)
+        self.type: str = &#39;&#39;
+        self.sign: int = 1
+        self._length: float = math.nan
+        self._nom_diameter: float = math.nan
+        self.zeta: float = math.nan
+        self._a: Tuple[float, float, float] = (math.nan, math.nan, math.nan)
+        self.V: float = math.nan
+        self.dp: float = math.nan
+        self._fluid: Optional[Fluid] = None
+        self._pipe_schedule: Optional[Type[PipeSchedule]] = None
+
+    def configure_section(self, **kwargs):
+        &#34;&#34;&#34;
+        Configure the pipe section.
+
+        **kwargs:**
+
+        - `dp_fixed`: (*quantities.Pressure*) = pressure difference between start and end node in case of a pseudo
+        section
+        - `pump_curve`: (*Tuple[float, float, float]*) = pump coefficients that describe the pump curve in case of a
+        pump section
+        - `length`: (*quantities.Length*) = the length of the section
+        - `nominal_diameter`: (*quantities.Length*) = the nominal diameter of the section
+        - `zeta`: (*float*) = sum of resistance coefficients of fittings/valves in the section
+        - `flow_rate`: (*quantities.VolumeFlowRate*) = (initial guess of) the flow rate through the section
+        - `fluid`: (object of type *pyflow.core.fluids.Fluid*) = fluid that flows in the section
+        - `pipe_schedule`: (type of *pyflow.core.pipe_schedules.PipeSchedule*) = pipe schedule of the section
+
+        &#34;&#34;&#34;
+        if kwargs[&#39;dp_fixed&#39;] is not None:
+            self.type = &#39;pseudo&#39;
+            self.dp = kwargs[&#39;dp_fixed&#39;]()
+        else:
+            if kwargs[&#39;pump_curve&#39;] is not None:
+                self.type = &#39;pump&#39;
+                self._a = kwargs[&#39;pump_curve&#39;]
+            else:
+                self.type = &#39;pipe&#39;
+            self._length = kwargs[&#39;length&#39;]()
+            self._nom_diameter = kwargs[&#39;nominal_diameter&#39;]()
+            self.zeta = kwargs[&#39;zeta&#39;]
+            V = kwargs[&#39;flow_rate&#39;]()
+            if V &lt; 0.0:
+                self.V = abs(V)
+                self.sign = -1
+            else:
+                self.V = V
+            self._fluid = kwargs[&#39;fluid&#39;]
+            self._pipe_schedule = kwargs[&#39;pipe_schedule&#39;]
+
+    @property
+    def dp_pipe(self) -&gt; float:
+        &#34;&#34;&#34;Get (signed) pressure drop (*float*) [Pa] across the pipe section.&#34;&#34;&#34;
+        return self.sign * self.dp
+
+    @property
+    def n_pipe(self) -&gt; float:
+        &#34;&#34;&#34;Get numerator term of pipe section to calculate the loop correction term.&#34;&#34;&#34;
+        return 2.0 * self.dp / self.V
+
+    @property
+    def dp_pump(self) -&gt; float:
+        &#34;&#34;&#34;Get (signed) pressure drop or gain (*float*) across the pump section.&#34;&#34;&#34;
+        return (self.sign * self.dp
+                - self.sign * (self._a[0] + self._a[1] * self.V + self._a[2] * self.V ** 2))
+
+    @property
+    def n_pump(self) -&gt; float:
+        &#34;&#34;&#34;Get numerator term of pump section to calculate loop correction term.&#34;&#34;&#34;
+        return (2.0 * self.dp / self.V
+                - (self._a[1] + 2.0 * self._a[2] * self.V))
+
+    @property
+    def dp_pseudo(self) -&gt; float:
+        &#34;&#34;&#34;Get pressure difference (*float*) across the pseudo section.&#34;&#34;&#34;
+        return self.dp
+
+    def calc_pressure_drop(self):
+        &#34;&#34;&#34;Calculate pressure drop across the pipe or pump section.&#34;&#34;&#34;
+        if self.type != &#39;pseudo&#39;:
+            pipe = Pipe.create(
+                fluid=self._fluid,
+                pipe_schedule=self._pipe_schedule,
+                length=self.length,
+                flow_rate=self.flow_rate,
+                nominal_diameter=self.nominal_diameter,
+                sum_zeta=self.zeta
+            )
+            self.dp = pipe.friction_loss() + pipe.minor_losses()
+
+    @property
+    def length(self) -&gt; qty.Length:
+        &#34;&#34;&#34;Get length (*quantities.Length*) of the section.&#34;&#34;&#34;
+        return qty.Length(self._length)
+
+    @property
+    def nominal_diameter(self) -&gt; qty.Length:
+        &#34;&#34;&#34;Get diameter (*quantities.Length*) of the section.&#34;&#34;&#34;
+        return qty.Length(self._nom_diameter)
+
+    @property
+    def flow_rate(self) -&gt; qty.VolumeFlowRate:
+        &#34;&#34;&#34;Get flow rate (*quantities.VolumeFlowRate*) of the section.&#34;&#34;&#34;
+        return qty.VolumeFlowRate(self.V)
+
+    @property
+    def pressure_drop(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;Get pressure drop (or gain in case of a pump section) (*quantities.Pressure*) across the section.&#34;&#34;&#34;
+        dp = 0.0
+        if self.type == &#39;pipe&#39;:
+            dp = self.dp_pipe
+        elif self.type == &#39;pump&#39;:
+            dp = self.dp_pump
+        elif self.type == &#39;pseudo&#39;:
+            dp = self.dp_pseudo
+        return qty.Pressure(dp)
+
+    @property
+    def velocity(self) -&gt; qty.Velocity:
+        &#34;&#34;&#34;Get flow velocity (*quantities.Velocity*) in the section.&#34;&#34;&#34;
+        if self.type != &#39;pseudo&#39;:
+            di = self._pipe_schedule.inside_diameter(self.nominal_diameter)
+        else:
+            di = qty.Length(math.nan)
+        return qty.Velocity(self.V / (math.pi * di() ** 2 / 4.0))
+
+    @property
+    def velocity_pressure(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;Get velocity pressure (*quantities.Velocity*) in the section.&#34;&#34;&#34;
+        v = self.velocity()
+        rho = self._fluid.density()
+        return qty.Pressure(rho * v ** 2 / 2)
+
+
+class Loop:
+    &#34;&#34;&#34;Class that models a primary loop in the network.&#34;&#34;&#34;
+
+    def __init__(self, id_: str):
+        &#34;&#34;&#34;Create *Loop* object with given id (*str*).&#34;&#34;&#34;
+        self.id: str = id_
+        self.sections: Dict[str, Section] = {}
+        self.corr_term: float = math.nan
+
+    def add_section(self, section: Section):
+        &#34;&#34;&#34;Add a section (*Section* object) to the loop.&#34;&#34;&#34;
+        v = self.sections.setdefault(section.id, section)
+        if v is not section:
+            raise ValueError(f&#39;section with {section.id} was already added to loop {self.id}&#39;)
+
+    def calculate_correction_term(self):
+        &#34;&#34;&#34;Calculate loop correction term.&#34;&#34;&#34;
+        d = 0.0
+        n = 0.0
+        for section in self.sections.values():
+            section.calc_pressure_drop()
+            if section.type == &#39;pipe&#39;:
+                d += section.dp_pipe
+                n += section.n_pipe
+            elif section.type == &#39;pump&#39;:
+                d += section.dp_pump
+                n += section.n_pump
+            elif section.type == &#39;pseudo&#39;:
+                d += section.dp_pseudo
+        self.corr_term = d / n
+
+    @property
+    def pressure_drop(self):
+        &#34;&#34;&#34;Get pressure drop (*float*) around the loop.&#34;&#34;&#34;
+        dp_loop = 0.0
+        for section in self.sections.values():
+            if section.type == &#39;pipe&#39;:
+                dp_loop += section.dp_pipe
+            elif section.type == &#39;pump&#39;:
+                dp_loop += section.dp_pump
+            elif section.type == &#39;pseudo&#39;:
+                dp_loop += section.dp_pseudo
+        return dp_loop
+
+
+class FlowPath(List[Section]):
+    &#34;&#34;&#34;Class that models a flow path between the start and end node of the network.&#34;&#34;&#34;
+
+    def __repr__(self):
+        return &#39;|&#39;.join([section.id for section in self])
+
+    def get_first_real_section(self) -&gt; Section:
+        &#34;&#34;&#34;Get the first section in the flow path that is not a pseudo section.&#34;&#34;&#34;
+        for section in self:
+            if section.type != &#39;pseudo&#39;:
+                return section
+
+    def get_last_real_section(self) -&gt; Section:
+        &#34;&#34;&#34;Get the last section in the flow path that is not a pseudo section.&#34;&#34;&#34;
+        for section in reversed(self):
+            if section.type != &#39;pseudo&#39;:
+                return section
+
+    @property
+    def dynamic_head(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;Get the dynamic head (*quantities.Pressure*) between end and start node of the flow path.&#34;&#34;&#34;
+        return qty.Pressure(sum([section.pressure_drop() for section in self if section.type != &#39;pseudo&#39;]))
+
+    @property
+    def elevation_head(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;Get the elevation head (*quantities.Pressure*) between end and start node of the flow path.&#34;&#34;&#34;
+        return qty.Pressure(sum([section.pressure_drop() for section in self if section.type == &#39;pseudo&#39;]))
+
+    @property
+    def velocity_head(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;Get the velocity head (*quantities.Pressure*) between end and start node of the flow path.&#34;&#34;&#34;
+        first = self.get_first_real_section()
+        last = self.get_last_real_section()
+        vp1 = first.velocity_pressure()
+        vp2 = last.velocity_pressure()
+        return qty.Pressure(vp2 - vp1)
+
+    @property
+    def static_head(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;Get the static head (*quantities.Pressure*) between end and start node of the flow path.&#34;&#34;&#34;
+        dp_vel = self.velocity_head()
+        dp_elev = self.elevation_head()
+        dp_dyn = self.dynamic_head()
+        return qty.Pressure(-(dp_vel + dp_elev + dp_dyn))
+
+
+class Network:
+    &#34;&#34;&#34;Class that models a piping network.&#34;&#34;&#34;
+
+    def __init__(self):
+        self.start_node_id: str = &#39;&#39;
+        self.end_node_id: str = &#39;&#39;
+        self.fluid: Optional[Fluid] = None
+        self.pipe_schedule: Optional[Type[PipeSchedule]] = None
+        self.loops: Dict[str, Loop] = {}
+        self.nodes: Dict[str, Node] = {}
+        self.sections: Dict[str, List[Section]] = {}
+        self._paths: List[FlowPath] = []
+
+    @classmethod
+    def create(cls, **kwargs):
+        &#34;&#34;&#34;
+        Create Network object.
+
+        **kwargs:**
+
+        - `start_node_id`: (*str*) = start node of the network
+        - `end_node_id`: (*str*) = end node of the network
+        - `fluid`: (object of type *pyflow.core.fluids.Fluid*) = fluid that flows in the network
+        - `pipe_schedule`: (type of *pyflow.core.pipe_schedules.PipeSchedule) = pipe schedule of the network sections
+
+        &#34;&#34;&#34;
+        start_node_id: str = kwargs.get(&#39;start_node_id&#39;)
+        end_node_id: str = kwargs.get(&#39;end_node_id&#39;)
+        fluid: Fluid = kwargs.get(&#39;fluid&#39;)
+        pipe_schedule: Type[PipeSchedule] = kwargs.get(&#39;pipe_schedule&#39;)
+
+        n = cls()
+        n.start_node_id = start_node_id
+        n.end_node_id = end_node_id
+        n.fluid = fluid
+        n.pipe_schedule = pipe_schedule
+        return n
+
+    def add_section(self, **kwargs):
+        &#34;&#34;&#34;
+        Add a new section to the network.
+
+        **kwargs:**
+
+        - `section_id`: (*str*) = id of the section
+        - `start_node_id`: (*str*) = the id of the start node of the section
+        - `end_node_id`: (*str*) = the id of the end node of the section
+        - `loop_id`: (*str*) = the id of the loop to which the section belongs
+
+        &#34;&#34;&#34;
+        section_id = kwargs.pop(&#39;section_id&#39;)
+        sn_id = kwargs.pop(&#39;start_node_id&#39;)
+        en_id = kwargs.pop(&#39;end_node_id&#39;)
+        loop_id = kwargs.pop(&#39;loop_id&#39;)
+        kwargs.update({&#39;fluid&#39;: self.fluid, &#39;pipe_schedule&#39;: self.pipe_schedule})
+
+        start_node = self.nodes.setdefault(sn_id, Node(sn_id))
+        end_node = self.nodes.setdefault(en_id, Node(en_id))
+        section = Section(section_id, loop_id, start_node, end_node)
+        section.configure_section(**kwargs)
+        loop = self.loops.setdefault(loop_id, Loop(loop_id))
+        loop.add_section(section)
+        section_list = self.sections.setdefault(section_id, [])
+        section_list.append(section)
+
+    def calculate_step(self):
+        &#34;&#34;&#34;
+        Calculate new flow rates and pressure drops following the Hardy Cross method.
+
+        &#34;&#34;&#34;
+        # calculate loop correction terms
+        for loop in self.loops.values():
+            loop.calculate_correction_term()
+
+        # apply correction terms to sections in each loop, except pseudo sections
+        for loop in self.loops.values():
+            for section in loop.sections.values():
+                if section.type != &#39;pseudo&#39;:
+                    # check if section belongs to two loops
+                    section_list = self.sections[section.id]
+                    if len(section_list) == 2:
+                        if section_list[0].loop_id != loop.id:
+                            second_loop_id = section_list[0].loop_id
+                        else:
+                            second_loop_id = section_list[1].loop_id
+                        corr_term = loop.corr_term - self.loops[second_loop_id].corr_term
+                    else:
+                        corr_term = loop.corr_term
+                    # apply correction term to section flow rate
+                    if section.sign == -1:
+                        section.V += corr_term
+                    else:
+                        section.V -= corr_term
+                    # if the flow rate direction is reversed after correction, reverse sign
+                    if section.V &lt; 0.0:
+                        section.sign = -section.sign
+                        section.V = abs(section.V)
+
+    def _check_loops(self, error: float):
+        &#34;&#34;&#34;Check if the loop pressure drops are smaller than the allowable error (i.e. deviation from zero).&#34;&#34;&#34;
+        if False in [abs(loop.pressure_drop) &lt; error for loop in self.loops.values()]:
+            return False
+        return True
+
+    def solve(self, error: float = 1.0e-3, i_max: int = 30):
+        &#34;&#34;&#34;
+        Solve the piping network for flow rates and pressure drops.
+
+        **Parameters:**
+
+        - `error`: (*float*) = allowable deviation from zero for the pressure drop around each loop
+        - `i_max`: (*int*) = the maximum number of iterations to find a solution within the given error tolerance
+
+        If no solution within the given fault tolerance is found after maximum number of iterations an *OverflowError*
+        exception is raised.
+
+        &#34;&#34;&#34;
+        i = 0
+        self.calculate_step()
+        while not self._check_loops(error):
+            self.calculate_step()
+            i += 1
+            if i &gt; i_max:
+                raise OverflowError(&#39;no solution found while maximum number of iterations has been exceeded&#39;)
+        return True
+
+    def _find_flow_paths(self):
+        &#34;&#34;&#34;Find all the possible flow paths between the start node and end node of the network.&#34;&#34;&#34;
+        path = FlowPath()
+        self._paths.append(path)
+        try:
+            node = self.nodes[self.start_node_id]  # get start node of network
+            self._search(node, path)               # begin searching at start node of network
+        except IndexError:
+            self._paths = []
+
+    def _search(self, node: Node, path: FlowPath):
+        # search until the end node of the network has been reached
+        # if the current node has more than 1 outgoing connection, then
+        # for each outgoing connection except the first one...
+        #   create a new empty path
+        #   add the current path to the new path
+        #   add the connection to the new path
+        #   add the new path to the list of paths in the network
+        #   create a thread that begins searching from the end node of the connection
+        # add the first outgoing connection of the current node to the current path
+        # and then set current node to the end node of the first outgoing connection
+        while node.id != self.end_node_id:
+            if len(node.outgoing) &gt; 1:
+                for section in node.outgoing[1:]:
+                    new_path = FlowPath()
+                    new_path.extend(path)
+                    new_path.append(section)
+                    self._paths.append(new_path)
+                    thread = threading.Thread(
+                        target=self._search,
+                        args=(self.nodes[section.end_node.id], new_path)
+                    )
+                    thread.start()
+                    thread.join()
+            path.append(node.outgoing[0])
+            node = self.nodes[path[-1].end_node.id]
+
+    @property
+    def paths(self) -&gt; List[FlowPath]:
+        &#34;&#34;&#34;Get the flow paths (*List[FlowPath]*) in the network.&#34;&#34;&#34;
+        if not self._paths: self._find_flow_paths()
+        return self._paths
+
+    @property
+    def flow_rate(self) -&gt; qty.VolumeFlowRate:
+        &#34;&#34;&#34;
+        Get the flow rate (*quantities.VolumeFlowRate*) of the network, i.e. the sum of the leaving flow rates at the
+        start node of the network, which is equal to the total flow rate that enters the network.
+
+        &#34;&#34;&#34;
+        start_node = self.nodes[self.start_node_id]
+        V = 0.0
+        for section in start_node.outgoing:
+            V += section.flow_rate()
+        return qty.VolumeFlowRate(V)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pypeflow.analysis.network.FlowPath"><code class="flex name class">
+<span>class <span class="ident">FlowPath</span></span>
+<span>(</span><span>iterable=())</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Class that models a flow path between the start and end node of the network.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FlowPath(List[Section]):
+    &#34;&#34;&#34;Class that models a flow path between the start and end node of the network.&#34;&#34;&#34;
+
+    def __repr__(self):
+        return &#39;|&#39;.join([section.id for section in self])
+
+    def get_first_real_section(self) -&gt; Section:
+        &#34;&#34;&#34;Get the first section in the flow path that is not a pseudo section.&#34;&#34;&#34;
+        for section in self:
+            if section.type != &#39;pseudo&#39;:
+                return section
+
+    def get_last_real_section(self) -&gt; Section:
+        &#34;&#34;&#34;Get the last section in the flow path that is not a pseudo section.&#34;&#34;&#34;
+        for section in reversed(self):
+            if section.type != &#39;pseudo&#39;:
+                return section
+
+    @property
+    def dynamic_head(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;Get the dynamic head (*quantities.Pressure*) between end and start node of the flow path.&#34;&#34;&#34;
+        return qty.Pressure(sum([section.pressure_drop() for section in self if section.type != &#39;pseudo&#39;]))
+
+    @property
+    def elevation_head(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;Get the elevation head (*quantities.Pressure*) between end and start node of the flow path.&#34;&#34;&#34;
+        return qty.Pressure(sum([section.pressure_drop() for section in self if section.type == &#39;pseudo&#39;]))
+
+    @property
+    def velocity_head(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;Get the velocity head (*quantities.Pressure*) between end and start node of the flow path.&#34;&#34;&#34;
+        first = self.get_first_real_section()
+        last = self.get_last_real_section()
+        vp1 = first.velocity_pressure()
+        vp2 = last.velocity_pressure()
+        return qty.Pressure(vp2 - vp1)
+
+    @property
+    def static_head(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;Get the static head (*quantities.Pressure*) between end and start node of the flow path.&#34;&#34;&#34;
+        dp_vel = self.velocity_head()
+        dp_elev = self.elevation_head()
+        dp_dyn = self.dynamic_head()
+        return qty.Pressure(-(dp_vel + dp_elev + dp_dyn))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.list</li>
+<li>typing.Generic</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pypeflow.analysis.network.FlowPath.dynamic_head"><code class="name">var <span class="ident">dynamic_head</span></code></dt>
+<dd>
+<section class="desc"><p>Get the dynamic head (<em>quantities.Pressure</em>) between end and start node of the flow path.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def dynamic_head(self) -&gt; qty.Pressure:
+    &#34;&#34;&#34;Get the dynamic head (*quantities.Pressure*) between end and start node of the flow path.&#34;&#34;&#34;
+    return qty.Pressure(sum([section.pressure_drop() for section in self if section.type != &#39;pseudo&#39;]))</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.network.FlowPath.elevation_head"><code class="name">var <span class="ident">elevation_head</span></code></dt>
+<dd>
+<section class="desc"><p>Get the elevation head (<em>quantities.Pressure</em>) between end and start node of the flow path.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def elevation_head(self) -&gt; qty.Pressure:
+    &#34;&#34;&#34;Get the elevation head (*quantities.Pressure*) between end and start node of the flow path.&#34;&#34;&#34;
+    return qty.Pressure(sum([section.pressure_drop() for section in self if section.type == &#39;pseudo&#39;]))</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.network.FlowPath.static_head"><code class="name">var <span class="ident">static_head</span></code></dt>
+<dd>
+<section class="desc"><p>Get the static head (<em>quantities.Pressure</em>) between end and start node of the flow path.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def static_head(self) -&gt; qty.Pressure:
+    &#34;&#34;&#34;Get the static head (*quantities.Pressure*) between end and start node of the flow path.&#34;&#34;&#34;
+    dp_vel = self.velocity_head()
+    dp_elev = self.elevation_head()
+    dp_dyn = self.dynamic_head()
+    return qty.Pressure(-(dp_vel + dp_elev + dp_dyn))</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.network.FlowPath.velocity_head"><code class="name">var <span class="ident">velocity_head</span></code></dt>
+<dd>
+<section class="desc"><p>Get the velocity head (<em>quantities.Pressure</em>) between end and start node of the flow path.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def velocity_head(self) -&gt; qty.Pressure:
+    &#34;&#34;&#34;Get the velocity head (*quantities.Pressure*) between end and start node of the flow path.&#34;&#34;&#34;
+    first = self.get_first_real_section()
+    last = self.get_last_real_section()
+    vp1 = first.velocity_pressure()
+    vp2 = last.velocity_pressure()
+    return qty.Pressure(vp2 - vp1)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pypeflow.analysis.network.FlowPath.get_first_real_section"><code class="name flex">
+<span>def <span class="ident">get_first_real_section</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Get the first section in the flow path that is not a pseudo section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_first_real_section(self) -&gt; Section:
+    &#34;&#34;&#34;Get the first section in the flow path that is not a pseudo section.&#34;&#34;&#34;
+    for section in self:
+        if section.type != &#39;pseudo&#39;:
+            return section</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.network.FlowPath.get_last_real_section"><code class="name flex">
+<span>def <span class="ident">get_last_real_section</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Get the last section in the flow path that is not a pseudo section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_last_real_section(self) -&gt; Section:
+    &#34;&#34;&#34;Get the last section in the flow path that is not a pseudo section.&#34;&#34;&#34;
+    for section in reversed(self):
+        if section.type != &#39;pseudo&#39;:
+            return section</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pypeflow.analysis.network.Loop"><code class="flex name class">
+<span>class <span class="ident">Loop</span></span>
+<span>(</span><span>id_)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Class that models a primary loop in the network.</p>
+<p>Create <em>Loop</em> object with given id (<em>str</em>).</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Loop:
+    &#34;&#34;&#34;Class that models a primary loop in the network.&#34;&#34;&#34;
+
+    def __init__(self, id_: str):
+        &#34;&#34;&#34;Create *Loop* object with given id (*str*).&#34;&#34;&#34;
+        self.id: str = id_
+        self.sections: Dict[str, Section] = {}
+        self.corr_term: float = math.nan
+
+    def add_section(self, section: Section):
+        &#34;&#34;&#34;Add a section (*Section* object) to the loop.&#34;&#34;&#34;
+        v = self.sections.setdefault(section.id, section)
+        if v is not section:
+            raise ValueError(f&#39;section with {section.id} was already added to loop {self.id}&#39;)
+
+    def calculate_correction_term(self):
+        &#34;&#34;&#34;Calculate loop correction term.&#34;&#34;&#34;
+        d = 0.0
+        n = 0.0
+        for section in self.sections.values():
+            section.calc_pressure_drop()
+            if section.type == &#39;pipe&#39;:
+                d += section.dp_pipe
+                n += section.n_pipe
+            elif section.type == &#39;pump&#39;:
+                d += section.dp_pump
+                n += section.n_pump
+            elif section.type == &#39;pseudo&#39;:
+                d += section.dp_pseudo
+        self.corr_term = d / n
+
+    @property
+    def pressure_drop(self):
+        &#34;&#34;&#34;Get pressure drop (*float*) around the loop.&#34;&#34;&#34;
+        dp_loop = 0.0
+        for section in self.sections.values():
+            if section.type == &#39;pipe&#39;:
+                dp_loop += section.dp_pipe
+            elif section.type == &#39;pump&#39;:
+                dp_loop += section.dp_pump
+            elif section.type == &#39;pseudo&#39;:
+                dp_loop += section.dp_pseudo
+        return dp_loop</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pypeflow.analysis.network.Loop.pressure_drop"><code class="name">var <span class="ident">pressure_drop</span></code></dt>
+<dd>
+<section class="desc"><p>Get pressure drop (<em>float</em>) around the loop.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def pressure_drop(self):
+    &#34;&#34;&#34;Get pressure drop (*float*) around the loop.&#34;&#34;&#34;
+    dp_loop = 0.0
+    for section in self.sections.values():
+        if section.type == &#39;pipe&#39;:
+            dp_loop += section.dp_pipe
+        elif section.type == &#39;pump&#39;:
+            dp_loop += section.dp_pump
+        elif section.type == &#39;pseudo&#39;:
+            dp_loop += section.dp_pseudo
+    return dp_loop</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pypeflow.analysis.network.Loop.add_section"><code class="name flex">
+<span>def <span class="ident">add_section</span></span>(<span>self, section)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Add a section (<em>Section</em> object) to the loop.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_section(self, section: Section):
+    &#34;&#34;&#34;Add a section (*Section* object) to the loop.&#34;&#34;&#34;
+    v = self.sections.setdefault(section.id, section)
+    if v is not section:
+        raise ValueError(f&#39;section with {section.id} was already added to loop {self.id}&#39;)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.network.Loop.calculate_correction_term"><code class="name flex">
+<span>def <span class="ident">calculate_correction_term</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Calculate loop correction term.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calculate_correction_term(self):
+    &#34;&#34;&#34;Calculate loop correction term.&#34;&#34;&#34;
+    d = 0.0
+    n = 0.0
+    for section in self.sections.values():
+        section.calc_pressure_drop()
+        if section.type == &#39;pipe&#39;:
+            d += section.dp_pipe
+            n += section.n_pipe
+        elif section.type == &#39;pump&#39;:
+            d += section.dp_pump
+            n += section.n_pump
+        elif section.type == &#39;pseudo&#39;:
+            d += section.dp_pseudo
+    self.corr_term = d / n</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pypeflow.analysis.network.Network"><code class="flex name class">
+<span>class <span class="ident">Network</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>Class that models a piping network.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Network:
+    &#34;&#34;&#34;Class that models a piping network.&#34;&#34;&#34;
+
+    def __init__(self):
+        self.start_node_id: str = &#39;&#39;
+        self.end_node_id: str = &#39;&#39;
+        self.fluid: Optional[Fluid] = None
+        self.pipe_schedule: Optional[Type[PipeSchedule]] = None
+        self.loops: Dict[str, Loop] = {}
+        self.nodes: Dict[str, Node] = {}
+        self.sections: Dict[str, List[Section]] = {}
+        self._paths: List[FlowPath] = []
+
+    @classmethod
+    def create(cls, **kwargs):
+        &#34;&#34;&#34;
+        Create Network object.
+
+        **kwargs:**
+
+        - `start_node_id`: (*str*) = start node of the network
+        - `end_node_id`: (*str*) = end node of the network
+        - `fluid`: (object of type *pyflow.core.fluids.Fluid*) = fluid that flows in the network
+        - `pipe_schedule`: (type of *pyflow.core.pipe_schedules.PipeSchedule) = pipe schedule of the network sections
+
+        &#34;&#34;&#34;
+        start_node_id: str = kwargs.get(&#39;start_node_id&#39;)
+        end_node_id: str = kwargs.get(&#39;end_node_id&#39;)
+        fluid: Fluid = kwargs.get(&#39;fluid&#39;)
+        pipe_schedule: Type[PipeSchedule] = kwargs.get(&#39;pipe_schedule&#39;)
+
+        n = cls()
+        n.start_node_id = start_node_id
+        n.end_node_id = end_node_id
+        n.fluid = fluid
+        n.pipe_schedule = pipe_schedule
+        return n
+
+    def add_section(self, **kwargs):
+        &#34;&#34;&#34;
+        Add a new section to the network.
+
+        **kwargs:**
+
+        - `section_id`: (*str*) = id of the section
+        - `start_node_id`: (*str*) = the id of the start node of the section
+        - `end_node_id`: (*str*) = the id of the end node of the section
+        - `loop_id`: (*str*) = the id of the loop to which the section belongs
+
+        &#34;&#34;&#34;
+        section_id = kwargs.pop(&#39;section_id&#39;)
+        sn_id = kwargs.pop(&#39;start_node_id&#39;)
+        en_id = kwargs.pop(&#39;end_node_id&#39;)
+        loop_id = kwargs.pop(&#39;loop_id&#39;)
+        kwargs.update({&#39;fluid&#39;: self.fluid, &#39;pipe_schedule&#39;: self.pipe_schedule})
+
+        start_node = self.nodes.setdefault(sn_id, Node(sn_id))
+        end_node = self.nodes.setdefault(en_id, Node(en_id))
+        section = Section(section_id, loop_id, start_node, end_node)
+        section.configure_section(**kwargs)
+        loop = self.loops.setdefault(loop_id, Loop(loop_id))
+        loop.add_section(section)
+        section_list = self.sections.setdefault(section_id, [])
+        section_list.append(section)
+
+    def calculate_step(self):
+        &#34;&#34;&#34;
+        Calculate new flow rates and pressure drops following the Hardy Cross method.
+
+        &#34;&#34;&#34;
+        # calculate loop correction terms
+        for loop in self.loops.values():
+            loop.calculate_correction_term()
+
+        # apply correction terms to sections in each loop, except pseudo sections
+        for loop in self.loops.values():
+            for section in loop.sections.values():
+                if section.type != &#39;pseudo&#39;:
+                    # check if section belongs to two loops
+                    section_list = self.sections[section.id]
+                    if len(section_list) == 2:
+                        if section_list[0].loop_id != loop.id:
+                            second_loop_id = section_list[0].loop_id
+                        else:
+                            second_loop_id = section_list[1].loop_id
+                        corr_term = loop.corr_term - self.loops[second_loop_id].corr_term
+                    else:
+                        corr_term = loop.corr_term
+                    # apply correction term to section flow rate
+                    if section.sign == -1:
+                        section.V += corr_term
+                    else:
+                        section.V -= corr_term
+                    # if the flow rate direction is reversed after correction, reverse sign
+                    if section.V &lt; 0.0:
+                        section.sign = -section.sign
+                        section.V = abs(section.V)
+
+    def _check_loops(self, error: float):
+        &#34;&#34;&#34;Check if the loop pressure drops are smaller than the allowable error (i.e. deviation from zero).&#34;&#34;&#34;
+        if False in [abs(loop.pressure_drop) &lt; error for loop in self.loops.values()]:
+            return False
+        return True
+
+    def solve(self, error: float = 1.0e-3, i_max: int = 30):
+        &#34;&#34;&#34;
+        Solve the piping network for flow rates and pressure drops.
+
+        **Parameters:**
+
+        - `error`: (*float*) = allowable deviation from zero for the pressure drop around each loop
+        - `i_max`: (*int*) = the maximum number of iterations to find a solution within the given error tolerance
+
+        If no solution within the given fault tolerance is found after maximum number of iterations an *OverflowError*
+        exception is raised.
+
+        &#34;&#34;&#34;
+        i = 0
+        self.calculate_step()
+        while not self._check_loops(error):
+            self.calculate_step()
+            i += 1
+            if i &gt; i_max:
+                raise OverflowError(&#39;no solution found while maximum number of iterations has been exceeded&#39;)
+        return True
+
+    def _find_flow_paths(self):
+        &#34;&#34;&#34;Find all the possible flow paths between the start node and end node of the network.&#34;&#34;&#34;
+        path = FlowPath()
+        self._paths.append(path)
+        try:
+            node = self.nodes[self.start_node_id]  # get start node of network
+            self._search(node, path)               # begin searching at start node of network
+        except IndexError:
+            self._paths = []
+
+    def _search(self, node: Node, path: FlowPath):
+        # search until the end node of the network has been reached
+        # if the current node has more than 1 outgoing connection, then
+        # for each outgoing connection except the first one...
+        #   create a new empty path
+        #   add the current path to the new path
+        #   add the connection to the new path
+        #   add the new path to the list of paths in the network
+        #   create a thread that begins searching from the end node of the connection
+        # add the first outgoing connection of the current node to the current path
+        # and then set current node to the end node of the first outgoing connection
+        while node.id != self.end_node_id:
+            if len(node.outgoing) &gt; 1:
+                for section in node.outgoing[1:]:
+                    new_path = FlowPath()
+                    new_path.extend(path)
+                    new_path.append(section)
+                    self._paths.append(new_path)
+                    thread = threading.Thread(
+                        target=self._search,
+                        args=(self.nodes[section.end_node.id], new_path)
+                    )
+                    thread.start()
+                    thread.join()
+            path.append(node.outgoing[0])
+            node = self.nodes[path[-1].end_node.id]
+
+    @property
+    def paths(self) -&gt; List[FlowPath]:
+        &#34;&#34;&#34;Get the flow paths (*List[FlowPath]*) in the network.&#34;&#34;&#34;
+        if not self._paths: self._find_flow_paths()
+        return self._paths
+
+    @property
+    def flow_rate(self) -&gt; qty.VolumeFlowRate:
+        &#34;&#34;&#34;
+        Get the flow rate (*quantities.VolumeFlowRate*) of the network, i.e. the sum of the leaving flow rates at the
+        start node of the network, which is equal to the total flow rate that enters the network.
+
+        &#34;&#34;&#34;
+        start_node = self.nodes[self.start_node_id]
+        V = 0.0
+        for section in start_node.outgoing:
+            V += section.flow_rate()
+        return qty.VolumeFlowRate(V)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="pypeflow.analysis.network.Network.create"><code class="name flex">
+<span>def <span class="ident">create</span></span>(<span>**kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Create Network object.</p>
+<p><strong>kwargs:</strong></p>
+<ul>
+<li><code>start_node_id</code>: (<em>str</em>) = start node of the network</li>
+<li><code>end_node_id</code>: (<em>str</em>) = end node of the network</li>
+<li><code>fluid</code>: (object of type <em>pyflow.core.fluids.Fluid</em>) = fluid that flows in the network</li>
+<li><code>pipe_schedule</code>: (type of *pyflow.core.pipe_schedules.PipeSchedule) = pipe schedule of the network sections</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def create(cls, **kwargs):
+    &#34;&#34;&#34;
+    Create Network object.
+
+    **kwargs:**
+
+    - `start_node_id`: (*str*) = start node of the network
+    - `end_node_id`: (*str*) = end node of the network
+    - `fluid`: (object of type *pyflow.core.fluids.Fluid*) = fluid that flows in the network
+    - `pipe_schedule`: (type of *pyflow.core.pipe_schedules.PipeSchedule) = pipe schedule of the network sections
+
+    &#34;&#34;&#34;
+    start_node_id: str = kwargs.get(&#39;start_node_id&#39;)
+    end_node_id: str = kwargs.get(&#39;end_node_id&#39;)
+    fluid: Fluid = kwargs.get(&#39;fluid&#39;)
+    pipe_schedule: Type[PipeSchedule] = kwargs.get(&#39;pipe_schedule&#39;)
+
+    n = cls()
+    n.start_node_id = start_node_id
+    n.end_node_id = end_node_id
+    n.fluid = fluid
+    n.pipe_schedule = pipe_schedule
+    return n</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pypeflow.analysis.network.Network.flow_rate"><code class="name">var <span class="ident">flow_rate</span></code></dt>
+<dd>
+<section class="desc"><p>Get the flow rate (<em>quantities.VolumeFlowRate</em>) of the network, i.e. the sum of the leaving flow rates at the
+start node of the network, which is equal to the total flow rate that enters the network.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def flow_rate(self) -&gt; qty.VolumeFlowRate:
+    &#34;&#34;&#34;
+    Get the flow rate (*quantities.VolumeFlowRate*) of the network, i.e. the sum of the leaving flow rates at the
+    start node of the network, which is equal to the total flow rate that enters the network.
+
+    &#34;&#34;&#34;
+    start_node = self.nodes[self.start_node_id]
+    V = 0.0
+    for section in start_node.outgoing:
+        V += section.flow_rate()
+    return qty.VolumeFlowRate(V)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.network.Network.paths"><code class="name">var <span class="ident">paths</span></code></dt>
+<dd>
+<section class="desc"><p>Get the flow paths (<em>List[FlowPath]</em>) in the network.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def paths(self) -&gt; List[FlowPath]:
+    &#34;&#34;&#34;Get the flow paths (*List[FlowPath]*) in the network.&#34;&#34;&#34;
+    if not self._paths: self._find_flow_paths()
+    return self._paths</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pypeflow.analysis.network.Network.add_section"><code class="name flex">
+<span>def <span class="ident">add_section</span></span>(<span>self, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Add a new section to the network.</p>
+<p><strong>kwargs:</strong></p>
+<ul>
+<li><code>section_id</code>: (<em>str</em>) = id of the section</li>
+<li><code>start_node_id</code>: (<em>str</em>) = the id of the start node of the section</li>
+<li><code>end_node_id</code>: (<em>str</em>) = the id of the end node of the section</li>
+<li><code>loop_id</code>: (<em>str</em>) = the id of the loop to which the section belongs</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_section(self, **kwargs):
+    &#34;&#34;&#34;
+    Add a new section to the network.
+
+    **kwargs:**
+
+    - `section_id`: (*str*) = id of the section
+    - `start_node_id`: (*str*) = the id of the start node of the section
+    - `end_node_id`: (*str*) = the id of the end node of the section
+    - `loop_id`: (*str*) = the id of the loop to which the section belongs
+
+    &#34;&#34;&#34;
+    section_id = kwargs.pop(&#39;section_id&#39;)
+    sn_id = kwargs.pop(&#39;start_node_id&#39;)
+    en_id = kwargs.pop(&#39;end_node_id&#39;)
+    loop_id = kwargs.pop(&#39;loop_id&#39;)
+    kwargs.update({&#39;fluid&#39;: self.fluid, &#39;pipe_schedule&#39;: self.pipe_schedule})
+
+    start_node = self.nodes.setdefault(sn_id, Node(sn_id))
+    end_node = self.nodes.setdefault(en_id, Node(en_id))
+    section = Section(section_id, loop_id, start_node, end_node)
+    section.configure_section(**kwargs)
+    loop = self.loops.setdefault(loop_id, Loop(loop_id))
+    loop.add_section(section)
+    section_list = self.sections.setdefault(section_id, [])
+    section_list.append(section)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.network.Network.calculate_step"><code class="name flex">
+<span>def <span class="ident">calculate_step</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Calculate new flow rates and pressure drops following the Hardy Cross method.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calculate_step(self):
+    &#34;&#34;&#34;
+    Calculate new flow rates and pressure drops following the Hardy Cross method.
+
+    &#34;&#34;&#34;
+    # calculate loop correction terms
+    for loop in self.loops.values():
+        loop.calculate_correction_term()
+
+    # apply correction terms to sections in each loop, except pseudo sections
+    for loop in self.loops.values():
+        for section in loop.sections.values():
+            if section.type != &#39;pseudo&#39;:
+                # check if section belongs to two loops
+                section_list = self.sections[section.id]
+                if len(section_list) == 2:
+                    if section_list[0].loop_id != loop.id:
+                        second_loop_id = section_list[0].loop_id
+                    else:
+                        second_loop_id = section_list[1].loop_id
+                    corr_term = loop.corr_term - self.loops[second_loop_id].corr_term
+                else:
+                    corr_term = loop.corr_term
+                # apply correction term to section flow rate
+                if section.sign == -1:
+                    section.V += corr_term
+                else:
+                    section.V -= corr_term
+                # if the flow rate direction is reversed after correction, reverse sign
+                if section.V &lt; 0.0:
+                    section.sign = -section.sign
+                    section.V = abs(section.V)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.network.Network.solve"><code class="name flex">
+<span>def <span class="ident">solve</span></span>(<span>self, error=0.001, i_max=30)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Solve the piping network for flow rates and pressure drops.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>error</code>: (<em>float</em>) = allowable deviation from zero for the pressure drop around each loop</li>
+<li><code>i_max</code>: (<em>int</em>) = the maximum number of iterations to find a solution within the given error tolerance</li>
+</ul>
+<p>If no solution within the given fault tolerance is found after maximum number of iterations an <em>OverflowError</em>
+exception is raised.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def solve(self, error: float = 1.0e-3, i_max: int = 30):
+    &#34;&#34;&#34;
+    Solve the piping network for flow rates and pressure drops.
+
+    **Parameters:**
+
+    - `error`: (*float*) = allowable deviation from zero for the pressure drop around each loop
+    - `i_max`: (*int*) = the maximum number of iterations to find a solution within the given error tolerance
+
+    If no solution within the given fault tolerance is found after maximum number of iterations an *OverflowError*
+    exception is raised.
+
+    &#34;&#34;&#34;
+    i = 0
+    self.calculate_step()
+    while not self._check_loops(error):
+        self.calculate_step()
+        i += 1
+        if i &gt; i_max:
+            raise OverflowError(&#39;no solution found while maximum number of iterations has been exceeded&#39;)
+    return True</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pypeflow.analysis.network.Node"><code class="flex name class">
+<span>class <span class="ident">Node</span></span>
+<span>(</span><span>id_)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Class that models a network node.</p>
+<p>Create a Node with given id (<em>str</em>).</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Node:
+    &#34;&#34;&#34;Class that models a network node.&#34;&#34;&#34;
+
+    def __init__(self, id_: str):
+        &#34;&#34;&#34;Create a Node with given id (*str*).&#34;&#34;&#34;
+        self.id: str = id_
+        self._in: Dict[str, Section] = {}
+        self._out: Dict[str, Section] = {}
+
+    def connect(self, section: &#39;Section&#39;, direction: str):
+        &#34;&#34;&#34;
+        Connect a pipe section (*Section* object) to the node.
+
+        Parameter `direction` (*str*) needs to specify if the section leaves the node (value = *&#39;out&#39;*) or arrives at
+        the node (value = *&#39;in&#39;*).
+        &#34;&#34;&#34;
+        if direction == &#39;in&#39;:
+            self._in.setdefault(section.id, section)  # only add section if key section.id does not exist
+        if direction == &#39;out&#39; and section not in self._out:
+            self._out.setdefault(section.id, section)
+
+    def check_flow_balance(self, V_ext_in: Optional[List[qty.VolumeFlowRate]] = None,
+                           V_ext_out: Optional[List[qty.VolumeFlowRate]] = None) -&gt; float:
+        &#34;&#34;&#34;
+        Check if the sum of entering and exiting flow rates at the network node equals zero (see physical law of the
+        conservation of mass).
+
+        **Parameters:**
+
+        - `V_ext_in`: (list of *quantities.VolumeFlowRate* objects) = external flow rates that enter the network at
+        the node
+        - `V_ext_out`: (list of *quantities.VolumeFlowRate* objects) = flow rates that leave the network at the node
+
+        **Returns:** (*float*) = the difference between entering and exiting flow rates at the node
+
+        &#34;&#34;&#34;
+        sum_V_in = sum([section.V for section in self._in.values() if section.type != &#39;pseudo&#39;])
+        sum_V_out = sum([section.V for section in self._out.values() if section.type != &#39;pseudo&#39;])
+        if V_ext_in is not None:
+            sum_V_in += sum([V() for V in V_ext_in])
+        if V_ext_out is not None:
+            sum_V_out += sum([V() for V in V_ext_out])
+        return sum_V_in - sum_V_out
+
+    @property
+    def incoming(self) -&gt; List[&#39;Section&#39;]:
+        &#34;&#34;&#34;Get a list of the *Section* objects that are entering the node.&#34;&#34;&#34;
+        return list(self._in.values())
+
+    @property
+    def outgoing(self) -&gt; List[&#39;Section&#39;]:
+        &#34;&#34;&#34;Get a list of the *Section* objects that are leaving the node.&#34;&#34;&#34;
+        return list(self._out.values())</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pypeflow.analysis.network.Node.incoming"><code class="name">var <span class="ident">incoming</span></code></dt>
+<dd>
+<section class="desc"><p>Get a list of the <em>Section</em> objects that are entering the node.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def incoming(self) -&gt; List[&#39;Section&#39;]:
+    &#34;&#34;&#34;Get a list of the *Section* objects that are entering the node.&#34;&#34;&#34;
+    return list(self._in.values())</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.network.Node.outgoing"><code class="name">var <span class="ident">outgoing</span></code></dt>
+<dd>
+<section class="desc"><p>Get a list of the <em>Section</em> objects that are leaving the node.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def outgoing(self) -&gt; List[&#39;Section&#39;]:
+    &#34;&#34;&#34;Get a list of the *Section* objects that are leaving the node.&#34;&#34;&#34;
+    return list(self._out.values())</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pypeflow.analysis.network.Node.check_flow_balance"><code class="name flex">
+<span>def <span class="ident">check_flow_balance</span></span>(<span>self, V_ext_in=None, V_ext_out=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Check if the sum of entering and exiting flow rates at the network node equals zero (see physical law of the
+conservation of mass).</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>V_ext_in</code>: (list of <em>quantities.VolumeFlowRate</em> objects) = external flow rates that enter the network at
+the node</li>
+<li><code>V_ext_out</code>: (list of <em>quantities.VolumeFlowRate</em> objects) = flow rates that leave the network at the node</li>
+</ul>
+<p><strong>Returns:</strong> (<em>float</em>) = the difference between entering and exiting flow rates at the node</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def check_flow_balance(self, V_ext_in: Optional[List[qty.VolumeFlowRate]] = None,
+                       V_ext_out: Optional[List[qty.VolumeFlowRate]] = None) -&gt; float:
+    &#34;&#34;&#34;
+    Check if the sum of entering and exiting flow rates at the network node equals zero (see physical law of the
+    conservation of mass).
+
+    **Parameters:**
+
+    - `V_ext_in`: (list of *quantities.VolumeFlowRate* objects) = external flow rates that enter the network at
+    the node
+    - `V_ext_out`: (list of *quantities.VolumeFlowRate* objects) = flow rates that leave the network at the node
+
+    **Returns:** (*float*) = the difference between entering and exiting flow rates at the node
+
+    &#34;&#34;&#34;
+    sum_V_in = sum([section.V for section in self._in.values() if section.type != &#39;pseudo&#39;])
+    sum_V_out = sum([section.V for section in self._out.values() if section.type != &#39;pseudo&#39;])
+    if V_ext_in is not None:
+        sum_V_in += sum([V() for V in V_ext_in])
+    if V_ext_out is not None:
+        sum_V_out += sum([V() for V in V_ext_out])
+    return sum_V_in - sum_V_out</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.network.Node.connect"><code class="name flex">
+<span>def <span class="ident">connect</span></span>(<span>self, section, direction)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Connect a pipe section (<em>Section</em> object) to the node.</p>
+<p>Parameter <code>direction</code> (<em>str</em>) needs to specify if the section leaves the node (value = <em>'out'</em>) or arrives at
+the node (value = <em>'in'</em>).</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def connect(self, section: &#39;Section&#39;, direction: str):
+    &#34;&#34;&#34;
+    Connect a pipe section (*Section* object) to the node.
+
+    Parameter `direction` (*str*) needs to specify if the section leaves the node (value = *&#39;out&#39;*) or arrives at
+    the node (value = *&#39;in&#39;*).
+    &#34;&#34;&#34;
+    if direction == &#39;in&#39;:
+        self._in.setdefault(section.id, section)  # only add section if key section.id does not exist
+    if direction == &#39;out&#39; and section not in self._out:
+        self._out.setdefault(section.id, section)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pypeflow.analysis.network.Section"><code class="flex name class">
+<span>class <span class="ident">Section</span></span>
+<span>(</span><span>section_id, loop_id, start_node, end_node)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Class that models a pipe section in a network.</p>
+<p>Create <em>Section</em> object.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>section_id</code>: (<em>str</em>) = id of the pipe section in the network</li>
+<li><code>loop_id</code>: (<em>str</em>) = id of the primary network loop to which the section belongs</li>
+<li><code>start_node</code>: (<em>Node</em> object) = start node of the pipe section</li>
+<li><code>end_node</code>: (<em>Node</em> object) = end node of the pipe section</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Section:
+    &#34;&#34;&#34;Class that models a pipe section in a network.&#34;&#34;&#34;
+
+    def __init__(self, section_id: str, loop_id: str, start_node: Node, end_node: Node):
+        &#34;&#34;&#34;
+        Create *Section* object.
+
+        **Parameters:**
+
+        - `section_id`: (*str*) = id of the pipe section in the network
+        - `loop_id`: (*str*) = id of the primary network loop to which the section belongs
+        - `start_node`: (*Node* object) = start node of the pipe section
+        - `end_node`: (*Node* object) = end node of the pipe section
+
+        &#34;&#34;&#34;
+        self.id: str = section_id
+        self.loop_id: str = loop_id
+        self.start_node: Node = start_node
+        self.end_node: Node = end_node
+        self.start_node.connect(self, &#39;out&#39;)
+        self.end_node.connect(self, &#39;in&#39;)
+        self.type: str = &#39;&#39;
+        self.sign: int = 1
+        self._length: float = math.nan
+        self._nom_diameter: float = math.nan
+        self.zeta: float = math.nan
+        self._a: Tuple[float, float, float] = (math.nan, math.nan, math.nan)
+        self.V: float = math.nan
+        self.dp: float = math.nan
+        self._fluid: Optional[Fluid] = None
+        self._pipe_schedule: Optional[Type[PipeSchedule]] = None
+
+    def configure_section(self, **kwargs):
+        &#34;&#34;&#34;
+        Configure the pipe section.
+
+        **kwargs:**
+
+        - `dp_fixed`: (*quantities.Pressure*) = pressure difference between start and end node in case of a pseudo
+        section
+        - `pump_curve`: (*Tuple[float, float, float]*) = pump coefficients that describe the pump curve in case of a
+        pump section
+        - `length`: (*quantities.Length*) = the length of the section
+        - `nominal_diameter`: (*quantities.Length*) = the nominal diameter of the section
+        - `zeta`: (*float*) = sum of resistance coefficients of fittings/valves in the section
+        - `flow_rate`: (*quantities.VolumeFlowRate*) = (initial guess of) the flow rate through the section
+        - `fluid`: (object of type *pyflow.core.fluids.Fluid*) = fluid that flows in the section
+        - `pipe_schedule`: (type of *pyflow.core.pipe_schedules.PipeSchedule*) = pipe schedule of the section
+
+        &#34;&#34;&#34;
+        if kwargs[&#39;dp_fixed&#39;] is not None:
+            self.type = &#39;pseudo&#39;
+            self.dp = kwargs[&#39;dp_fixed&#39;]()
+        else:
+            if kwargs[&#39;pump_curve&#39;] is not None:
+                self.type = &#39;pump&#39;
+                self._a = kwargs[&#39;pump_curve&#39;]
+            else:
+                self.type = &#39;pipe&#39;
+            self._length = kwargs[&#39;length&#39;]()
+            self._nom_diameter = kwargs[&#39;nominal_diameter&#39;]()
+            self.zeta = kwargs[&#39;zeta&#39;]
+            V = kwargs[&#39;flow_rate&#39;]()
+            if V &lt; 0.0:
+                self.V = abs(V)
+                self.sign = -1
+            else:
+                self.V = V
+            self._fluid = kwargs[&#39;fluid&#39;]
+            self._pipe_schedule = kwargs[&#39;pipe_schedule&#39;]
+
+    @property
+    def dp_pipe(self) -&gt; float:
+        &#34;&#34;&#34;Get (signed) pressure drop (*float*) [Pa] across the pipe section.&#34;&#34;&#34;
+        return self.sign * self.dp
+
+    @property
+    def n_pipe(self) -&gt; float:
+        &#34;&#34;&#34;Get numerator term of pipe section to calculate the loop correction term.&#34;&#34;&#34;
+        return 2.0 * self.dp / self.V
+
+    @property
+    def dp_pump(self) -&gt; float:
+        &#34;&#34;&#34;Get (signed) pressure drop or gain (*float*) across the pump section.&#34;&#34;&#34;
+        return (self.sign * self.dp
+                - self.sign * (self._a[0] + self._a[1] * self.V + self._a[2] * self.V ** 2))
+
+    @property
+    def n_pump(self) -&gt; float:
+        &#34;&#34;&#34;Get numerator term of pump section to calculate loop correction term.&#34;&#34;&#34;
+        return (2.0 * self.dp / self.V
+                - (self._a[1] + 2.0 * self._a[2] * self.V))
+
+    @property
+    def dp_pseudo(self) -&gt; float:
+        &#34;&#34;&#34;Get pressure difference (*float*) across the pseudo section.&#34;&#34;&#34;
+        return self.dp
+
+    def calc_pressure_drop(self):
+        &#34;&#34;&#34;Calculate pressure drop across the pipe or pump section.&#34;&#34;&#34;
+        if self.type != &#39;pseudo&#39;:
+            pipe = Pipe.create(
+                fluid=self._fluid,
+                pipe_schedule=self._pipe_schedule,
+                length=self.length,
+                flow_rate=self.flow_rate,
+                nominal_diameter=self.nominal_diameter,
+                sum_zeta=self.zeta
+            )
+            self.dp = pipe.friction_loss() + pipe.minor_losses()
+
+    @property
+    def length(self) -&gt; qty.Length:
+        &#34;&#34;&#34;Get length (*quantities.Length*) of the section.&#34;&#34;&#34;
+        return qty.Length(self._length)
+
+    @property
+    def nominal_diameter(self) -&gt; qty.Length:
+        &#34;&#34;&#34;Get diameter (*quantities.Length*) of the section.&#34;&#34;&#34;
+        return qty.Length(self._nom_diameter)
+
+    @property
+    def flow_rate(self) -&gt; qty.VolumeFlowRate:
+        &#34;&#34;&#34;Get flow rate (*quantities.VolumeFlowRate*) of the section.&#34;&#34;&#34;
+        return qty.VolumeFlowRate(self.V)
+
+    @property
+    def pressure_drop(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;Get pressure drop (or gain in case of a pump section) (*quantities.Pressure*) across the section.&#34;&#34;&#34;
+        dp = 0.0
+        if self.type == &#39;pipe&#39;:
+            dp = self.dp_pipe
+        elif self.type == &#39;pump&#39;:
+            dp = self.dp_pump
+        elif self.type == &#39;pseudo&#39;:
+            dp = self.dp_pseudo
+        return qty.Pressure(dp)
+
+    @property
+    def velocity(self) -&gt; qty.Velocity:
+        &#34;&#34;&#34;Get flow velocity (*quantities.Velocity*) in the section.&#34;&#34;&#34;
+        if self.type != &#39;pseudo&#39;:
+            di = self._pipe_schedule.inside_diameter(self.nominal_diameter)
+        else:
+            di = qty.Length(math.nan)
+        return qty.Velocity(self.V / (math.pi * di() ** 2 / 4.0))
+
+    @property
+    def velocity_pressure(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;Get velocity pressure (*quantities.Velocity*) in the section.&#34;&#34;&#34;
+        v = self.velocity()
+        rho = self._fluid.density()
+        return qty.Pressure(rho * v ** 2 / 2)</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pypeflow.analysis.network.Section.dp_pipe"><code class="name">var <span class="ident">dp_pipe</span></code></dt>
+<dd>
+<section class="desc"><p>Get (signed) pressure drop (<em>float</em>) [Pa] across the pipe section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def dp_pipe(self) -&gt; float:
+    &#34;&#34;&#34;Get (signed) pressure drop (*float*) [Pa] across the pipe section.&#34;&#34;&#34;
+    return self.sign * self.dp</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.network.Section.dp_pseudo"><code class="name">var <span class="ident">dp_pseudo</span></code></dt>
+<dd>
+<section class="desc"><p>Get pressure difference (<em>float</em>) across the pseudo section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def dp_pseudo(self) -&gt; float:
+    &#34;&#34;&#34;Get pressure difference (*float*) across the pseudo section.&#34;&#34;&#34;
+    return self.dp</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.network.Section.dp_pump"><code class="name">var <span class="ident">dp_pump</span></code></dt>
+<dd>
+<section class="desc"><p>Get (signed) pressure drop or gain (<em>float</em>) across the pump section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def dp_pump(self) -&gt; float:
+    &#34;&#34;&#34;Get (signed) pressure drop or gain (*float*) across the pump section.&#34;&#34;&#34;
+    return (self.sign * self.dp
+            - self.sign * (self._a[0] + self._a[1] * self.V + self._a[2] * self.V ** 2))</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.network.Section.flow_rate"><code class="name">var <span class="ident">flow_rate</span></code></dt>
+<dd>
+<section class="desc"><p>Get flow rate (<em>quantities.VolumeFlowRate</em>) of the section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def flow_rate(self) -&gt; qty.VolumeFlowRate:
+    &#34;&#34;&#34;Get flow rate (*quantities.VolumeFlowRate*) of the section.&#34;&#34;&#34;
+    return qty.VolumeFlowRate(self.V)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.network.Section.length"><code class="name">var <span class="ident">length</span></code></dt>
+<dd>
+<section class="desc"><p>Get length (<em>quantities.Length</em>) of the section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def length(self) -&gt; qty.Length:
+    &#34;&#34;&#34;Get length (*quantities.Length*) of the section.&#34;&#34;&#34;
+    return qty.Length(self._length)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.network.Section.n_pipe"><code class="name">var <span class="ident">n_pipe</span></code></dt>
+<dd>
+<section class="desc"><p>Get numerator term of pipe section to calculate the loop correction term.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def n_pipe(self) -&gt; float:
+    &#34;&#34;&#34;Get numerator term of pipe section to calculate the loop correction term.&#34;&#34;&#34;
+    return 2.0 * self.dp / self.V</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.network.Section.n_pump"><code class="name">var <span class="ident">n_pump</span></code></dt>
+<dd>
+<section class="desc"><p>Get numerator term of pump section to calculate loop correction term.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def n_pump(self) -&gt; float:
+    &#34;&#34;&#34;Get numerator term of pump section to calculate loop correction term.&#34;&#34;&#34;
+    return (2.0 * self.dp / self.V
+            - (self._a[1] + 2.0 * self._a[2] * self.V))</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.network.Section.nominal_diameter"><code class="name">var <span class="ident">nominal_diameter</span></code></dt>
+<dd>
+<section class="desc"><p>Get diameter (<em>quantities.Length</em>) of the section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def nominal_diameter(self) -&gt; qty.Length:
+    &#34;&#34;&#34;Get diameter (*quantities.Length*) of the section.&#34;&#34;&#34;
+    return qty.Length(self._nom_diameter)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.network.Section.pressure_drop"><code class="name">var <span class="ident">pressure_drop</span></code></dt>
+<dd>
+<section class="desc"><p>Get pressure drop (or gain in case of a pump section) (<em>quantities.Pressure</em>) across the section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def pressure_drop(self) -&gt; qty.Pressure:
+    &#34;&#34;&#34;Get pressure drop (or gain in case of a pump section) (*quantities.Pressure*) across the section.&#34;&#34;&#34;
+    dp = 0.0
+    if self.type == &#39;pipe&#39;:
+        dp = self.dp_pipe
+    elif self.type == &#39;pump&#39;:
+        dp = self.dp_pump
+    elif self.type == &#39;pseudo&#39;:
+        dp = self.dp_pseudo
+    return qty.Pressure(dp)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.network.Section.velocity"><code class="name">var <span class="ident">velocity</span></code></dt>
+<dd>
+<section class="desc"><p>Get flow velocity (<em>quantities.Velocity</em>) in the section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def velocity(self) -&gt; qty.Velocity:
+    &#34;&#34;&#34;Get flow velocity (*quantities.Velocity*) in the section.&#34;&#34;&#34;
+    if self.type != &#39;pseudo&#39;:
+        di = self._pipe_schedule.inside_diameter(self.nominal_diameter)
+    else:
+        di = qty.Length(math.nan)
+    return qty.Velocity(self.V / (math.pi * di() ** 2 / 4.0))</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.network.Section.velocity_pressure"><code class="name">var <span class="ident">velocity_pressure</span></code></dt>
+<dd>
+<section class="desc"><p>Get velocity pressure (<em>quantities.Velocity</em>) in the section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def velocity_pressure(self) -&gt; qty.Pressure:
+    &#34;&#34;&#34;Get velocity pressure (*quantities.Velocity*) in the section.&#34;&#34;&#34;
+    v = self.velocity()
+    rho = self._fluid.density()
+    return qty.Pressure(rho * v ** 2 / 2)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pypeflow.analysis.network.Section.calc_pressure_drop"><code class="name flex">
+<span>def <span class="ident">calc_pressure_drop</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Calculate pressure drop across the pipe or pump section.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calc_pressure_drop(self):
+    &#34;&#34;&#34;Calculate pressure drop across the pipe or pump section.&#34;&#34;&#34;
+    if self.type != &#39;pseudo&#39;:
+        pipe = Pipe.create(
+            fluid=self._fluid,
+            pipe_schedule=self._pipe_schedule,
+            length=self.length,
+            flow_rate=self.flow_rate,
+            nominal_diameter=self.nominal_diameter,
+            sum_zeta=self.zeta
+        )
+        self.dp = pipe.friction_loss() + pipe.minor_losses()</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.analysis.network.Section.configure_section"><code class="name flex">
+<span>def <span class="ident">configure_section</span></span>(<span>self, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Configure the pipe section.</p>
+<p><strong>kwargs:</strong></p>
+<ul>
+<li><code>dp_fixed</code>: (<em>quantities.Pressure</em>) = pressure difference between start and end node in case of a pseudo
+section</li>
+<li><code>pump_curve</code>: (<em>Tuple[float, float, float]</em>) = pump coefficients that describe the pump curve in case of a
+pump section</li>
+<li><code>length</code>: (<em>quantities.Length</em>) = the length of the section</li>
+<li><code>nominal_diameter</code>: (<em>quantities.Length</em>) = the nominal diameter of the section</li>
+<li><code>zeta</code>: (<em>float</em>) = sum of resistance coefficients of fittings/valves in the section</li>
+<li><code>flow_rate</code>: (<em>quantities.VolumeFlowRate</em>) = (initial guess of) the flow rate through the section</li>
+<li><code>fluid</code>: (object of type <em>pyflow.core.fluids.Fluid</em>) = fluid that flows in the section</li>
+<li><code>pipe_schedule</code>: (type of <em>pyflow.core.pipe_schedules.PipeSchedule</em>) = pipe schedule of the section</li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def configure_section(self, **kwargs):
+    &#34;&#34;&#34;
+    Configure the pipe section.
+
+    **kwargs:**
+
+    - `dp_fixed`: (*quantities.Pressure*) = pressure difference between start and end node in case of a pseudo
+    section
+    - `pump_curve`: (*Tuple[float, float, float]*) = pump coefficients that describe the pump curve in case of a
+    pump section
+    - `length`: (*quantities.Length*) = the length of the section
+    - `nominal_diameter`: (*quantities.Length*) = the nominal diameter of the section
+    - `zeta`: (*float*) = sum of resistance coefficients of fittings/valves in the section
+    - `flow_rate`: (*quantities.VolumeFlowRate*) = (initial guess of) the flow rate through the section
+    - `fluid`: (object of type *pyflow.core.fluids.Fluid*) = fluid that flows in the section
+    - `pipe_schedule`: (type of *pyflow.core.pipe_schedules.PipeSchedule*) = pipe schedule of the section
+
+    &#34;&#34;&#34;
+    if kwargs[&#39;dp_fixed&#39;] is not None:
+        self.type = &#39;pseudo&#39;
+        self.dp = kwargs[&#39;dp_fixed&#39;]()
+    else:
+        if kwargs[&#39;pump_curve&#39;] is not None:
+            self.type = &#39;pump&#39;
+            self._a = kwargs[&#39;pump_curve&#39;]
+        else:
+            self.type = &#39;pipe&#39;
+        self._length = kwargs[&#39;length&#39;]()
+        self._nom_diameter = kwargs[&#39;nominal_diameter&#39;]()
+        self.zeta = kwargs[&#39;zeta&#39;]
+        V = kwargs[&#39;flow_rate&#39;]()
+        if V &lt; 0.0:
+            self.V = abs(V)
+            self.sign = -1
+        else:
+            self.V = V
+        self._fluid = kwargs[&#39;fluid&#39;]
+        self._pipe_schedule = kwargs[&#39;pipe_schedule&#39;]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#modeling-the-components-for-network-flow-analysis">Modeling the components for network flow analysis</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pypeflow.analysis" href="index.html">pypeflow.analysis</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pypeflow.analysis.network.FlowPath" href="#pypeflow.analysis.network.FlowPath">FlowPath</a></code></h4>
+<ul class="">
+<li><code><a title="pypeflow.analysis.network.FlowPath.dynamic_head" href="#pypeflow.analysis.network.FlowPath.dynamic_head">dynamic_head</a></code></li>
+<li><code><a title="pypeflow.analysis.network.FlowPath.elevation_head" href="#pypeflow.analysis.network.FlowPath.elevation_head">elevation_head</a></code></li>
+<li><code><a title="pypeflow.analysis.network.FlowPath.get_first_real_section" href="#pypeflow.analysis.network.FlowPath.get_first_real_section">get_first_real_section</a></code></li>
+<li><code><a title="pypeflow.analysis.network.FlowPath.get_last_real_section" href="#pypeflow.analysis.network.FlowPath.get_last_real_section">get_last_real_section</a></code></li>
+<li><code><a title="pypeflow.analysis.network.FlowPath.static_head" href="#pypeflow.analysis.network.FlowPath.static_head">static_head</a></code></li>
+<li><code><a title="pypeflow.analysis.network.FlowPath.velocity_head" href="#pypeflow.analysis.network.FlowPath.velocity_head">velocity_head</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pypeflow.analysis.network.Loop" href="#pypeflow.analysis.network.Loop">Loop</a></code></h4>
+<ul class="">
+<li><code><a title="pypeflow.analysis.network.Loop.add_section" href="#pypeflow.analysis.network.Loop.add_section">add_section</a></code></li>
+<li><code><a title="pypeflow.analysis.network.Loop.calculate_correction_term" href="#pypeflow.analysis.network.Loop.calculate_correction_term">calculate_correction_term</a></code></li>
+<li><code><a title="pypeflow.analysis.network.Loop.pressure_drop" href="#pypeflow.analysis.network.Loop.pressure_drop">pressure_drop</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pypeflow.analysis.network.Network" href="#pypeflow.analysis.network.Network">Network</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pypeflow.analysis.network.Network.add_section" href="#pypeflow.analysis.network.Network.add_section">add_section</a></code></li>
+<li><code><a title="pypeflow.analysis.network.Network.calculate_step" href="#pypeflow.analysis.network.Network.calculate_step">calculate_step</a></code></li>
+<li><code><a title="pypeflow.analysis.network.Network.create" href="#pypeflow.analysis.network.Network.create">create</a></code></li>
+<li><code><a title="pypeflow.analysis.network.Network.flow_rate" href="#pypeflow.analysis.network.Network.flow_rate">flow_rate</a></code></li>
+<li><code><a title="pypeflow.analysis.network.Network.paths" href="#pypeflow.analysis.network.Network.paths">paths</a></code></li>
+<li><code><a title="pypeflow.analysis.network.Network.solve" href="#pypeflow.analysis.network.Network.solve">solve</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pypeflow.analysis.network.Node" href="#pypeflow.analysis.network.Node">Node</a></code></h4>
+<ul class="">
+<li><code><a title="pypeflow.analysis.network.Node.check_flow_balance" href="#pypeflow.analysis.network.Node.check_flow_balance">check_flow_balance</a></code></li>
+<li><code><a title="pypeflow.analysis.network.Node.connect" href="#pypeflow.analysis.network.Node.connect">connect</a></code></li>
+<li><code><a title="pypeflow.analysis.network.Node.incoming" href="#pypeflow.analysis.network.Node.incoming">incoming</a></code></li>
+<li><code><a title="pypeflow.analysis.network.Node.outgoing" href="#pypeflow.analysis.network.Node.outgoing">outgoing</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pypeflow.analysis.network.Section" href="#pypeflow.analysis.network.Section">Section</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pypeflow.analysis.network.Section.calc_pressure_drop" href="#pypeflow.analysis.network.Section.calc_pressure_drop">calc_pressure_drop</a></code></li>
+<li><code><a title="pypeflow.analysis.network.Section.configure_section" href="#pypeflow.analysis.network.Section.configure_section">configure_section</a></code></li>
+<li><code><a title="pypeflow.analysis.network.Section.dp_pipe" href="#pypeflow.analysis.network.Section.dp_pipe">dp_pipe</a></code></li>
+<li><code><a title="pypeflow.analysis.network.Section.dp_pseudo" href="#pypeflow.analysis.network.Section.dp_pseudo">dp_pseudo</a></code></li>
+<li><code><a title="pypeflow.analysis.network.Section.dp_pump" href="#pypeflow.analysis.network.Section.dp_pump">dp_pump</a></code></li>
+<li><code><a title="pypeflow.analysis.network.Section.flow_rate" href="#pypeflow.analysis.network.Section.flow_rate">flow_rate</a></code></li>
+<li><code><a title="pypeflow.analysis.network.Section.length" href="#pypeflow.analysis.network.Section.length">length</a></code></li>
+<li><code><a title="pypeflow.analysis.network.Section.n_pipe" href="#pypeflow.analysis.network.Section.n_pipe">n_pipe</a></code></li>
+<li><code><a title="pypeflow.analysis.network.Section.n_pump" href="#pypeflow.analysis.network.Section.n_pump">n_pump</a></code></li>
+<li><code><a title="pypeflow.analysis.network.Section.nominal_diameter" href="#pypeflow.analysis.network.Section.nominal_diameter">nominal_diameter</a></code></li>
+<li><code><a title="pypeflow.analysis.network.Section.pressure_drop" href="#pypeflow.analysis.network.Section.pressure_drop">pressure_drop</a></code></li>
+<li><code><a title="pypeflow.analysis.network.Section.velocity" href="#pypeflow.analysis.network.Section.velocity">velocity</a></code></li>
+<li><code><a title="pypeflow.analysis.network.Section.velocity_pressure" href="#pypeflow.analysis.network.Section.velocity_pressure">velocity_pressure</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
