@@ -2,6 +2,8 @@
 
 *A Python package, written in Python 3.7, for designing and analyzing small scale piping networks using SI-units.*
 
+At this moment only circular pipes are implemented. Supported fluids are water and air.
+
 **Designing** a piping network involves finding a solution for two kinds of problems:
 
 1. The design flow rates in the pipe sections composing the network are known. Also known are the available friction losses due to fluid flow in the pipe sections. The problem remains to find appropriate diameters for the pipe sections, so that the known flow rates do not generate friction losses that exceed the available values.
