@@ -1,0 +1,19 @@
+.my_table table {
+    border: 1px solid #ddd;
+}
+
+.my_table th, .my_table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    font-size: 1.25em;
+}
+
+.my_table td {
+    text-align: left;
+}
+
+.my_table th {
+    text-align: center;
+}
+
+
