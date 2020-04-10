@@ -57,6 +57,7 @@ For **designing a network**, the csv network configuration file for sections loo
 
 
 Column:
+
 0. id of the section
 1. start node id of the section
 2. height of the start node with respect to a chosen reference plane
