@@ -1,6 +1,6 @@
 # PypeFlow 2020.0
 
-*A Python package, written in Python 3.7, for designing and analyzing piping networks using SI-units.*
+*A Python package, written in Python 3.7, for designing and analyzing small scale piping networks using SI-units.*
 
 **Designing** a piping network involves finding a solution for two kinds of problems:
 
