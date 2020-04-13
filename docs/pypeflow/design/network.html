@@ -195,7 +195,7 @@ class Section:
         self._balancing_valve.set_pressure_excess(dp_excess)
         return self._balancing_valve.Kvr
 
-    def add_control_valve(self, target_authority: float) -&gt; float:
+    def add_control_valve(self, target_authority: float, dp_crit_path: qty.Pressure) -&gt; float:
         &#34;&#34;&#34;
         Add a control valve to the section. A section can have only one control valve.
 
@@ -210,7 +210,7 @@ class Section:
             self._pipe.fluid,
             self._pipe.flow_rate,
             target_authority,
-            self.pressure_drop
+            dp_crit_path
         )
         return self._control_valve.Kvs
 
@@ -1714,7 +1714,7 @@ def outgoing(self) -&gt; List[Section]:
         self._balancing_valve.set_pressure_excess(dp_excess)
         return self._balancing_valve.Kvr
 
-    def add_control_valve(self, target_authority: float) -&gt; float:
+    def add_control_valve(self, target_authority: float, dp_crit_path: qty.Pressure) -&gt; float:
         &#34;&#34;&#34;
         Add a control valve to the section. A section can have only one control valve.
 
@@ -1729,7 +1729,7 @@ def outgoing(self) -&gt; List[Section]:
             self._pipe.fluid,
             self._pipe.flow_rate,
             target_authority,
-            self.pressure_drop
+            dp_crit_path
         )
         return self._control_valve.Kvs
 
@@ -2235,7 +2235,7 @@ Preliminary calculated Kvs value for the balancing valve.</p></section>
 </details>
 </dd>
 <dt id="pypeflow.design.network.Section.add_control_valve"><code class="name flex">
-<span>def <span class="ident">add_control_valve</span></span>(<span>self, target_authority)</span>
+<span>def <span class="ident">add_control_valve</span></span>(<span>self, target_authority, dp_crit_path)</span>
 </code></dt>
 <dd>
 <section class="desc"><p>Add a control valve to the section. A section can have only one control valve.</p>
@@ -2248,7 +2248,7 @@ Preliminary calculated Kvs value for the balancing valve.</p></section>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def add_control_valve(self, target_authority: float) -&gt; float:
+<pre><code class="python">def add_control_valve(self, target_authority: float, dp_crit_path: qty.Pressure) -&gt; float:
     &#34;&#34;&#34;
     Add a control valve to the section. A section can have only one control valve.
 
@@ -2263,7 +2263,7 @@ Preliminary calculated Kvs value for the balancing valve.</p></section>
         self._pipe.fluid,
         self._pipe.flow_rate,
         target_authority,
-        self.pressure_drop
+        dp_crit_path
     )
     return self._control_valve.Kvs</code></pre>
 </details>

@@ -168,7 +168,7 @@ class Section:
         self._balancing_valve.set_pressure_excess(dp_excess)
         return self._balancing_valve.Kvr
 
-    def add_control_valve(self, target_authority: float) -> float:
+    def add_control_valve(self, target_authority: float, dp_crit_path: qty.Pressure) -> float:
         """
         Add a control valve to the section. A section can have only one control valve.
 
@@ -183,7 +183,7 @@ class Section:
             self._pipe.fluid,
             self._pipe.flow_rate,
             target_authority,
-            self.pressure_drop
+            dp_crit_path
         )
         return self._control_valve.Kvs
 

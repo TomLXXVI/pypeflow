@@ -101,11 +101,11 @@ class ControlValve:
         self._dp: float = math.nan
         self._Kvs: float = math.nan
         self._target_authority: float = math.nan
-        self._dp_section: float = math.nan
+        self._dp_crit_path: float = math.nan
 
     @classmethod
     def create(cls, fluid: Fluid, flow_rate: qty.VolumeFlowRate, target_authority: float,
-               dp_section: qty.Pressure) -> 'ControlValve':
+               dp_crit_path: qty.Pressure) -> 'ControlValve':
         """
         Create configured ControlValve object.<br>
         Based on target authority and section pressure loss a preliminary Kvs value is calculated.
@@ -115,7 +115,7 @@ class ControlValve:
         - `fluid`: (object of type *pyflow.core.fluids.Fluid*) = fluid through control valve
         - `flow_rate`: (*quantities.VolumeFlowRate*) = flow rate through control valve
         - `target_authority`: (*float*) = target authority of control valve at design
-        - `dp_section`: (*quantities.Pressure*) = pressure loss in pipe section without control valve
+        - `dp_crit_path`: (*quantities.Pressure*) = pressure loss in the critical path of the network
 
         **Returns:** (*ControlValve* object)
 
@@ -124,29 +124,28 @@ class ControlValve:
         cv._fluid = fluid
         cv._flow_rate = flow_rate()
         cv._target_authority = target_authority
-        cv._dp_section = dp_section()
+        cv._dp_crit_path = dp_crit_path()
         cv._calc_preliminary_Kvs()
         return cv
 
     def _calc_preliminary_Kvs(self):
-        dp_valve = self._target_authority * self._dp_section / (1.0 - self._target_authority)
-        Avs = self._flow_rate / math.sqrt(dp_valve / self._fluid.density('kg/m^3'))
+        # don't store the pressure drop across the control valve when the preliminary Kvs value is calculated, keep it
+        # local to the method
+        dp = self._target_authority * self._dp_crit_path / (1.0 - self._target_authority)
+        Avs = self._flow_rate / math.sqrt(dp / self._fluid.density('kg/m^3'))
         self._Kvs = FlowCoefficient.Av_to_Kv(Avs)
 
-    def authority(self, dp_section: qty.Pressure) -> float:
+    def authority(self, dp_crit_path: qty.Pressure) -> float:
         """
-        Get control valve authority (*float*) given pipe section pressure loss without the control valve
-        (*quantities.Pressure*).
-
+        Get control valve authority (*float*) given the pipe section pressure loss (*quantities.Pressure*).
         """
-        return self._dp / dp_section()
+        return self._dp / dp_crit_path()
 
     @property
     def Kvs(self) -> float:
         """
         Get/set (commercial available) Kvs value (*float*) of control valve.
         When set, the pressure drop across the control valve is recalculated.
-
         """
         return self._Kvs
 
@@ -154,11 +153,10 @@ class ControlValve:
     def Kvs(self, Kvs_: float):
         """
         Set  Kvs value (*float*) of control valve.
-
         """
         self._Kvs = Kvs_
         Avs = FlowCoefficient.Kv_to_Av(self._Kvs)
-        # update pressure drop across valve
+        # update pressure drop across control valve
         self._dp = self._fluid.density('kg/m^3') * (self._flow_rate / Avs) ** 2
 
     @property

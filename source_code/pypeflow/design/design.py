@@ -212,7 +212,7 @@ class Designer:
     @classmethod
     def init_balancing_valves(cls, Kvs_list: List[Tuple[str, float]]):
         """
-        Set the commercial available Kvs values of the balancing valves in the network.
+        Set the commercially available Kvs values of the balancing valves in the network.
 
         **Parameters:**
 
@@ -242,16 +242,20 @@ class Designer:
 
         """
         Kvs_pre_list: List[Tuple[str, float]] = []
+        # get the critical path in the network before any control valve has been added to the network.
+        # the static head of the critical path together with the target valve authority will be the criterion to
+        # calculate the preliminary Kvs values of the control valves.
+        dp_crit_path = cls.network.critical_path.static_head_required
         for section_id, target_authority in target_authority_list:
             section = cls.network.sections[section_id]
-            Kvs = section.add_control_valve(target_authority)
+            Kvs = section.add_control_valve(target_authority, dp_crit_path)
             Kvs_pre_list.append((section_id, Kvs))
         return Kvs_pre_list
 
     @classmethod
     def set_control_valves(cls, Kvs_list: List[Tuple[str, float]]):
         """
-        Set the commercial available Kvs value of the control valves in the network.
+        Set the commercially available Kvs value of the control valves in the network.
 
         **Parameters:**
 
@@ -351,7 +355,6 @@ class Designer:
     def get_fittings(cls) -> pd.DataFrame:
         """
         Returns an overview of the fittings in the network organised as a Pandas DataFrame.
-
         """
         keys = [
             'section_id',
@@ -382,7 +385,6 @@ class Designer:
     def get_control_valves(cls) -> pd.DataFrame:
         """
         Get an overview of the control valves in the network organised as a Pandas DataFrame.
-
         """
         keys = [
             'section_id',
@@ -392,20 +394,19 @@ class Designer:
         ]
         d = {k: [] for k in keys}
         cv_dict = cls.network.get_control_valves()
+        dp_crit_path = cls.network.critical_path.static_head_required
         for section_id, tup in cv_dict.items():
             control_valve = tup[0]
-            section = tup[1]
             d[keys[0]].append(section_id)
             d[keys[1]].append(control_valve.pressure_drop(cls.units['pressure'], 3))
             d[keys[2]].append(control_valve.Kvs)
-            d[keys[3]].append(control_valve.authority(section.pressure_drop))
+            d[keys[3]].append(control_valve.authority(dp_crit_path))
         return pd.DataFrame(d)
 
     @classmethod
     def get_balancing_valves(cls) -> pd.DataFrame:
         """
         Returns an overview of the balancing valves in the network organised as a Pandas DataFrame.
-
         """
         keys = [
             'section_id',
