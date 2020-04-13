@@ -1,4 +1,4 @@
-# PypeFlow 2020.1
+# PypeFlow 2020.2
 
 *A Python package, written in Python 3.7, for designing and analyzing small scale piping networks using SI-units.*
 
