@@ -660,7 +660,36 @@ class Network:
     @property
     def end_node_id(self) -&gt; str:
         &#34;&#34;&#34;Get the end node id of the network.&#34;&#34;&#34;
-        return self._end_node_id</code></pre>
+        return self._end_node_id
+
+    @property
+    def flow_rate(self) -&gt; qty.VolumeFlowRate:
+        &#34;&#34;&#34;Get the flow rate (*quantities.VolumeFlowRate*) that enters the network.&#34;&#34;&#34;
+        start_node = self._nodes[self._start_node_id]
+        V = 0.0
+        for section in start_node.outgoing:
+            V += section.flow_rate()
+        return qty.VolumeFlowRate(V)
+
+    @property
+    def feed_pressure(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;
+        Get the required feed pressure (*quantities.Pressure*) for the network, i.e. the required static head for
+        the critical path in the network. If the network is balanced, all flow paths share the same required static
+        head.
+        &#34;&#34;&#34;
+        return self.critical_path.static_head_required
+
+    @ property
+    def hydraulic_resistance(self) -&gt; float:
+        &#34;&#34;&#34;
+        Get the hydraulic resistance (*float*) of the network. Its value is based on flow rate and pressure expressed in
+        their base SI-units (m^3/s and Pa).
+        &#34;&#34;&#34;
+        V = self.flow_rate()
+        dp_feed = self.feed_pressure()
+        R = dp_feed / V ** 2
+        return R</code></pre>
 </details>
 </section>
 <section>
@@ -1089,7 +1118,36 @@ def velocity_head(self) -&gt; qty.Pressure:
     @property
     def end_node_id(self) -&gt; str:
         &#34;&#34;&#34;Get the end node id of the network.&#34;&#34;&#34;
-        return self._end_node_id</code></pre>
+        return self._end_node_id
+
+    @property
+    def flow_rate(self) -&gt; qty.VolumeFlowRate:
+        &#34;&#34;&#34;Get the flow rate (*quantities.VolumeFlowRate*) that enters the network.&#34;&#34;&#34;
+        start_node = self._nodes[self._start_node_id]
+        V = 0.0
+        for section in start_node.outgoing:
+            V += section.flow_rate()
+        return qty.VolumeFlowRate(V)
+
+    @property
+    def feed_pressure(self) -&gt; qty.Pressure:
+        &#34;&#34;&#34;
+        Get the required feed pressure (*quantities.Pressure*) for the network, i.e. the required static head for
+        the critical path in the network. If the network is balanced, all flow paths share the same required static
+        head.
+        &#34;&#34;&#34;
+        return self.critical_path.static_head_required
+
+    @ property
+    def hydraulic_resistance(self) -&gt; float:
+        &#34;&#34;&#34;
+        Get the hydraulic resistance (*float*) of the network. Its value is based on flow rate and pressure expressed in
+        their base SI-units (m^3/s and Pa).
+        &#34;&#34;&#34;
+        V = self.flow_rate()
+        dp_feed = self.feed_pressure()
+        R = dp_feed / V ** 2
+        return R</code></pre>
 </details>
 <h3>Static methods</h3>
 <dl>
@@ -1172,6 +1230,62 @@ def critical_path(self) -&gt; FlowPath:
 def end_node_id(self) -&gt; str:
     &#34;&#34;&#34;Get the end node id of the network.&#34;&#34;&#34;
     return self._end_node_id</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Network.feed_pressure"><code class="name">var <span class="ident">feed_pressure</span></code></dt>
+<dd>
+<section class="desc"><p>Get the required feed pressure (<em>quantities.Pressure</em>) for the network, i.e. the required static head for
+the critical path in the network. If the network is balanced, all flow paths share the same required static
+head.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def feed_pressure(self) -&gt; qty.Pressure:
+    &#34;&#34;&#34;
+    Get the required feed pressure (*quantities.Pressure*) for the network, i.e. the required static head for
+    the critical path in the network. If the network is balanced, all flow paths share the same required static
+    head.
+    &#34;&#34;&#34;
+    return self.critical_path.static_head_required</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Network.flow_rate"><code class="name">var <span class="ident">flow_rate</span></code></dt>
+<dd>
+<section class="desc"><p>Get the flow rate (<em>quantities.VolumeFlowRate</em>) that enters the network.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def flow_rate(self) -&gt; qty.VolumeFlowRate:
+    &#34;&#34;&#34;Get the flow rate (*quantities.VolumeFlowRate*) that enters the network.&#34;&#34;&#34;
+    start_node = self._nodes[self._start_node_id]
+    V = 0.0
+    for section in start_node.outgoing:
+        V += section.flow_rate()
+    return qty.VolumeFlowRate(V)</code></pre>
+</details>
+</dd>
+<dt id="pypeflow.design.network.Network.hydraulic_resistance"><code class="name">var <span class="ident">hydraulic_resistance</span></code></dt>
+<dd>
+<section class="desc"><p>Get the hydraulic resistance (<em>float</em>) of the network. Its value is based on flow rate and pressure expressed in
+their base SI-units (m^3/s and Pa).</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@ property
+def hydraulic_resistance(self) -&gt; float:
+    &#34;&#34;&#34;
+    Get the hydraulic resistance (*float*) of the network. Its value is based on flow rate and pressure expressed in
+    their base SI-units (m^3/s and Pa).
+    &#34;&#34;&#34;
+    V = self.flow_rate()
+    dp_feed = self.feed_pressure()
+    R = dp_feed / V ** 2
+    return R</code></pre>
 </details>
 </dd>
 <dt id="pypeflow.design.network.Network.paths"><code class="name">var <span class="ident">paths</span></code></dt>
@@ -2439,8 +2553,11 @@ feed pressure (<em>quantities.Pressure</em>).</p>
 <li><code><a title="pypeflow.design.network.Network.create" href="#pypeflow.design.network.Network.create">create</a></code></li>
 <li><code><a title="pypeflow.design.network.Network.critical_path" href="#pypeflow.design.network.Network.critical_path">critical_path</a></code></li>
 <li><code><a title="pypeflow.design.network.Network.end_node_id" href="#pypeflow.design.network.Network.end_node_id">end_node_id</a></code></li>
+<li><code><a title="pypeflow.design.network.Network.feed_pressure" href="#pypeflow.design.network.Network.feed_pressure">feed_pressure</a></code></li>
+<li><code><a title="pypeflow.design.network.Network.flow_rate" href="#pypeflow.design.network.Network.flow_rate">flow_rate</a></code></li>
 <li><code><a title="pypeflow.design.network.Network.get_balancing_valves" href="#pypeflow.design.network.Network.get_balancing_valves">get_balancing_valves</a></code></li>
 <li><code><a title="pypeflow.design.network.Network.get_control_valves" href="#pypeflow.design.network.Network.get_control_valves">get_control_valves</a></code></li>
+<li><code><a title="pypeflow.design.network.Network.hydraulic_resistance" href="#pypeflow.design.network.Network.hydraulic_resistance">hydraulic_resistance</a></code></li>
 <li><code><a title="pypeflow.design.network.Network.paths" href="#pypeflow.design.network.Network.paths">paths</a></code></li>
 <li><code><a title="pypeflow.design.network.Network.sections" href="#pypeflow.design.network.Network.sections">sections</a></code></li>
 <li><code><a title="pypeflow.design.network.Network.start_node_id" href="#pypeflow.design.network.Network.start_node_id">start_node_id</a></code></li>

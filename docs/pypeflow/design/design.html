@@ -421,13 +421,12 @@ class Designer:
         ]
         d = {k: [] for k in keys}
         cv_dict = cls.network.get_control_valves()
+        dp_crit_path = cls.network.critical_path.static_head_required
         for section_id, tup in cv_dict.items():
             control_valve = tup[0]
-            # section = tup[1]
             d[keys[0]].append(section_id)
             d[keys[1]].append(control_valve.pressure_drop(cls.units[&#39;pressure&#39;], 3))
             d[keys[2]].append(control_valve.Kvs)
-            dp_crit_path = cls.network.critical_path.static_head_required
             d[keys[3]].append(control_valve.authority(dp_crit_path))
         return pd.DataFrame(d)
 
@@ -854,13 +853,12 @@ class Designer:
         ]
         d = {k: [] for k in keys}
         cv_dict = cls.network.get_control_valves()
+        dp_crit_path = cls.network.critical_path.static_head_required
         for section_id, tup in cv_dict.items():
             control_valve = tup[0]
-            # section = tup[1]
             d[keys[0]].append(section_id)
             d[keys[1]].append(control_valve.pressure_drop(cls.units[&#39;pressure&#39;], 3))
             d[keys[2]].append(control_valve.Kvs)
-            dp_crit_path = cls.network.critical_path.static_head_required
             d[keys[3]].append(control_valve.authority(dp_crit_path))
         return pd.DataFrame(d)
 
@@ -1228,13 +1226,12 @@ def get_control_valves(cls) -&gt; pd.DataFrame:
     ]
     d = {k: [] for k in keys}
     cv_dict = cls.network.get_control_valves()
+    dp_crit_path = cls.network.critical_path.static_head_required
     for section_id, tup in cv_dict.items():
         control_valve = tup[0]
-        # section = tup[1]
         d[keys[0]].append(section_id)
         d[keys[1]].append(control_valve.pressure_drop(cls.units[&#39;pressure&#39;], 3))
         d[keys[2]].append(control_valve.Kvs)
-        dp_crit_path = cls.network.critical_path.static_head_required
         d[keys[3]].append(control_valve.authority(dp_crit_path))
     return pd.DataFrame(d)</code></pre>
 </details>

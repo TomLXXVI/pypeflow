@@ -634,3 +634,32 @@ class Network:
     def end_node_id(self) -> str:
         """Get the end node id of the network."""
         return self._end_node_id
+
+    @property
+    def flow_rate(self) -> qty.VolumeFlowRate:
+        """Get the flow rate (*quantities.VolumeFlowRate*) that enters the network."""
+        start_node = self._nodes[self._start_node_id]
+        V = 0.0
+        for section in start_node.outgoing:
+            V += section.flow_rate()
+        return qty.VolumeFlowRate(V)
+
+    @property
+    def feed_pressure(self) -> qty.Pressure:
+        """
+        Get the required feed pressure (*quantities.Pressure*) for the network, i.e. the required static head for
+        the critical path in the network. If the network is balanced, all flow paths share the same required static
+        head.
+        """
+        return self.critical_path.static_head_required
+
+    @ property
+    def hydraulic_resistance(self) -> float:
+        """
+        Get the hydraulic resistance (*float*) of the network. Its value is based on flow rate and pressure expressed in
+        their base SI-units (m^3/s and Pa).
+        """
+        V = self.flow_rate()
+        dp_feed = self.feed_pressure()
+        R = dp_feed / V ** 2
+        return R
