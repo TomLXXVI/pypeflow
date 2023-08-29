@@ -1,5 +1,9 @@
 # PypeFlow 2020.2
 
+> [!WARNING]
+> This repository is no longer maintained. Please, check out my newer repository
+> **project-hvac**.
+> 
 *A Python package, written in Python 3.7, for designing and analyzing small scale piping networks using SI-units.*
 
 At this moment only circular pipes are implemented. Supported fluids are water and air.
