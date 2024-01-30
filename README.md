@@ -2,7 +2,7 @@
 
 > [!WARNING]
 > This repository is no longer maintained. Please, check out my newer repository
-> **project-hvac**.
+> **python-hvac**.
 > 
 *A Python package, written in Python 3.7, for designing and analyzing small scale piping networks using SI-units.*
 
